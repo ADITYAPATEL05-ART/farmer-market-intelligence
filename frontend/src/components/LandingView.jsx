@@ -20,12 +20,37 @@ import {
   Tag,
   ArrowRight,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Bot,
+  Send,
+  MessageSquare,
+  Phone,
+  Mail,
+  Building2,
+  Clock,
+  BookOpen,
+  Newspaper,
+  Search,
+  ExternalLink,
+  CheckCircle2,
+  HelpCircle,
+  Volume2,
+  RefreshCw,
+  SlidersHorizontal,
+  Layers,
+  Award,
+  Scale,
+  ArrowUpRight,
+  Check,
+  Copy,
+  Info
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
   AreaChart, 
   Area, 
+  LineChart,
+  Line,
   XAxis, 
   YAxis, 
   Tooltip, 
@@ -35,601 +60,1611 @@ import { useApp } from '../context/AppContext';
 
 export const LandingView = ({ 
   onNavigateTab, 
+  onOpenLogin,
   onOpenAiGrader, 
   onOpenKisanBot 
 }) => {
-  const { language } = useApp();
+  const { 
+    language, 
+    currentRole, 
+    setCurrentRole, 
+    showNotification 
+  } = useApp();
 
-  // Price trend 7-day data matching screenshot
-  const trendData = [
-    { day: '14 May', price: 2010 },
-    { day: '15 May', price: 2040 },
-    { day: '16 May', price: 2020 },
-    { day: '17 May', price: 2045 },
-    { day: '18 May', price: 2095 },
-    { day: '19 May', price: 2075 },
-    { day: '20 May', price: 2125 }
+  // -------------------------------------------------------------
+  // 1. CROP SELECTION & RATE GRAPH DATA (SECTION 3)
+  // -------------------------------------------------------------
+  const [selectedCrop, setSelectedCrop] = useState('wheat');
+  const [graphTimeframe, setGraphTimeframe] = useState('14days');
+
+  const cropDatasets = {
+    wheat: {
+      nameEn: 'Wheat (Sharbati)',
+      nameHi: 'गेहूं (शरबती)',
+      category: 'Grains',
+      currentPrice: '3,050',
+      unit: '/quintal',
+      change: '+2.1%',
+      isPositive: true,
+      mandi: 'Indore APMC (Madhya Pradesh)',
+      arrivalsMT: '2,850 MT',
+      recommendation: 'SELL NOW',
+      confidence: '91%',
+      adviceEn: 'Seasonal high demand from institutional flour millers. Current prices are near a 6-month peak.',
+      adviceHi: 'आटा मिलों की मजबूत संस्थागत मांग। मौजूदा भाव 6 महीने के उच्चतम स्तर के करीब हैं।',
+      trendData: [
+        { day: '01 Sep', price: 2820, forecast: false },
+        { day: '03 Sep', price: 2890, forecast: false },
+        { day: '05 Sep', price: 2950, forecast: false },
+        { day: '07 Sep', price: 3010, forecast: false },
+        { day: '08 Sep (Today)', price: 3050, forecast: false },
+        { day: '11 Sep', price: 3040, forecast: true },
+        { day: '14 Sep', price: 2990, forecast: true },
+        { day: '18 Sep', price: 2940, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Indore Mandi', state: 'Madhya Pradesh', price: '3,050', arrivals: '2,850 MT', isBest: true },
+        { name: 'Nashik Mandi', state: 'Maharashtra', price: '2,890', arrivals: '1,420 MT', isBest: false },
+        { name: 'Bhopal APMC', state: 'Madhya Pradesh', price: '2,920', arrivals: '1,890 MT', isBest: false },
+        { name: 'Kota Mandi', state: 'Rajasthan', price: '2,840', arrivals: '2,100 MT', isBest: false }
+      ]
+    },
+    onion: {
+      nameEn: 'Onion (Red)',
+      nameHi: 'लाल प्याज',
+      category: 'Vegetables',
+      currentPrice: '2,380',
+      unit: '/quintal',
+      change: '+5.8%',
+      isPositive: true,
+      mandi: 'Lasalgaon APMC (Maharashtra)',
+      arrivalsMT: '1,420 MT',
+      recommendation: 'HOLD FOR 5-7 DAYS',
+      confidence: '88%',
+      adviceEn: 'Unseasonal rain in southern districts has slowed arrivals. Prices are projected to surge another 12-15%.',
+      adviceHi: 'दक्षिणी जिलों में बारिश के कारण आवक कम है। कीमतों में 12-15% अतिरिक्त उछाल की संभावना है।',
+      trendData: [
+        { day: '01 Sep', price: 2100, forecast: false },
+        { day: '03 Sep', price: 2180, forecast: false },
+        { day: '05 Sep', price: 2260, forecast: false },
+        { day: '07 Sep', price: 2320, forecast: false },
+        { day: '08 Sep (Today)', price: 2380, forecast: false },
+        { day: '11 Sep', price: 2510, forecast: true },
+        { day: '14 Sep', price: 2660, forecast: true },
+        { day: '18 Sep', price: 2720, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Lasalgaon APMC', state: 'Maharashtra', price: '2,380', arrivals: '1,420 MT', isBest: true },
+        { name: 'Nashik APMC', state: 'Maharashtra', price: '2,320', arrivals: '980 MT', isBest: false },
+        { name: 'Pune Mandi', state: 'Maharashtra', price: '2,240', arrivals: '1,150 MT', isBest: false },
+        { name: 'Azadpur Mandi', state: 'Delhi', price: '2,350', arrivals: '3,200 MT', isBest: false }
+      ]
+    },
+    tomato: {
+      nameEn: 'Tomato (Hybrid)',
+      nameHi: 'टमाटर (हाइब्रिड)',
+      category: 'Vegetables',
+      currentPrice: '1,850',
+      unit: '/quintal',
+      change: '-3.4%',
+      isPositive: false,
+      mandi: 'Kolar APMC (Karnataka)',
+      arrivalsMT: '950 MT',
+      recommendation: 'SELL GRADUALLY / COLD STORAGE',
+      confidence: '84%',
+      adviceEn: 'Perishable crop risk. Sell 60% immediately to institutional retail buyers; preserve 40% in cold storage.',
+      adviceHi: 'शीघ्र खराब होने का जोखिम। 60% तुरंत रीटेल खरीदारों को बेचें और 40% कोल्ड स्टोरेज में रखें।',
+      trendData: [
+        { day: '01 Sep', price: 2150, forecast: false },
+        { day: '03 Sep', price: 2020, forecast: false },
+        { day: '05 Sep', price: 1940, forecast: false },
+        { day: '07 Sep', price: 1890, forecast: false },
+        { day: '08 Sep (Today)', price: 1850, forecast: false },
+        { day: '11 Sep', price: 1820, forecast: true },
+        { day: '14 Sep', price: 1890, forecast: true },
+        { day: '18 Sep', price: 1970, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Kolar APMC', state: 'Karnataka', price: '1,850', arrivals: '950 MT', isBest: true },
+        { name: 'Madanapalle', state: 'Andhra Pradesh', price: '1,810', arrivals: '1,200 MT', isBest: false },
+        { name: 'Pune Mandi', state: 'Maharashtra', price: '1,740', arrivals: '620 MT', isBest: false },
+        { name: 'Nashik Mandi', state: 'Maharashtra', price: '1,720', arrivals: '540 MT', isBest: false }
+      ]
+    },
+    potato: {
+      nameEn: 'Potato (Jyoti)',
+      nameHi: 'आलू (ज्योति)',
+      category: 'Vegetables',
+      currentPrice: '1,320',
+      unit: '/quintal',
+      change: '+1.6%',
+      isPositive: true,
+      mandi: 'Agra APMC (Uttar Pradesh)',
+      arrivalsMT: '4,100 MT',
+      recommendation: 'STABLE DEMAND',
+      confidence: '89%',
+      adviceEn: 'Cold storage stock releases are steady. Steady pricing expected over next 10 days.',
+      adviceHi: 'कोल्ड स्टोरेज से स्थिर निकासी। अगले 10 दिनों में स्थिर भाव रहने का अनुमान।',
+      trendData: [
+        { day: '01 Sep', price: 1280, forecast: false },
+        { day: '03 Sep', price: 1290, forecast: false },
+        { day: '05 Sep', price: 1305, forecast: false },
+        { day: '07 Sep', price: 1315, forecast: false },
+        { day: '08 Sep (Today)', price: 1320, forecast: false },
+        { day: '11 Sep', price: 1325, forecast: true },
+        { day: '14 Sep', price: 1330, forecast: true },
+        { day: '18 Sep', price: 1340, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Agra APMC', state: 'Uttar Pradesh', price: '1,320', arrivals: '4,100 MT', isBest: true },
+        { name: 'Farrukhabad', state: 'Uttar Pradesh', price: '1,280', arrivals: '3,400 MT', isBest: false },
+        { name: 'Indore Mandi', state: 'Madhya Pradesh', price: '1,300', arrivals: '1,650 MT', isBest: false },
+        { name: 'Azadpur Mandi', state: 'Delhi', price: '1,310', arrivals: '4,800 MT', isBest: false }
+      ]
+    },
+    soybean: {
+      nameEn: 'Soybean (Yellow)',
+      nameHi: 'सोयाबीन (पीला)',
+      category: 'Oilseeds',
+      currentPrice: '4,680',
+      unit: '/quintal',
+      change: '+3.9%',
+      isPositive: true,
+      mandi: 'Ujjain APMC (Madhya Pradesh)',
+      arrivalsMT: '1,780 MT',
+      recommendation: 'HIGH BUYER DEMAND',
+      confidence: '93%',
+      adviceEn: 'Global edible oil benchmarks and local solvent extraction plants are actively bidding on high oil-content lots.',
+      adviceHi: 'खाद्य तेल बाज़ार में तेजी और तेल निष्कर्षण संयंत्रों से मजबूत बोलियां मिल रही हैं।',
+      trendData: [
+        { day: '01 Sep', price: 4450, forecast: false },
+        { day: '03 Sep', price: 4510, forecast: false },
+        { day: '05 Sep', price: 4590, forecast: false },
+        { day: '07 Sep', price: 4640, forecast: false },
+        { day: '08 Sep (Today)', price: 4680, forecast: false },
+        { day: '11 Sep', price: 4730, forecast: true },
+        { day: '14 Sep', price: 4790, forecast: true },
+        { day: '18 Sep', price: 4830, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Ujjain APMC', state: 'Madhya Pradesh', price: '4,680', arrivals: '1,780 MT', isBest: true },
+        { name: 'Indore Mandi', state: 'Madhya Pradesh', price: '4,640', arrivals: '2,200 MT', isBest: false },
+        { name: 'Latur APMC', state: 'Maharashtra', price: '4,610', arrivals: '1,450 MT', isBest: false },
+        { name: 'Akola Mandi', state: 'Maharashtra', price: '4,590', arrivals: '980 MT', isBest: false }
+      ]
+    },
+    cotton: {
+      nameEn: 'Cotton (Medium Staple)',
+      nameHi: 'कपास (मध्यम स्टेपल)',
+      category: 'Fiber',
+      currentPrice: '7,150',
+      unit: '/quintal',
+      change: '+1.2%',
+      isPositive: true,
+      mandi: 'Rajkot APMC (Gujarat)',
+      arrivalsMT: '1,120 MT',
+      recommendation: 'ABOVE MSP BENCHMARK',
+      confidence: '90%',
+      adviceEn: 'Spinning mill inventories are running low. Quality certified lots are fetching up to ₹250/Qtl premium over MSP.',
+      adviceHi: 'कताई मिलों में स्टॉक कम है। ग्रेड प्रमाणित लॉट को एमएसपी से ₹250/क्विंटल तक का प्रीमियम मिल रहा है।',
+      trendData: [
+        { day: '01 Sep', price: 6980, forecast: false },
+        { day: '03 Sep', price: 7040, forecast: false },
+        { day: '05 Sep', price: 7080, forecast: false },
+        { day: '07 Sep', price: 7120, forecast: false },
+        { day: '08 Sep (Today)', price: 7150, forecast: false },
+        { day: '11 Sep', price: 7190, forecast: true },
+        { day: '14 Sep', price: 7240, forecast: true },
+        { day: '18 Sep', price: 7280, forecast: true }
+      ],
+      mandiComparisons: [
+        { name: 'Rajkot APMC', state: 'Gujarat', price: '7,150', arrivals: '1,120 MT', isBest: true },
+        { name: 'Surendranagar', state: 'Gujarat', price: '7,110', arrivals: '980 MT', isBest: false },
+        { name: 'Adilabad Mandi', state: 'Telangana', price: '7,050', arrivals: '1,400 MT', isBest: false },
+        { name: 'Amravati APMC', state: 'Maharashtra', price: '7,080', arrivals: '850 MT', isBest: false }
+      ]
+    }
+  };
+
+  const activeCropData = cropDatasets[selectedCrop] || cropDatasets.wheat;
+
+  // -------------------------------------------------------------
+  // 2. INLINE KISAN AI CHATBOT STATE (SECTION 2)
+  // -------------------------------------------------------------
+  const [chatInput, setChatInput] = useState('');
+  const [isAiThinking, setIsAiThinking] = useState(false);
+  const [chatHistory, setChatHistory] = useState([
+    {
+      sender: 'bot',
+      time: 'Just now',
+      text: language === 'en'
+        ? 'Namaste! I am Kisan AI, your agricultural market intelligence assistant. Ask me about live mandi rates, price forecasts, Agmarknet quality certification, cold storage facilities, or how our escrow payment protection works.'
+        : 'नमस्ते! मैं किसान एआई हूँ, आपका कृषि बाज़ार सहायक। मुझसे लाइव मंडी भाव, मूल्य पूर्वानुमान, गुणवत्ता ग्रेडिंग, कोल्ड स्टोरेज या एस्क्रो भुगतान सुरक्षा के बारे में पूछें।'
+    }
+  ]);
+
+  const quickChips = [
+    { label: language === 'en' ? 'Best mandi to sell wheat this week?' : 'इस हफ्ते गेहूं बेचने के लिए सबसे अच्छी मंडी?' },
+    { label: language === 'en' ? 'How does Escrow protect farmer payment?' : 'एस्क्रो किसान भुगतान की सुरक्षा कैसे करता है?' },
+    { label: language === 'en' ? 'How does AI assaying grade my crop?' : 'एआई ग्रेडिंग मेरी फसल की जांच कैसे करती है?' },
+    { label: language === 'en' ? 'Current onion forecast in Lasalgaon' : 'लासलगंज में प्याज का वर्तमान मूल्य पूर्वानुमान' },
+    { label: language === 'en' ? 'Cold storage facilities near Nashik' : 'नासिक के पास कोल्ड स्टोरेज की सुविधा' }
   ];
 
-  const marketPrices = [
+  const handleSendChat = (questionText) => {
+    const query = questionText || chatInput;
+    if (!query.trim()) return;
+
+    const userMessage = {
+      sender: 'user',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      text: query
+    };
+
+    setChatHistory(prev => [...prev, userMessage]);
+    setChatInput('');
+    setIsAiThinking(true);
+
+    setTimeout(() => {
+      let botReply = '';
+      const qLower = query.toLowerCase();
+
+      if (qLower.includes('wheat') || qLower.includes('गेहूं')) {
+        botReply = language === 'en'
+          ? 'Wheat Analysis: Indore Mandi currently leads at ₹3,050/Quintal (+2.1% trend) with 2,850 MT arrivals. Our AI model recommends "SELL NOW" because institutional flour mills are active, and modal rates are within 2% of the seasonal peak.'
+          : 'गेहूं विश्लेषण: इंदौर मंडी वर्तमान में ₹3,050/क्विंटल (+2.1% रुझान) पर उच्चतम भाव दे रही है। हमारा एआई मॉडल "अभी बेचें" की सलाह देता है क्योंकि मिलों की मजबूत मांग है।';
+      } else if (qLower.includes('escrow') || qLower.includes('payment') || qLower.includes('भुगतान') || qLower.includes('सुरक्षा')) {
+        botReply = language === 'en'
+          ? 'Escrow Protection: When you accept a buyer offer, 100% of the funds are locked in an RBI-regulated bank escrow before the truck leaves your farm. Once delivery is verified at the weighbridge, funds are released directly to your bank account via Aadhaar DBT / UPI within 45 minutes.'
+          : 'एस्क्रो सुरक्षा: जब आप खरीदार का प्रस्ताव स्वीकार करते हैं, तो वाहन रवाना होने से पहले 100% राशि बैंक एस्क्रो में जमा हो जाती है। डिलीवरी सत्यापन के बाद 45 मिनट के भीतर पैसा सीधे आपके बैंक खाते में जमा हो जाता है।';
+      } else if (qLower.includes('quality') || qLower.includes('ai') || qLower.includes('grade') || qLower.includes('ग्रेडिंग') || qLower.includes('गुणवत्ता')) {
+        botReply = language === 'en'
+          ? 'AI Quality Assaying: Take 3 photos using our mobile camera. The computer vision model analyzes surface blemishes, color uniformity (RGB spectrum), and average grain diameter to generate an Agmarknet Grade A/B/C digital certificate with verified specifications.'
+          : 'एआई गुणवत्ता परख: अपने स्मार्टफोन से उपज की 3 तस्वीरें लें। कंप्यूटर विज़न मॉडल दाग-धब्बे, रंग और आकार का विश्लेषण करके प्रमाणित एगमार्कनेट ग्रेड A/B/C डिजिटल प्रमाणपत्र जारी करता है।';
+      } else if (qLower.includes('onion') || qLower.includes('lasalgaon') || qLower.includes('प्याज')) {
+        botReply = language === 'en'
+          ? 'Onion Intelligence: Lasalgaon APMC is trading at ₹2,380/Qtl (+5.8%). Unseasonal rain in southern districts has restricted supply. AI forecast indicates prices will rise toward ₹2,660 - ₹2,720/Qtl in 7-10 days. Recommendation: HOLD for 5-7 days.'
+          : 'प्याज भाव: लासलगांव मंडी में भाव ₹2,380/क्विंटल हैं। बारिश के कारण आवक प्रभावित हुई है। एआई पूर्वानुमान बताता है कि 7-10 दिनों में भाव ₹2,660 से ₹2,720 तक पहुंच सकते हैं। सलाह: 5-7 दिन रोकें।';
+      } else if (qLower.includes('cold storage') || qLower.includes('storage') || qLower.includes('स्टोरेज')) {
+        botReply = language === 'en'
+          ? 'Cold Storage: Sahyadri Agro Cold Storage (Niphad, Nashik) has 1,200 MT available capacity at ₹18/bag/month with humidity controls for onions and tomatoes. You can book directly from the Farmer Portal with bank warehouse receipt financing (e-NWR).'
+          : 'कोल्ड स्टोरेज: सह्याद्री एग्रो कोल्ड स्टोरेज (निफाड, नासिक) में ₹18/बोरी/माह पर 1,200 मीट्रिक टन जगह उपलब्ध है। आप सीधे किसान पोर्टल से ई-एनडब्ल्यूआर रसीद के साथ बुकिंग कर सकते हैं।';
+      } else {
+        botReply = language === 'en'
+          ? `Agri Intelligence Summary: We are tracking live arrivals across 420+ mandis. For "${query}", current platform average is steady. You can post your produce lot or explore buyer demands in our dedicated portals for real-time trade matching.`
+          : `कृषि जानकारी: हम 420+ मंडियों में लाइव आवक पर नजर रख रहे हैं। आपकी जिज्ञासा के संदर्भ में मंडी भाव स्थिर हैं। आप सीधे किसान या खरीदार पोर्टल में जाकर ट्रेड कर सकते हैं।`;
+      }
+
+      setChatHistory(prev => [
+        ...prev,
+        {
+          sender: 'bot',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: botReply
+        }
+      ]);
+      setIsAiThinking(false);
+    }, 650);
+  };
+
+  const handleSpeakText = (text) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = language === 'en' ? 'en-IN' : 'hi-IN';
+      utterance.rate = 0.95;
+      window.speechSynthesis.speak(utterance);
+      showNotification('Playing audio response...', 'info');
+    } else {
+      showNotification('Audio speech synthesis is not supported on this browser.', 'warning');
+    }
+  };
+
+  // -------------------------------------------------------------
+  // 3. CONTACT FORM STATE (SECTION 6)
+  // -------------------------------------------------------------
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    phoneOrEmail: '',
+    roleCategory: 'farmer',
+    subject: '',
+    message: ''
+  });
+  const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.phoneOrEmail || !contactForm.message) {
+      showNotification('Please fill in your name, contact details, and message.', 'warning');
+      return;
+    }
+    setIsContactSubmitted(true);
+    showNotification(
+      language === 'en'
+        ? 'Inquiry submitted successfully! Our grievance officer will contact you within 4 hours.'
+        : 'पूछताछ सफलतापूर्वक दर्ज की गई! हमारे अधिकारी 4 घंटे के भीतर आपसे संपर्क करेंगे।',
+      'success'
+    );
+    setContactForm({
+      name: '',
+      phoneOrEmail: '',
+      roleCategory: 'farmer',
+      subject: '',
+      message: ''
+    });
+    setTimeout(() => setIsContactSubmitted(false), 6000);
+  };
+
+  const copyToClipboard = (text, label) => {
+    navigator.clipboard.writeText(text);
+    showNotification(`${label} copied to clipboard!`, 'info');
+  };
+
+  // -------------------------------------------------------------
+  // 4. NEWS & RESEARCH DATA (SECTION 5)
+  // -------------------------------------------------------------
+  const [newsCategoryTab, setNewsCategoryTab] = useState('all'); // 'all' | 'news' | 'research'
+
+  const agriNewsArticles = [
     {
-      name: language === 'en' ? 'Wheat' : 'गेहूं',
-      mandi: language === 'en' ? 'Nashik Mandi' : 'नासिक मंडी',
-      price: '2,125',
-      unit: '/quintal',
-      change: '+1.8%',
-      isPositive: true
+      id: 1,
+      type: 'news',
+      tag: 'Policy & MSP',
+      tagColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      titleEn: 'Cabinet Approves Kharif 2026 MSP Revisions: Pulses and Oilseeds See Up to 8.2% Hike',
+      titleHi: 'कैबिनेट ने खरीफ 2026 एमएसपी संशोधन को दी मंजूरी: दालों और तिलहनों में 8.2% तक की वृद्धि',
+      source: 'Ministry of Agriculture & Farmers Welfare',
+      date: '06 Sep 2026',
+      readTime: '3 min read',
+      summaryEn: 'Government increases Minimum Support Price for pulses, soybean, and cotton to encourage crop diversification away from water-intensive paddy.',
+      summaryHi: 'पानी की अधिक खपत वाले धान से फसल विविधीकरण को बढ़ावा देने के लिए दालों, सोयाबीन और कपास के एमएसपी में बढ़ोतरी की गई।',
+      linkText: 'Read Full Policy Brief'
     },
     {
-      name: language === 'en' ? 'Tomato' : 'टमाटर',
-      mandi: language === 'en' ? 'Pune Mandi' : 'पुणे मंडी',
-      price: '1,245',
-      unit: '/quintal',
-      change: '-2.6%',
-      isPositive: false
+      id: 2,
+      type: 'news',
+      tag: 'Market Reforms',
+      tagColor: 'bg-blue-100 text-blue-800 border-blue-200',
+      titleEn: 'Direct Farm-Gate Procurement Guidelines Adopted by 6 State APMC Marketing Boards',
+      titleHi: '6 राज्यों के मंडी बोर्डों द्वारा प्रत्यक्ष फार्म-गेट खरीद दिशानिर्देश लागू',
+      source: 'National e-NAM Directorate',
+      date: '04 Sep 2026',
+      readTime: '4 min read',
+      summaryEn: 'New regulatory framework exempts certified FPOs from physical mandi cess when executing digital escrow trades directly with corporate buyers.',
+      summaryHi: 'नया ढांचा प्रमाणित एफपीओ को कॉर्पोरेट खरीदारों के साथ सीधे डिजिटल एस्क्रो व्यापार करने पर मंडी उपकर से छूट देता है।',
+      linkText: 'Download APMC Circular'
     },
     {
-      name: language === 'en' ? 'Potato' : 'आलू',
-      mandi: language === 'en' ? 'Nashik Mandi' : 'नासिक मंडी',
-      price: '1,050',
-      unit: '/quintal',
-      change: '+3.2%',
-      isPositive: true
+      id: 3,
+      type: 'news',
+      tag: 'Export Trade',
+      tagColor: 'bg-amber-100 text-amber-800 border-amber-200',
+      titleEn: 'Export Window Reopens for Nashik Red Onions with Reduced Minimum Export Benchmark',
+      titleHi: 'नाशिक लाल प्याज के लिए निर्यात खुला, न्यूनतम निर्यात मूल्य में कटौती',
+      source: 'APEDA Agri Trade Monitor',
+      date: '02 Sep 2026',
+      readTime: '2 min read',
+      summaryEn: 'Removal of the $550/MT floor price enables Indian farmers and FPOs to access high-paying markets in Dubai, Colombo, and Singapore.',
+      summaryHi: 'न्यूनतम निर्यात मूल्य हटने से भारतीय किसानों को दुबई, कोलंबो और सिंगापुर के बाजारों में बेहतर मूल्य प्राप्त होंगे।',
+      linkText: 'View Export Corridors'
     },
     {
-      name: language === 'en' ? 'Onion' : 'प्याज',
-      mandi: language === 'en' ? 'Ahmednagar Mandi' : 'अहमदनगर मंडी',
-      price: '1,180',
-      unit: '/quintal',
-      change: '+0.9%',
-      isPositive: true
+      id: 4,
+      type: 'research',
+      tag: 'Post-Harvest Research',
+      tagColor: 'bg-purple-100 text-purple-800 border-purple-200',
+      titleEn: 'ICAR-CIAE Study: Controlled Atmosphere Cold Storages Reduce Post-Harvest Loss by 34.2%',
+      titleHi: 'भाकृअनुप-सीआईएई अध्ययन: नियंत्रित वायुमंडलीय कोल्ड स्टोरेज से फसल खराबी में 34.2% की कमी',
+      source: 'Indian Council of Agricultural Research (ICAR)',
+      date: 'August 2026',
+      readTime: '6 min read',
+      summaryEn: 'Empirical research across 12 districts confirms decentralized 10 MT farm-gate pre-cooling stops microbial rot in tomatoes, bell peppers, and table grapes.',
+      summaryHi: '12 जिलों में किए गए परीक्षणों से सिद्ध हुआ है कि खेत स्तर पर प्री-कूलिंग से टमाटर और सब्जियों में सड़न को एक-तिहाई तक कम किया जा सकता है।',
+      linkText: 'View ICAR Research Paper'
+    },
+    {
+      id: 5,
+      type: 'research',
+      tag: 'Crop Science',
+      tagColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      titleEn: 'IARI Pusa: New Climate-Resilient Hybrid Wheat Strains Show 18% Higher Yield Under Thermal Stress',
+      titleHi: 'पूसा संस्थान: जलवायु-सहिष्णु हाइब्रिड गेहूं किस्म ने उच्च तापमान में 18% अधिक उपज दी',
+      source: 'Indian Agricultural Research Institute (Pusa)',
+      date: 'July 2026',
+      readTime: '5 min read',
+      summaryEn: 'The HD-3388 biofortified Sharbati grain variety retains high protein and gluten strength even under terminal heat conditions in late rabi cycles.',
+      summaryHi: 'एचडी-3388 शरबती किस्म रबी के अंतिम चरण में तेज धूप और गर्मी के बावजूद उच्च प्रोटीन और बेहतर दाना वजन बनाए रखती है।',
+      linkText: 'Download Agronomy Guide'
+    },
+    {
+      id: 6,
+      type: 'research',
+      tag: 'Agri-Fintech',
+      tagColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      titleEn: 'Empirical Evaluation of Digital Escrow Payments in APMCs: Farmers Realize 28.4% Higher Net Returns',
+      titleHi: 'मंडियों में डिजिटल एस्क्रो भुगतान का मूल्यांकन: किसानों को 28.4% अधिक शुद्ध लाभ',
+      source: 'National Institute of Agricultural Economics & Policy Research',
+      date: 'June 2026',
+      readTime: '7 min read',
+      summaryEn: 'Replacing delayed paper kaccha parcha settlement with automated bank escrow cuts out unrecorded commission deductions and reduces bad debt risks to 0%.',
+      summaryHi: 'कागजी पर्ची के स्थान पर डिजिटल एस्क्रो प्रणाली अपनाने से बिचौलियों की अघोषित कटौतियां बंद हुईं और किसानों की शुद्ध आय में उल्लेखनीय वृद्धि हुई।',
+      linkText: 'Read Economics Report'
     }
   ];
 
-  const bestSellingMarkets = [
-    { rank: 1, name: language === 'en' ? 'Nashik Mandi' : 'नासिक मंडी', price: '2,125', isBest: true },
-    { rank: 2, name: language === 'en' ? 'Pune Mandi' : 'पुणे मंडी', price: '2,045', isBest: false },
-    { rank: 3, name: language === 'en' ? 'Ahmednagar Mandi' : 'अहमदनगर मंडी', price: '1,980', isBest: false },
-    { rank: 4, name: language === 'en' ? 'Solapur Mandi' : 'सोलापुर मंडी', price: '1,965', isBest: false }
-  ];
+  const filteredArticles = newsCategoryTab === 'all'
+    ? agriNewsArticles
+    : agriNewsArticles.filter(a => a.type === newsCategoryTab);
+
+  // Helper for navigating to role-specific portal
+  const handleEnterRolePortal = (targetRole, targetTab) => {
+    setCurrentRole(targetRole);
+    onNavigateTab(targetTab);
+  };
 
   return (
-    <div className="space-y-6 max-w-[1240px] mx-auto animate-fade-in pb-12">
+    <div className="space-y-16 max-w-[1240px] mx-auto animate-fade-in pb-20">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-r from-[#f7f9f6] via-[#f1f6f1] to-[#e7f0e6] border border-[#e4eae2] p-6 sm:p-10 lg:p-12 shadow-xs">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* Left Hero Text Column */}
-          <div className="lg:col-span-7 space-y-6 z-10">
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 1: HERO & STAKEHOLDER ROLE GATEWAYS */}
+      {/* ------------------------------------------------------------- */}
+      <section id="hero-section" className="space-y-8">
+        
+        {/* Active Role Notice Banner if already logged in */}
+        {currentRole && currentRole !== 'overview' && (
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-emerald-950">
+                  {language === 'en' ? 'Active Session' : 'सक्रिय सत्र'}: <span className="capitalize font-black text-emerald-700">{currentRole} Portal</span>
+                </div>
+                <div className="text-[11px] text-emerald-800 font-medium">
+                  {language === 'en' 
+                    ? 'You are currently logged in. You can open your private dashboard or browse public market intelligence below.' 
+                    : 'आप वर्तमान में लॉग इन हैं। आप अपना निजी डैशबोर्ड खोल सकते हैं या नीचे सार्वजनिक मंडी जानकारी देख सकते हैं।'}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => {
+                  if (currentRole === 'farmer') onNavigateTab('farmer-portal');
+                  else if (currentRole === 'buyer') onNavigateTab('buyer-portal');
+                  else if (currentRole === 'transporter') onNavigateTab('transporter-portal');
+                  else if (currentRole === 'admin') onNavigateTab('admin-portal');
+                }}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>{language === 'en' ? 'Go to My Portal' : 'मेरे पोर्टल पर जाएं'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentRole('overview');
+                  showNotification('Signed out to public visitor view.', 'info');
+                }}
+                className="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold px-3 py-2 rounded-xl transition cursor-pointer"
+              >
+                {language === 'en' ? 'Sign Out' : 'साइन आउट'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Hero Banner with Original Green Palette */}
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#f7f9f6] via-[#f1f6f1] to-[#e7f0e6] border border-[#e4eae2] p-6 sm:p-10 lg:p-12 shadow-xs">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            {/* Left Column: Headlines & CTA */}
+            <div className="lg:col-span-7 space-y-6 z-10">
+              <div className="inline-flex items-center gap-2 bg-[#eaf6ed] border border-emerald-300/80 px-3 py-1 rounded-full text-xs font-bold text-[#174d26]">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Smart India Hackathon 2026 • Problem ID 26132</span>
+              </div>
+
+              <div>
+                <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 leading-[1.12] tracking-tight">
+                  {language === 'en' ? (
+                    <>
+                      Sell Smarter.<br />
+                      Get the <span className="text-[#174d26]">Right Price.</span>
+                    </>
+                  ) : (
+                    <>
+                      सही जानकारी से बेचें.<br />
+                      पाएं <span className="text-[#174d26]">सही दाम।</span>
+                    </>
+                  )}
+                </h1>
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mt-4 font-normal">
+                  {language === 'en' 
+                    ? 'India\'s unified digital agriculture intelligence infrastructure. Real-time APMC mandi prices, computer vision AI grading, verified buyer marketplace, rural logistics, and 100% bank-backed escrow payments.'
+                    : 'भारत का एकीकृत डिजिटल कृषि मंच। रीयल-टाइम मंडी भाव, कंप्यूटर विज़न एआई ग्रेडिंग, सत्यापित खरीदार बाज़ार, ग्रामीण परिवहन और 100% बैंक एस्क्रो सुरक्षा।'}
+                </p>
+              </div>
+
+              {/* Quick Action Navigation CTAs */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <a
+                  href="#rates-section"
+                  className="inline-flex items-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md shadow-[#174d26]/20 transition hover:scale-[1.02] cursor-pointer"
+                >
+                  <BarChart2 className="w-4 h-4" />
+                  <span>{language === 'en' ? 'Live Mandi Rates & Graphs' : 'मंडी भाव व ग्राफ देखें'}</span>
+                </a>
+
+                <a
+                  href="#ai-section"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm px-5 py-3 rounded-xl border border-slate-300 shadow-xs transition hover:scale-[1.02] cursor-pointer"
+                >
+                  <Bot className="w-4 h-4 text-[#174d26]" />
+                  <span>{language === 'en' ? 'Ask Kisan AI' : 'किसान AI से पूछें'}</span>
+                </a>
+
+                <a
+                  href="#how-it-works"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] hover:underline px-2 py-2 cursor-pointer"
+                >
+                  <span>{language === 'en' ? 'How Platform Works →' : 'यह कैसे काम करता है →'}</span>
+                </a>
+              </div>
+
+              {/* Trust Badge Strip */}
+              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-slate-600 border-t border-slate-200/70">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>25,000+ Farmers Enrolled</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>₹4.82 Cr Protected Escrow</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Agmarknet & e-NAM Standard</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Column: Hero Visual & Mission Card */}
+            <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+              <div className="relative w-full max-w-[420px] aspect-[4/3] sm:aspect-[1/1] rounded-2xl overflow-hidden shadow-lg border border-white/60">
+                <img 
+                  src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=900&auto=format&fit=crop&q=80" 
+                  alt="Farmer in lush Indian agricultural farm" 
+                  className="w-full h-full object-cover object-center transform hover:scale-105 transition duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+
+                {/* Floating Mission Card */}
+                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/80 max-w-[195px] space-y-2 animate-slide-up">
+                  <div className="w-9 h-9 rounded-xl bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
+                    <Sprout className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900 leading-tight">Better Price</div>
+                    <div className="text-xs font-extrabold text-[#174d26] leading-tight">Better Future</div>
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-medium space-y-0.5 leading-tight pt-1">
+                    <div>Transparent Mandis</div>
+                    <div>Direct Buyer Bidding</div>
+                    <div>Aadhaar DBT Payout</div>
+                  </div>
+                  <div className="w-8 h-1 bg-[#174d26] rounded-full mt-1"></div>
+                </div>
+
+                {/* Bottom Live Escrow Ticker */}
+                <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl text-white flex items-center justify-between text-[11px] border border-slate-700/60">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span className="font-semibold">Live Trade Settlement:</span>
+                  </div>
+                  <div className="font-bold text-emerald-400">₹10,75,500 Secured in Escrow</div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 4 DEDICATED STAKEHOLDER PORTAL GATEWAYS */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 leading-[1.12] tracking-tight">
-                {language === 'en' ? (
-                  <>
-                    Sell Smarter.<br />
-                    Get the <span className="text-[#195627]">Right Price.</span>
-                  </>
-                ) : (
-                  <>
-                    सही जानकारी से बेचें.<br />
-                    पाएं <span className="text-[#195627]">सही दाम।</span>
-                  </>
-                )}
-              </h1>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mt-4 font-normal">
+              <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <Layers className="w-5 h-5 text-[#174d26]" />
+                <span>{language === 'en' ? 'Choose Your Dedicated Stakeholder Portal' : 'अपना समर्पित हितधारक पोर्टल चुनें'}</span>
+              </h2>
+              <p className="text-xs text-slate-500">
                 {language === 'en' 
-                  ? 'Live mandi prices, verified buyers, quality matching, logistics & secure payments — all in one platform for farmers.'
-                  : 'लाइव मंडी भाव, सत्यापित खरीदार, गुणवत्ता मिलान, परिवहन और सुरक्षित डिजिटल भुगतान — किसानों के लिए संपूर्ण मंच।'}
+                  ? 'Each role features an isolated, role-specific portal. Select your persona to enter your private dashboard:' 
+                  : 'प्रत्येक भूमिका के लिए एक सुरक्षित, अलग पोर्टल है। अपने डैशबोर्ड में प्रवेश करने के लिए अपना विकल्प चुनें:'}
               </p>
             </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-1">
-              <button
-                onClick={() => onNavigateTab('market-prices')}
-                className="inline-flex items-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md shadow-[#174d26]/20 transition hover:scale-[1.02] cursor-pointer"
-              >
-                <BarChart2 className="w-4 h-4" />
-                <span>{language === 'en' ? 'Check Market Prices' : 'मंडी भाव देखें'}</span>
-              </button>
-
-              <button
-                onClick={() => onNavigateTab('sell-produce')}
-                className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm px-6 py-3 rounded-xl border border-slate-300/90 shadow-xs transition hover:scale-[1.02] cursor-pointer"
-              >
-                <Tag className="w-4 h-4 text-slate-600" />
-                <span>{language === 'en' ? 'List Your Produce' : 'अपनी फसल बेचें'}</span>
-              </button>
-            </div>
-
-            {/* Social Proof Trust Badge */}
-            <div className="flex items-center gap-3 pt-2">
-              <div className="flex -space-x-2 overflow-hidden">
-                <img 
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" 
-                  alt="Farmer 1" 
-                />
-                <img 
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" 
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" 
-                  alt="Farmer 2" 
-                />
-                <img 
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" 
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80" 
-                  alt="Farmer 3" 
-                />
-              </div>
-              <span className="text-xs font-medium text-slate-600">
-                {language === 'en' 
-                  ? 'Trusted by 25,000+ Farmers & FPOs across India' 
-                  : 'भारत भर में 25,000+ किसानों व FPOs का विश्वास'}
-              </span>
-            </div>
+            <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 hidden sm:inline-block">
+              Role-Separated Architecture
+            </span>
           </div>
 
-          {/* Right Hero Image & Floating Mission Card */}
-          <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[420px] aspect-[4/3] sm:aspect-[1/1] rounded-2xl overflow-hidden shadow-lg border border-white/60">
-              
-              {/* Farmer Image in Lush Fields */}
-              <img 
-                src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=900&auto=format&fit=crop&q=80" 
-                alt="Happy Indian Farmer in agricultural farm field" 
-                className="w-full h-full object-cover object-center transform hover:scale-105 transition duration-700"
-              />
-              
-              {/* Subtle Warm Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-
-              {/* Floating Mission Card (Matching Reference Screenshot) */}
-              <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-xl border border-white/80 max-w-[185px] space-y-2 animate-slide-up">
-                <div className="w-8 h-8 rounded-lg bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
-                  <Sprout className="w-5 h-5" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* 1. Farmer Portal Card */}
+            <div className="bg-white rounded-2xl border-2 border-emerald-500/40 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-emerald-600">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#174d26] flex items-center justify-center group-hover:scale-110 transition">
+                  <Sprout className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-900 leading-tight">Better Price</div>
-                  <div className="text-xs font-extrabold text-[#174d26] leading-tight">Better Future</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">For Producers & FPOs</div>
+                  <h3 className="text-base font-black text-slate-900 leading-snug">
+                    {language === 'en' ? 'Farmer Portal' : 'किसान पोर्टल'}
+                  </h3>
                 </div>
-                <div className="text-[10px] text-slate-500 font-medium space-y-0.5 leading-tight pt-1">
-                  <div>Transparent markets</div>
-                  <div>Stronger farmers</div>
-                  <div>Stronger India</div>
-                </div>
-                <div className="w-6 h-0.5 bg-[#174d26] rounded-full mt-1"></div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {language === 'en'
+                    ? 'Check AI price forecasts, assay crop quality with computer vision, list produce lots, and review verified buyer offers.'
+                    : 'एआई मूल्य पूर्वानुमान, फसल गुणवत्ता ग्रेडिंग, लॉट सूची और खरीदारों के सीधे बोलियां देखें।'}
+                </p>
               </div>
 
+              <button
+                onClick={() => handleEnterRolePortal('farmer', 'farmer-portal')}
+                className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white font-bold text-xs py-2.5 px-4 rounded-xl transition cursor-pointer shadow-xs"
+              >
+                <span>{language === 'en' ? 'Enter Farmer Portal' : 'किसान पोर्टल खोलें'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-          </div>
 
+            {/* 2. Buyer Portal Card */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-blue-500">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:scale-110 transition">
+                  <Building2 className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-blue-700">For Institutional Buyers</div>
+                  <h3 className="text-base font-black text-slate-900 leading-snug">
+                    {language === 'en' ? 'Buyer Portal' : 'खरीदार पोर्टल'}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {language === 'en'
+                    ? 'Browse Grade A/B certified farm-gate lots, submit binding bids, post commodity requirements, and track escrow contracts.'
+                    : 'सत्यापित फार्म-गेट लॉट ब्राउज़ करें, बोलियां लगाएं, अपनी आवश्यकताएं पोस्ट करें और एस्क्रो ट्रैक करें।'}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleEnterRolePortal('buyer', 'buyer-portal')}
+                className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition cursor-pointer shadow-xs"
+              >
+                <span>{language === 'en' ? 'Enter Buyer Portal' : 'खरीदार पोर्टल खोलें'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* 3. Transporter Portal Card */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-amber-500">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center group-hover:scale-110 transition">
+                  <Truck className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-amber-700">For Agri Logistics & Fleets</div>
+                  <h3 className="text-base font-black text-slate-900 leading-snug">
+                    {language === 'en' ? 'Transporter Portal' : 'परिवहन पोर्टल'}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {language === 'en'
+                    ? 'Accept farm-gate pickup dispatch jobs, GPS route tracking, FASTag toll updates, and instant digital proof-of-delivery (e-POD).'
+                    : 'खेत से पिकअप ट्रिप स्वीकार करें, जीपीएस ट्रैकिंग, फास्टैग टोल और डिजिटल डिलीवरी रसीद प्रबंधित करें।'}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleEnterRolePortal('transporter', 'transporter-portal')}
+                className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition cursor-pointer shadow-xs"
+              >
+                <span>{language === 'en' ? 'Enter Transporter Portal' : 'परिवहन पोर्टल खोलें'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* 4. APMC Admin Card */}
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-purple-500">
+              <div className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center group-hover:scale-110 transition">
+                  <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-purple-700">For Regulators & APMC</div>
+                  <h3 className="text-base font-black text-slate-900 leading-snug">
+                    {language === 'en' ? 'APMC Mandi Board' : 'मंडी विनियामक बोर्ड'}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {language === 'en'
+                    ? 'Oversee macro market arrivals, approve KYC onboarding for corporate buyers and FPOs, and arbitrate trade disputes.'
+                    : 'मंडी आवक की निगरानी, खरीदार और एफपीओ का केवाईसी सत्यापन, और व्यापार विवादों का वैधानिक निपटारा करें।'}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleEnterRolePortal('admin', 'admin-portal')}
+                className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-purple-800 hover:bg-purple-900 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition cursor-pointer shadow-xs"
+              >
+                <span>{language === 'en' ? 'Open APMC Oversight' : 'नियामक केंद्र खोलें'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+          </div>
         </div>
+
       </section>
 
-      {/* 2. MAIN 4-MODULE DASHBOARD GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 2: INLINE KISAN AI CHATBOT & ADVISORY WIDGET */}
+      {/* ------------------------------------------------------------- */}
+      <section id="ai-section" className="bg-white rounded-3xl border border-[#e4eae2] p-6 sm:p-8 shadow-xs space-y-6">
         
-        {/* Module 1: Today's Market Prices */}
-        <div className="farm-card p-5 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">
-                {language === 'en' ? "Today's Market Prices" : 'आज के मंडी भाव'}
-              </h3>
-              <button 
-                onClick={() => onNavigateTab('market-prices')}
-                className="text-xs font-medium text-slate-400 hover:text-[#174d26] transition"
-              >
-                {language === 'en' ? 'View All' : 'सभी देखें'}
-              </button>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shadow-xs">
+              <Bot className="w-6 h-6 stroke-[2.2]" />
             </div>
-
-            <div className="divide-y divide-slate-100 mt-2">
-              {marketPrices.map((item, idx) => (
-                <div key={idx} className="py-2.5 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
-                      <Sprout className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-slate-800">{item.name}</div>
-                      <div className="text-[10px] text-slate-400">{item.mandi}</div>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <div className="text-xs font-bold text-slate-900">
-                      ₹ {item.price} <span className="text-[10px] text-slate-400 font-normal">{item.unit}</span>
-                    </div>
-                    <div className={`text-[10px] font-bold flex items-center justify-end gap-0.5 ${
-                      item.isPositive ? 'text-emerald-600' : 'text-rose-500'
-                    }`}>
-                      {item.isPositive ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
-                      <span>{item.change}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">
+                  {language === 'en' ? 'Kisan AI Market Assistant' : 'किसान एआई बाज़ार सलाहकार'}
+                </h2>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping"></span>
+                  Active 24/7
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {language === 'en' 
+                  ? 'Ask any question in English or Hindi regarding mandi trends, selling windows, AI quality grading, or escrow.' 
+                  : 'मंडी भाव, विक्रय समय, एआई ग्रेडिंग या एस्क्रो भुगतान के बारे में कोई भी प्रश्न पूछें।'}
+              </p>
             </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setChatHistory([
+                {
+                  sender: 'bot',
+                  time: 'Just now',
+                  text: language === 'en'
+                    ? 'Conversation reset. How can I assist you with your produce or market rates today?'
+                    : 'बातचीत रीसेट की गई। आज मैं आपकी फसल या मंडी भाव में क्या सहायता कर सकता हूँ?'
+                }
+              ])}
+              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Reset</span>
+            </button>
+            <button
+              onClick={onOpenAiGrader}
+              className="text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5 transition cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+              <span>Open Camera Assayer</span>
+            </button>
           </div>
         </div>
 
-        {/* Module 2: Best Selling Market */}
-        <div className="farm-card p-5 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">
-                {language === 'en' ? 'Best Selling Market' : 'श्रेष्ठ विक्रय मंडियां'}
-              </h3>
-              <button 
-                onClick={() => onNavigateTab('market-prices')}
-                className="text-xs font-medium text-slate-400 hover:text-[#174d26] transition"
+        {/* Quick Suggestion Chips */}
+        <div>
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1">
+            <HelpCircle className="w-3 h-3" />
+            <span>Click a Quick Question to Ask Instantly:</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {quickChips.map((chip, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSendChat(chip.label)}
+                className="text-xs font-medium bg-[#f6f9f6] hover:bg-[#eaf6ed] text-[#174d26] border border-emerald-200/70 px-3 py-1.5 rounded-xl transition hover:scale-[1.02] cursor-pointer text-left"
               >
-                {language === 'en' ? 'View All' : 'सभी देखें'}
+                {chip.label}
               </button>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            <div className="space-y-3 mt-3">
-              {bestSellingMarkets.map((m) => (
-                <div key={m.rank} className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-3">
-                    <span className="text-slate-400 font-bold w-3 text-center">{m.rank}</span>
-                    <span className="font-semibold text-slate-800">{m.name}</span>
+        {/* Chat Messages Feed */}
+        <div className="bg-[#fafaf8] rounded-2xl border border-slate-200 p-4 sm:p-5 h-[320px] overflow-y-auto space-y-4">
+          {chatHistory.map((msg, index) => {
+            const isBot = msg.sender === 'bot';
+            return (
+              <div 
+                key={index} 
+                className={`flex gap-3 items-start ${isBot ? '' : 'flex-row-reverse'}`}
+              >
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
+                  isBot ? 'bg-[#eaf6ed] text-[#174d26]' : 'bg-slate-800 text-white'
+                }`}>
+                  {isBot ? <Bot className="w-4 h-4" /> : <Users className="w-4 h-4" />}
+                </div>
+
+                <div className={`max-w-[82%] sm:max-w-[70%] space-y-1 ${isBot ? 'items-start' : 'items-end text-right'}`}>
+                  <div className={`p-3.5 rounded-2xl text-xs leading-relaxed ${
+                    isBot 
+                      ? 'bg-white border border-slate-200 text-slate-800 shadow-xs rounded-tl-none' 
+                      : 'bg-[#174d26] text-white rounded-tr-none shadow-xs'
+                  }`}>
+                    {msg.text}
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900">₹ {m.price}</span>
-                    {m.isBest && (
-                      <span className="text-[10px] bg-[#eaf6ed] text-[#18582b] font-bold px-2 py-0.5 rounded-full">
-                        {language === 'en' ? 'Best Price' : 'उत्तम भाव'}
-                      </span>
+                  <div className="flex items-center gap-2 px-1 text-[10px] text-slate-400">
+                    <span>{msg.time}</span>
+                    {isBot && (
+                      <button
+                        onClick={() => handleSpeakText(msg.text)}
+                        className="hover:text-emerald-700 flex items-center gap-1 cursor-pointer"
+                        title="Listen to audio"
+                      >
+                        <Volume2 className="w-3 h-3" />
+                        <span>Listen</span>
+                      </button>
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            );
+          })}
 
-          <button 
-            onClick={() => onNavigateTab('market-prices')}
-            className="w-full mt-4 py-2 px-3 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition cursor-pointer text-center"
+          {isAiThinking && (
+            <div className="flex gap-3 items-start animate-fade-in">
+              <div className="w-8 h-8 rounded-full bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                <Bot className="w-4 h-4" />
+              </div>
+              <div className="bg-white border border-slate-200 p-3 rounded-2xl text-xs text-slate-500 rounded-tl-none flex items-center gap-2 shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce"></span>
+                <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce [animation-delay:0.2s]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce [animation-delay:0.4s]"></span>
+                <span className="text-[11px] font-semibold text-slate-500 ml-1">Analyzing APMC mandi intelligence...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Input Bar */}
+        <form 
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendChat();
+          }}
+          className="flex items-center gap-2"
+        >
+          <input 
+            type="text"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            placeholder={language === 'en' 
+              ? 'Ask about crop rates, selling windows, Agmarknet grades, or logistics...' 
+              : 'फसल भाव, सही समय, ग्रेडिंग या परिवहन के बारे में पूछें...'}
+            className="flex-1 bg-slate-50 border border-slate-300 focus:border-[#174d26] focus:bg-white focus:outline-none text-xs rounded-xl px-4 py-3 text-slate-900 transition"
+          />
+          <button
+            type="submit"
+            disabled={!chatInput.trim() || isAiThinking}
+            className="bg-[#174d26] hover:bg-[#123e1e] disabled:opacity-50 text-white text-xs font-bold px-5 py-3 rounded-xl flex items-center gap-1.5 transition shadow-xs cursor-pointer"
           >
-            {language === 'en' ? 'Compare More Markets' : 'अन्य मंडियों की तुलना करें'}
+            <span>{language === 'en' ? 'Ask AI' : 'पूछें'}</span>
+            <Send className="w-3.5 h-3.5" />
           </button>
-        </div>
+        </form>
 
-        {/* Module 3: Price Trend (Wheat) */}
-        <div className="farm-card p-5 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">
-                {language === 'en' ? 'Price Trend (Wheat)' : 'मूल्य रुझान (गेहूं)'}
-              </h3>
-              <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md cursor-pointer">
-                <span>7 Days</span>
-                <ChevronDown className="w-3 h-3 text-slate-500" />
-              </div>
-            </div>
+      </section>
 
-            {/* Recharts Area Curve */}
-            <div className="h-36 w-full mt-2 relative">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={trendData} margin={{ top: 18, right: 10, left: -25, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#16a34a" stopOpacity={0.25}/>
-                      <stop offset="95%" stopColor="#16a34a" stopOpacity={0.0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis 
-                    dataKey="day" 
-                    tick={{ fontSize: 9, fill: '#94a3b8' }} 
-                    axisLine={false} 
-                    tickLine={false} 
-                  />
-                  <YAxis 
-                    domain={[1900, 2200]} 
-                    ticks={[1900, 2000, 2100, 2200]} 
-                    tick={{ fontSize: 9, fill: '#94a3b8' }} 
-                    axisLine={false} 
-                    tickLine={false} 
-                  />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#1e293b', 
-                      borderRadius: '8px', 
-                      color: '#fff', 
-                      fontSize: '11px',
-                      border: 'none'
-                    }} 
-                    formatter={(value) => [`₹ ${value}`, 'Price']}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="price" 
-                    stroke="#16a34a" 
-                    strokeWidth={2} 
-                    fillOpacity={1} 
-                    fill="url(#colorPrice)" 
-                    dot={{ r: 2.5, fill: '#16a34a' }}
-                    activeDot={{ r: 4.5, fill: '#15803d' }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-
-              {/* Peak Marker Badge matching screenshot */}
-              <div className="absolute top-0 right-1 bg-white/90 backdrop-blur border border-slate-200 px-1.5 py-0.5 rounded text-[9px] font-bold text-slate-800 shadow-xs">
-                ₹ 2,125 <span className="font-normal text-slate-400">20 May</span>
-              </div>
-            </div>
-          </div>
-
-          <button 
-            onClick={() => onNavigateTab('market-prices')}
-            className="w-full mt-3 py-2 px-3 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition cursor-pointer text-center"
-          >
-            {language === 'en' ? 'View Full Trend' : 'पूर्ण रुझान देखें'}
-          </button>
-        </div>
-
-        {/* Module 4: Verified Buyers & Recommended Window Stack */}
-        <div className="flex flex-col gap-4 justify-between">
-          
-          {/* Top Widget: Verified Buyers */}
-          <div 
-            onClick={() => onNavigateTab('find-buyers')}
-            className="farm-card p-5 flex items-center justify-between cursor-pointer hover:border-emerald-300 transition group flex-1"
-          >
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-full bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition">
-                <Users className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-xs text-slate-500 font-medium">
-                  {language === 'en' ? 'Verified Buyers' : 'सत्यापित खरीदार'}
-                </div>
-                <div className="text-xl font-black text-slate-900 tracking-tight">1,248+</div>
-                <div className="text-[10px] text-slate-400">Across India</div>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-600 transition" />
-          </div>
-
-          {/* Bottom Widget: Recommended Sale Window */}
-          <div 
-            onClick={() => onNavigateTab('market-prices')}
-            className="farm-card p-5 flex items-center justify-between cursor-pointer hover:border-emerald-300 transition group flex-1"
-          >
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-full bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-xs text-slate-500 font-medium">
-                  {language === 'en' ? 'Recommended Sale Window' : 'अनुशंसित बिक्री समय'}
-                </div>
-                <div className="text-lg font-black text-slate-900 tracking-tight">21 – 24 May</div>
-                <div className="text-[10px] text-emerald-600 font-medium">High demand expected</div>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-600 transition" />
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* 3. BOTTOM ROW: MARKET MAP (MAHARASHTRA) & HOW IT WORKS */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 3: ALL RATE GRAPHS & MANDI INTELLIGENCE */}
+      {/* ------------------------------------------------------------- */}
+      <section id="rates-section" className="space-y-6">
         
-        {/* Left: Market Map (Maharashtra) */}
-        <div className="lg:col-span-4 farm-card p-5 flex flex-col justify-between">
+        {/* Section Title & Filter Tabs */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">
-                {language === 'en' ? 'Market Map (Maharashtra)' : 'मंडी मानचित्र (महाराष्ट्र)'}
-              </h3>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
+              <BarChart2 className="w-4 h-4" />
+              <span>National Agmarknet Price Discovery</span>
             </div>
-
-            {/* Stylized Maharashtra SVG Vector Map matching screenshot */}
-            <div className="relative w-full h-44 my-2 flex items-center justify-center bg-[#f8faf8] rounded-xl overflow-hidden border border-slate-100">
-              
-              {/* Soft SVG map representation */}
-              <svg viewBox="0 0 300 200" className="w-full h-full text-slate-200 fill-[#eef5ee] stroke-emerald-200 stroke-1">
-                <path d="M 40,80 Q 70,30 130,40 T 220,60 T 270,110 T 240,160 T 160,180 T 80,160 T 35,130 Z" />
-              </svg>
-
-              {/* Pin: Nashik */}
-              <div className="absolute top-9 left-24 flex items-center gap-1 bg-white/95 px-2 py-0.5 rounded-md shadow-xs border border-slate-200 text-[10px]">
-                <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-                <div>
-                  <span className="font-bold text-slate-800">Nashik</span>
-                  <span className="text-slate-400 block text-[9px]">₹ 2,125</span>
-                </div>
-              </div>
-
-              {/* Pin: Ahmednagar */}
-              <div className="absolute top-16 right-16 flex items-center gap-1 bg-white/95 px-2 py-0.5 rounded-md shadow-xs border border-slate-200 text-[10px]">
-                <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-                <div>
-                  <span className="font-bold text-slate-800">Ahmednagar</span>
-                  <span className="text-slate-400 block text-[9px]">₹ 1,980</span>
-                </div>
-              </div>
-
-              {/* Pin: Pune */}
-              <div className="absolute bottom-11 left-20 flex items-center gap-1 bg-white/95 px-2 py-0.5 rounded-md shadow-xs border border-slate-200 text-[10px]">
-                <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-                <div>
-                  <span className="font-bold text-slate-800">Pune</span>
-                  <span className="text-slate-400 block text-[9px]">₹ 2,045</span>
-                </div>
-              </div>
-
-              {/* Pin: Solapur */}
-              <div className="absolute bottom-6 right-20 flex items-center gap-1 bg-white/95 px-2 py-0.5 rounded-md shadow-xs border border-slate-200 text-[10px]">
-                <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-                <div>
-                  <span className="font-bold text-slate-800">Solapur</span>
-                  <span className="text-slate-400 block text-[9px]">₹ 1,965</span>
-                </div>
-              </div>
-
-            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {language === 'en' ? 'Live Mandi Rate Intelligence & Trends' : 'लाइव मंडी भाव व मूल्य विश्लेषण'}
+            </h2>
+            <p className="text-xs text-slate-500 max-w-xl mt-1">
+              {language === 'en' 
+                ? 'Historical spot prices combined with 7-day machine learning predictive forecasts for Indian agricultural commodities.' 
+                : 'भारतीय कृषि जिंसों के लिए 7-दिवसीय मशीन लर्निंग मूल्य पूर्वानुमान और ऐतिहासिक मंडी डेटा।'}
+            </p>
           </div>
 
-          <button 
-            onClick={() => onNavigateTab('market-prices')}
-            className="w-full mt-2 py-2 px-3 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition cursor-pointer flex items-center justify-center gap-2"
-          >
-            <Map className="w-3.5 h-3.5 text-emerald-700" />
-            <span>{language === 'en' ? 'Explore All Markets' : 'सभी मंडियां देखें'}</span>
-          </button>
-        </div>
-
-        {/* Right: How It Works (6-Step Progression) */}
-        <div className="lg:col-span-8 farm-card p-6 flex flex-col justify-between">
-          <div>
-            <div className="pb-4 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm">
-                {language === 'en' ? 'How It Works' : 'यह कैसे काम करता है'}
-              </h3>
-            </div>
-
-            {/* 6 Connected Steps */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 pt-6 pb-2 relative">
-              
-              {/* Step 1 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <UserPlus className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">1. Register</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Create your account as Farmer / FPO</p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <BarChart2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">2. Check Prices</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Compare live mandi prices & trends</p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <Package className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">3. List Produce</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Add produce lot with quality & quantity</p>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">4. Get Offers</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Receive offers from verified buyers</p>
-                </div>
-              </div>
-
-              {/* Step 5 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">5. Arrange Logistics</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Choose transport & storage options</p>
-                </div>
-              </div>
-
-              {/* Step 6 */}
-              <div className="flex flex-col items-center text-center space-y-2 group">
-                <div className="w-12 h-12 rounded-full border border-emerald-300 bg-[#eaf6ed] flex items-center justify-center text-[#18582b] group-hover:scale-110 transition shadow-xs">
-                  <Coins className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-slate-900">6. Get Paid</div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">Secure payments & track transactions</p>
-                </div>
-              </div>
-
-            </div>
+          {/* Crop Switcher Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+            {Object.keys(cropDatasets).map((cropKey) => {
+              const item = cropDatasets[cropKey];
+              const isSelected = selectedCrop === cropKey;
+              return (
+                <button
+                  key={cropKey}
+                  onClick={() => setSelectedCrop(cropKey)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+                    isSelected 
+                      ? 'bg-[#174d26] text-white shadow-xs' 
+                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                  }`}
+                >
+                  {language === 'en' ? item.nameEn : item.nameHi}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-      </div>
-
-      {/* 4. BOTTOM 3-PILLAR TRUST BANNER (MATCHING SCREENSHOT) */}
-      <div className="farm-card p-6 bg-white border border-[#eef0eb]">
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100 gap-6 md:gap-0">
+        {/* Selected Crop Metric Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
-          {/* Pillar 1 */}
-          <div className="flex items-center gap-4 px-2 md:px-6">
-            <div className="p-3 rounded-xl bg-[#eaf6ed] text-[#18582b] shrink-0">
-              <ShieldCheck className="w-6 h-6" />
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-400">Modal Spot Price</div>
+            <div className="text-2xl font-black text-slate-900 mt-1">
+              ₹ {activeCropData.currentPrice} <span className="text-xs font-medium text-slate-500">{activeCropData.unit}</span>
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Verified Buyers' : 'सत्यापित खरीदार'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {language === 'en' 
-                  ? 'All buyers are verified for trust & transparency' 
-                  : 'विश्वास व पारदर्शिता के लिए सभी खरीदार प्रमाणित हैं'}
-              </p>
+            <div className={`text-xs font-bold mt-1 flex items-center gap-1 ${
+              activeCropData.isPositive ? 'text-emerald-600' : 'text-rose-500'
+            }`}>
+              {activeCropData.isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+              <span>{activeCropData.change} 24h change</span>
             </div>
           </div>
 
-          {/* Pillar 2 */}
-          <div className="flex items-center gap-4 px-2 md:px-6 pt-4 md:pt-0">
-            <div className="p-3 rounded-xl bg-[#eaf6ed] text-[#18582b] shrink-0">
-              <Handshake className="w-6 h-6" />
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-400">Benchmark APMC Mandi</div>
+            <div className="text-base font-black text-slate-900 mt-1 truncate">
+              {activeCropData.mandi}
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Transparent Offers' : 'पारदर्शी बोलियां'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {language === 'en' 
-                  ? 'Digital offers & clear terms, no hidden charges' 
-                  : 'स्पष्ट शर्तों के साथ डिजिटल बोलियां, कोई छिपा शुल्क नहीं'}
-              </p>
+            <div className="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-slate-400" />
+              <span>Verified APMC Yard</span>
             </div>
           </div>
 
-          {/* Pillar 3 */}
-          <div className="flex items-center gap-4 px-2 md:px-6 pt-4 md:pt-0">
-            <div className="p-3 rounded-xl bg-[#eaf6ed] text-[#18582b] shrink-0">
-              <Lock className="w-6 h-6" />
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-400">Today's Market Arrivals</div>
+            <div className="text-2xl font-black text-slate-900 mt-1">
+              {activeCropData.arrivalsMT}
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Secure Payments' : 'सुरक्षित भुगतान'}
-              </h4>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {language === 'en' 
-                  ? 'Safe transactions with payment tracking' 
-                  : 'एस्क्रो व प्रत्यक्ष DBT से सुरक्षित लेन-देन'}
-              </p>
+            <div className="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
+              <Package className="w-3.5 h-3.5 text-slate-400" />
+              <span>Physical yard arrivals</span>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+            <div className="text-[11px] font-semibold text-slate-400">AI Sale Recommendation</div>
+            <div className="text-base font-black text-[#174d26] mt-1">
+              {activeCropData.recommendation}
+            </div>
+            <div className="text-xs font-bold text-amber-800 mt-1 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <span>{activeCropData.confidence} Confidence Score</span>
             </div>
           </div>
 
         </div>
-      </div>
+
+        {/* Interactive Recharts Graph & Mandi Comparison Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* Main Price Trend Curve (8 Cols) */}
+          <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h3 className="font-black text-slate-900 text-sm sm:text-base">
+                    {language === 'en' 
+                      ? `${activeCropData.nameEn} Price Trend & 7-Day AI Forecast` 
+                      : `${activeCropData.nameHi} मूल्य रुझान व 7-दिवसीय पूर्वानुमान`}
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Solid line: Historical actuals • Dashed area: Machine learning price projection
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold bg-[#eaf6ed] text-[#174d26] px-2.5 py-1 rounded-lg">
+                    {activeCropData.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* Chart Container */}
+              <div className="h-72 w-full mt-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart 
+                    data={activeCropData.trendData} 
+                    margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                  >
+                    <defs>
+                      <linearGradient id="cropPriceGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#174d26" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#174d26" stopOpacity={0.0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                    <XAxis 
+                      dataKey="day" 
+                      tick={{ fontSize: 10, fill: '#64748b' }} 
+                      axisLine={{ stroke: '#cbd5e1' }}
+                      tickLine={false}
+                    />
+                    <YAxis 
+                      tick={{ fontSize: 10, fill: '#64748b' }} 
+                      axisLine={false}
+                      tickLine={false}
+                      domain={['auto', 'auto']}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#0f172a', 
+                        borderRadius: '12px', 
+                        color: '#fff', 
+                        fontSize: '11px',
+                        border: 'none',
+                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)'
+                      }} 
+                      formatter={(value, name, item) => [
+                        `₹ ${value} / Qtl ${item.payload.forecast ? '(AI Forecast)' : '(Actual)'}`, 
+                        'Price'
+                      ]}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="price" 
+                      stroke="#174d26" 
+                      strokeWidth={2.5} 
+                      fillOpacity={1} 
+                      fill="url(#cropPriceGradient)" 
+                      dot={{ r: 4, fill: '#174d26', strokeWidth: 1, stroke: '#ffffff' }}
+                      activeDot={{ r: 6, fill: '#123e1e' }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Advisory Box */}
+              <div className="mt-4 p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-2xl flex items-start gap-3">
+                <Sparkles className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="text-xs text-amber-950 leading-relaxed">
+                  <span className="font-bold">Agri AI Advisory: </span>
+                  {language === 'en' ? activeCropData.adviceEn : activeCropData.adviceHi}
+                </div>
+              </div>
+
+            </div>
+
+            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <span className="text-slate-500 text-[11px]">
+                Data synchronized with Agmarknet APMC Gateway • Refreshed hourly
+              </span>
+              <button
+                onClick={() => handleEnterRolePortal('farmer', 'farmer-portal')}
+                className="text-[#174d26] font-bold hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>Check All 420+ Mandis in Farmer Portal →</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Mandi Rate Comparison Table (4 Cols) */}
+          <div className="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+            <div>
+              <div className="pb-3 border-b border-slate-100">
+                <h3 className="font-black text-slate-900 text-sm sm:text-base">
+                  {language === 'en' ? 'Top Mandis Comparison' : 'शीर्ष मंडियों की तुलना'}
+                </h3>
+                <p className="text-[11px] text-slate-400">
+                  Real-time price variance for {language === 'en' ? activeCropData.nameEn : activeCropData.nameHi}
+                </p>
+              </div>
+
+              <div className="divide-y divide-slate-100 mt-2">
+                {activeCropData.mandiComparisons.map((m, idx) => (
+                  <div key={idx} className="py-3 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-slate-800">{m.name}</span>
+                        {m.isBest && (
+                          <span className="text-[9px] font-extrabold bg-[#eaf6ed] text-[#174d26] px-1.5 py-0.5 rounded border border-emerald-300">
+                            Highest
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[10px] text-slate-400">{m.state} • {m.arrivals}</div>
+                    </div>
+
+                    <div className="text-right">
+                      <div className="text-xs font-black text-slate-900">
+                        ₹ {m.price}
+                      </div>
+                      <div className="text-[10px] text-slate-400">/quintal</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100">
+              <button
+                onClick={() => handleEnterRolePortal('farmer', 'farmer-portal')}
+                className="w-full py-2.5 px-3 rounded-xl border border-slate-300 hover:border-[#174d26] text-slate-800 text-xs font-bold hover:bg-slate-50 transition cursor-pointer text-center"
+              >
+                {language === 'en' ? 'Open Detailed Mandi Radar' : 'विस्तृत मंडी रडार देखें'}
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 4: HOW THE APP WORKS (6-POINT BREAKDOWN) */}
+      {/* ------------------------------------------------------------- */}
+      <section id="how-it-works" className="bg-[#fcfdfc] rounded-3xl border border-[#e4eae2] p-6 sm:p-10 shadow-xs space-y-8">
+        
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <span>End-to-End Agri Trade Infrastructure</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            {language === 'en' ? 'How Farmer Market Intelligence Works' : 'यह मंच कैसे काम करता है'}
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            {language === 'en'
+              ? 'Our 6-step digital process removes exploitative commission agents, validates produce quality, guarantees payments through bank escrow, and tracks farm-gate logistics.'
+              : 'हमारी 6-चरणीय डिजिटल प्रक्रिया बिचौलियों को समाप्त करती है, उपज की गुणवत्ता प्रमाणित करती है और एस्क्रो के माध्यम से भुगतान की गारंटी देती है।'}
+          </p>
+        </div>
+
+        {/* 6 Grid Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          {/* Point 1 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              01
+            </div>
+            <div className="flex items-center gap-2">
+              <UserPlus className="w-4 h-4 text-[#174d26]" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? 'Aadhaar / GSTIN Verified KYC' : 'आधार व जीएसटी सत्यापित केवाईसी'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'Farmers and FPOs onboard via 1-click Aadhaar e-KYC. Corporate buyers and processors undergo GSTIN and bank solvency verification to prevent defaults.'
+                : 'किसान और एफपीओ आधार के माध्यम से आसानी से जुड़ते हैं। कॉरपोरेट खरीदारों का जीएसटी और बैंक सत्यापन किया जाता है ताकि किसी भी तरह का जोखिम न रहे।'}
+            </p>
+          </div>
+
+          {/* Point 2 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              02
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-600" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? 'AI Computer Vision Assaying' : 'एआई कंप्यूटर विज़न गुणवत्ता परख'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'Farmers snap 3 photos of their harvest. Our neural network assesses size uniformity, color saturation, and surface defects to issue an Agmarknet Grade A/B/C digital certificate.'
+                : 'किसान अपनी फसल की 3 फोटो लेते हैं। कंप्यूटर विज़न मॉडल आकार, रंग और दाग-धब्बों का विश्लेषण करके एगमार्कनेट ग्रेड प्रमाणपत्र जारी करता है।'}
+            </p>
+          </div>
+
+          {/* Point 3 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              03
+            </div>
+            <div className="flex items-center gap-2">
+              <Handshake className="w-4 h-4 text-[#174d26]" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? 'Direct Price Discovery & Bidding' : 'प्रत्यक्ष मूल्य खोज व डिजिटल बोलियां'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'Lots are displayed directly to 1,200+ institutional buyers (BigBasket, Reliance Fresh, ITC). Buyers place digital bids based on verified grades, removing middlemen cartels.'
+                : 'प्रमाणित लॉट 1,200+ संस्थागत खरीदारों को दिखाए जाते हैं। खरीदार सीधे डिजिटल बोलियां लगाते हैं, जिससे 15-20% दलाली कमीशन पूरी तरह समाप्त हो जाती है।'}
+            </p>
+          </div>
+
+          {/* Point 4 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              04
+            </div>
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4 text-emerald-700" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? '100% Locked Bank Escrow' : '100% सुरक्षित बैंक एस्क्रो'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'When an offer is accepted, 100% of the trade value is securely deposited into an automated banking escrow account before any truck is dispatched from the farm.'
+                : 'सौदा पक्का होते ही पूरी खरीद राशि अधिकृत बैंक एस्क्रो में जमा हो जाती है। खेत से वाहन निकलने से पहले किसान का पूरा भुगतान सुरक्षित हो जाता है।'}
+            </p>
+          </div>
+
+          {/* Point 5 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              05
+            </div>
+            <div className="flex items-center gap-2">
+              <Truck className="w-4 h-4 text-amber-700" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? 'Farm-Gate GPS Logistics & Cold Chain' : 'फार्म-गेट जीपीएस परिवहन व कोल्ड चेन'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'Kisan Express verified logistics fleet handles farm-gate loading with real-time GPS tracking. Perishable loads can be routed directly to partner cold storage facilities.'
+                : 'सत्यापित वाहन चालक खेत से ही माल उठाते हैं। जीपीएस ट्रैकिंग और तापमान नियंत्रित कोल्ड वैन से फल व सब्जियों की गुणवत्ता बनी रहती है।'}
+            </p>
+          </div>
+
+          {/* Point 6 */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+              06
+            </div>
+            <div className="flex items-center gap-2">
+              <Coins className="w-4 h-4 text-emerald-700" />
+              <h3 className="text-sm font-bold text-slate-900">
+                {language === 'en' ? 'Instant DBT / UPI Settlement' : 'तत्काल डीबीटी / यूपीआई भुगतान'}
+              </h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {language === 'en'
+                ? 'Upon physical weighbridge verification at the buyer hub, the smart contract immediately releases funds directly to the farmer\'s bank account within 45 minutes.'
+                : 'खरीदार के गोदाम पर वजन और गुणवत्ता सत्यापन होते ही स्मार्ट अनुबंध द्वारा 45 मिनट के भीतर किसान के बैंक खाते में सीधा भुगतान हो जाता है।'}
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 5: AGRICULTURAL NEWS & CURRENT RESEARCH STUDIES */}
+      {/* ------------------------------------------------------------- */}
+      <section id="news-section" className="space-y-6">
+        
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
+              <Newspaper className="w-4 h-4" />
+              <span>National Agri Knowledge & Insights</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {language === 'en' ? 'Agricultural News & Current Research' : 'कृषि समाचार व नवीनतम अनुसंधान'}
+            </h2>
+            <p className="text-xs text-slate-500 max-w-xl mt-1">
+              {language === 'en' 
+                ? 'Curated updates on national policy, APMC mandi regulations, and peer-reviewed studies from ICAR, IARI, and agricultural universities.' 
+                : 'राष्ट्रीय कृषि नीतियां, मंडी सुधार और भारतीय कृषि अनुसंधान परिषद (ICAR) के नवीनतम वैज्ञानिक अध्ययन।'}
+            </p>
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold">
+            <button
+              onClick={() => setNewsCategoryTab('all')}
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+                newsCategoryTab === 'all' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              All Updates
+            </button>
+            <button
+              onClick={() => setNewsCategoryTab('news')}
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+                newsCategoryTab === 'news' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Policy & Mandi News
+            </button>
+            <button
+              onClick={() => setNewsCategoryTab('research')}
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+                newsCategoryTab === 'research' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              University Research
+            </button>
+          </div>
+        </div>
+
+        {/* Article Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredArticles.map((article) => (
+            <div 
+              key={article.id}
+              className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between group"
+            >
+              <div className="space-y-3">
+                
+                {/* Meta Tag & Source */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${article.tagColor}`}>
+                    {article.tag}
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-medium">{article.readTime}</span>
+                </div>
+
+                <h3 className="text-sm font-bold text-slate-900 leading-snug group-hover:text-[#174d26] transition">
+                  {language === 'en' ? article.titleEn : article.titleHi}
+                </h3>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {language === 'en' ? article.summaryEn : article.summaryHi}
+                </p>
+
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <div className="text-slate-400 font-medium">
+                  <span>{article.source}</span> • <span>{article.date}</span>
+                </div>
+                <button
+                  onClick={() => showNotification(`Opened full summary for: ${article.titleEn.slice(0, 40)}...`, 'info')}
+                  className="text-[#174d26] font-bold hover:underline flex items-center gap-1 cursor-pointer shrink-0"
+                >
+                  <span>{article.linkText}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* SECTION 6: CONTACT US & GRIEVANCE HELPDESK */}
+      {/* ------------------------------------------------------------- */}
+      <section id="contact-section" className="bg-white rounded-3xl border border-[#e4eae2] p-6 sm:p-10 shadow-xs space-y-8">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Column: Explicit Contact Details */}
+          <div className="lg:col-span-5 space-y-6">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
+                <Phone className="w-3.5 h-3.5" />
+                <span>24/7 Farmer & Buyer Helpline</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                {language === 'en' ? 'Get In Touch & Support' : 'संपर्क व सहायता केंद्र'}
+              </h2>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                {language === 'en'
+                  ? 'Have questions about onboarding your FPO, getting an AI quality certificate, or tracking an escrow disbursement? Call or email our team directly.'
+                  : 'एफपीओ पंजीकरण, एआई गुणवत्ता प्रमाणपत्र या एस्क्रो भुगतान के संबंध में सहायता के लिए सीधे संपर्क करें।'}
+              </p>
+            </div>
+
+            {/* Direct Phone Box */}
+            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                  <Phone className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Toll-Free Helpline / Mobile</div>
+                  <a 
+                    href="tel:9336161644" 
+                    className="text-base sm:text-lg font-black text-slate-900 hover:text-[#174d26] transition block cursor-pointer"
+                  >
+                    9336161644
+                  </a>
+                  <div className="text-[10px] text-emerald-700 font-medium">Click to Call (Mon–Sat, 8am–8pm)</div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => copyToClipboard('9336161644', 'Phone Number')}
+                className="p-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition cursor-pointer"
+                title="Copy phone number"
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Direct Email Box */}
+            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-11 h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                  <Mail className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Official Inquiries & Support</div>
+                  <a 
+                    href="mailto:adityapatelp34@gmail.com" 
+                    className="text-sm sm:text-base font-black text-slate-900 hover:text-[#174d26] transition truncate block cursor-pointer"
+                  >
+                    adityapatelp34@gmail.com
+                  </a>
+                  <div className="text-[10px] text-emerald-700 font-medium">Click to Email (Average reply 2 hrs)</div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => copyToClipboard('adityapatelp34@gmail.com', 'Email Address')}
+                className="p-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition cursor-pointer shrink-0"
+                title="Copy email address"
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Physical Location & Credentials */}
+            <div className="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
+                <span>National Agricultural Innovation Directorate • Pusa Complex, New Delhi & Pune Division</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Smart India Hackathon 2026: Team <strong>INCREDIBLE_X_TECH</strong> (Problem ID 26132)</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Column: Direct Message & Inquiry Form */}
+          <div className="lg:col-span-7 bg-[#fafaf8] border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4">
+            <div>
+              <h3 className="text-base font-black text-slate-900">
+                {language === 'en' ? 'Send an Inquiry or Grievance' : 'पूछताछ या शिकायत भेजें'}
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {language === 'en' 
+                  ? 'Our APMC grievance officer and technical team will address your submission immediately.' 
+                  : 'हमारे अधिकारी और तकनीकी सहायता दल आपकी शिकायत का तुरंत समाधान करेंगे।'}
+              </p>
+            </div>
+
+            {isContactSubmitted ? (
+              <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2 animate-slide-up">
+                <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+                <div className="text-sm font-black text-emerald-950">
+                  {language === 'en' ? 'Inquiry Submitted Successfully!' : 'पूछताछ सफलतापूर्वक दर्ज की गई!'}
+                </div>
+                <p className="text-xs text-emerald-800 max-w-sm mx-auto">
+                  {language === 'en'
+                    ? 'Thank you for reaching out. A ticket has been generated. You will receive an SMS and email update.'
+                    : 'संपर्क करने के लिए धन्यवाद। टिकट संख्या उत्पन्न कर दी गई है। आपको एसएमएस और ईमेल द्वारा सूचना प्राप्त होगी।'}
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                      Your Full Name *
+                    </label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="e.g. Ramesh Patil / Rajesh Kumar"
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                      Phone Number / Email *
+                    </label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="+91 98224 XXXXX or your email"
+                      value={contactForm.phoneOrEmail}
+                      onChange={(e) => setContactForm({ ...contactForm, phoneOrEmail: e.target.value })}
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                      Stakeholder Role
+                    </label>
+                    <select
+                      value={contactForm.roleCategory}
+                      onChange={(e) => setContactForm({ ...contactForm, roleCategory: e.target.value })}
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none cursor-pointer"
+                    >
+                      <option value="farmer">Farmer / FPO Producer</option>
+                      <option value="buyer">Institutional / Bulk Buyer</option>
+                      <option value="transporter">Agri Logistics / Transporter</option>
+                      <option value="general">General / Technical Support</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                      Subject / Topic
+                    </label>
+                    <input 
+                      type="text"
+                      placeholder="e.g. Escrow Inquiry, AI Grader, FPO Onboarding"
+                      value={contactForm.subject}
+                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                    Your Message / Grievance Details *
+                  </label>
+                  <textarea 
+                    rows={3}
+                    required
+                    placeholder="Describe your question, mandi issue, or technical support requirement..."
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl p-3.5 text-slate-900 focus:outline-none resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white text-xs font-bold py-3 px-6 rounded-xl transition shadow-xs cursor-pointer w-full sm:w-auto"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Submit Inquiry</span>
+                </button>
+
+              </form>
+            )}
+
+          </div>
+
+        </div>
+
+      </section>
 
     </div>
   );
 };
-

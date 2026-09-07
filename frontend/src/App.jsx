@@ -16,13 +16,20 @@ import {
   ExternalLink,
   Sparkles,
   Bot,
-  Layers
+  Layers,
+  Phone,
+  Mail,
+  ShieldCheck
 } from 'lucide-react';
 
 const MainContent = () => {
-  const { currentRole, setCurrentRole, language } = useApp();
+  const { currentRole, setCurrentRole, language, showNotification } = useApp();
   
-  // Navigation tabs: 'home' | 'market-prices' | 'sell-produce' | 'find-buyers' | 'logistics' | 'how-it-works'
+  // Navigation tabs:
+  // 'home' | 'farmer-portal' | 'farmer-intelligence' | 'farmer-lots' | 'farmer-storage' | 'farmer-grievances'
+  // | 'buyer-portal' | 'buyer-produce' | 'buyer-demands' | 'buyer-orders'
+  // | 'transporter-portal' | 'transporter-dispatches' | 'transporter-fleet'
+  // | 'admin-portal' | 'admin-kyc' | 'admin-disputes'
   const [activeTab, setActiveTab] = useState('home');
 
   // Modals
@@ -33,45 +40,85 @@ const MainContent = () => {
 
   const handleApplyAiToLot = (lotData) => {
     setPrefillLotData(lotData);
-    setActiveTab('sell-produce');
     setCurrentRole('farmer');
+    setActiveTab('farmer-lots');
   };
 
   const handleNavigateTab = (tabId) => {
-    if (tabId === 'how-it-works') {
+    if (tabId === 'home') {
       setActiveTab('home');
-      setTimeout(() => {
-        window.scrollTo({ top: 900, behavior: 'smooth' });
-      }, 100);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Role-isolated routing
+    if (tabId.startsWith('farmer-') || tabId === 'sell-produce' || tabId === 'market-prices') {
+      if (currentRole !== 'farmer') setCurrentRole('farmer');
+      setActiveTab(tabId === 'sell-produce' ? 'farmer-lots' : tabId === 'market-prices' ? 'farmer-intelligence' : tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (tabId.startsWith('buyer-') || tabId === 'find-buyers') {
+      if (currentRole !== 'buyer') setCurrentRole('buyer');
+      setActiveTab(tabId === 'find-buyers' ? 'buyer-produce' : tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (tabId.startsWith('transporter-') || tabId === 'logistics') {
+      if (currentRole !== 'transporter') setCurrentRole('transporter');
+      setActiveTab(tabId === 'logistics' ? 'transporter-portal' : tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (tabId.startsWith('admin-')) {
+      if (currentRole !== 'admin') setCurrentRole('admin');
+      setActiveTab(tabId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     setActiveTab(tabId);
-    if (tabId === 'home') {
-      if (currentRole === 'admin') {
-        setCurrentRole('overview');
-      }
-    } else if (tabId === 'sell-produce' || tabId === 'market-prices') {
-      if (currentRole === 'overview' || currentRole === 'admin') setCurrentRole('farmer');
-    } else if (tabId === 'find-buyers') {
-      if (currentRole === 'overview' || currentRole === 'admin') setCurrentRole('buyer');
-    } else if (tabId === 'logistics') {
-      if (currentRole === 'overview' || currentRole === 'admin') setCurrentRole('transporter');
-    }
   };
 
   const handleLoginSuccess = (selectedRole) => {
     if (selectedRole === 'farmer') {
-      setActiveTab('sell-produce');
+      setActiveTab('farmer-portal');
     } else if (selectedRole === 'buyer') {
-      setActiveTab('find-buyers');
+      setActiveTab('buyer-portal');
     } else if (selectedRole === 'transporter') {
-      setActiveTab('logistics');
+      setActiveTab('transporter-portal');
     } else if (selectedRole === 'admin') {
-      setActiveTab('market-prices');
+      setActiveTab('admin-portal');
     } else {
       setActiveTab('home');
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Helper to determine FarmerPortal initial subtab
+  const getFarmerSubTab = () => {
+    if (activeTab === 'farmer-intelligence') return 'intelligence';
+    if (activeTab === 'farmer-lots') return 'lots';
+    if (activeTab === 'farmer-storage') return 'storage';
+    if (activeTab === 'farmer-grievances') return 'grievance';
+    return 'lots';
+  };
+
+  // Helper to determine BuyerPortal initial subtab
+  const getBuyerSubTab = () => {
+    if (activeTab === 'buyer-demands') return 'post-demand';
+    if (activeTab === 'buyer-orders') return 'orders';
+    return 'marketplace';
+  };
+
+  // Helper to determine AdminPortal initial subtab
+  const getAdminSubTab = () => {
+    if (activeTab === 'admin-kyc') return 'kyc';
+    if (activeTab === 'admin-disputes') return 'grievances';
+    return 'overview';
   };
 
   return (
@@ -89,31 +136,33 @@ const MainContent = () => {
       {/* 2. MAIN VIEW CONTAINER */}
       <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         
-        {/* VIEW 1: HOME LANDING DASHBOARD */}
-        {activeTab === 'home' && currentRole !== 'admin' && (
+        {/* VIEW 1: UNIVERSAL HOME LANDING PAGE (AVAILABLE FOR EVERYONE) */}
+        {activeTab === 'home' && (
           <LandingView 
             onNavigateTab={handleNavigateTab}
+            onOpenLogin={() => setIsLoginModalOpen(true)}
             onOpenAiGrader={() => setIsAiGraderOpen(true)}
             onOpenKisanBot={() => setIsKisanBotOpen(true)}
           />
         )}
 
-        {/* VIEW 2: MARKET PRICES & FORECASTING */}
-        {activeTab === 'market-prices' && currentRole !== 'admin' && (
+        {/* VIEW 2: DEDICATED FARMER PORTAL */}
+        {activeTab.startsWith('farmer-') && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between bg-emerald-50/70 border border-emerald-200/80 px-4 py-2.5 rounded-2xl">
               <button 
                 onClick={() => setActiveTab('home')}
-                className="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-[#174d26] hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Back to Home
+                ← Back to Universal Home Page
               </button>
-              <span className="text-xs text-slate-500 font-medium">
-                Live Mandi Price Discovery & AI Forecasting
+              <span className="text-xs text-emerald-900 font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+                Dedicated Farmer & FPO Producer Portal
               </span>
             </div>
             <FarmerPortal 
-              initialTab="intelligence"
+              initialTab={getFarmerSubTab()}
               onOpenAiGrader={() => setIsAiGraderOpen(true)}
               prefillData={prefillLotData}
               onClearPrefill={() => setPrefillLotData(null)}
@@ -121,124 +170,129 @@ const MainContent = () => {
           </div>
         )}
 
-        {/* VIEW 3: SELL PRODUCE (FARMER LOTS & LISTINGS) */}
-        {activeTab === 'sell-produce' && currentRole !== 'admin' && (
+        {/* VIEW 3: DEDICATED BUYER PORTAL */}
+        {activeTab.startsWith('buyer-') && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between bg-blue-50/70 border border-blue-200/80 px-4 py-2.5 rounded-2xl">
               <button 
                 onClick={() => setActiveTab('home')}
-                className="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-blue-800 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Back to Home
+                ← Back to Universal Home Page
               </button>
-              <span className="text-xs text-slate-500 font-medium">
-                Farmer & FPO Produce Lot Management
+              <span className="text-xs text-blue-900 font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                Dedicated Institutional Buyer Portal • BigBasket Fresh
               </span>
             </div>
-            <FarmerPortal 
-              initialTab="lots"
-              onOpenAiGrader={() => setIsAiGraderOpen(true)}
-              prefillData={prefillLotData}
-              onClearPrefill={() => setPrefillLotData(null)}
-            />
+            <BuyerPortal initialTab={getBuyerSubTab()} />
           </div>
         )}
 
-        {/* VIEW 4: FIND BUYERS (INSTITUTIONAL BUYER MARKETPLACE) */}
-        {activeTab === 'find-buyers' && currentRole !== 'admin' && (
+        {/* VIEW 4: DEDICATED TRANSPORTER PORTAL */}
+        {activeTab.startsWith('transporter-') && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between bg-amber-50/70 border border-amber-200/80 px-4 py-2.5 rounded-2xl">
               <button 
                 onClick={() => setActiveTab('home')}
-                className="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-amber-800 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Back to Home
+                ← Back to Universal Home Page
               </button>
-              <span className="text-xs text-slate-500 font-medium">
-                Verified Buyer Marketplace & Escrow Bids
-              </span>
-            </div>
-            <BuyerPortal />
-          </div>
-        )}
-
-        {/* VIEW 5: LOGISTICS & TRANSPORT FLEET */}
-        {activeTab === 'logistics' && currentRole !== 'admin' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <button 
-                onClick={() => setActiveTab('home')}
-                className="text-xs font-bold text-emerald-800 hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                ← Back to Home
-              </button>
-              <span className="text-xs text-slate-500 font-medium">
-                Rural Farm-Gate Pickup & Cold Chain Logistics
+              <span className="text-xs text-amber-900 font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-600"></span>
+                Dedicated Agri Logistics & Fleet Portal • Kisan Express
               </span>
             </div>
             <TransporterPortal />
           </div>
         )}
 
-        {/* VIEW 6: APMC MANDI BOARD & GOVT REGULATORY OVERSIGHT */}
-        {currentRole === 'admin' && (
+        {/* VIEW 5: DEDICATED APMC MANDI BOARD & GOVT REGULATORY OVERSIGHT */}
+        {activeTab.startsWith('admin-') && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between bg-purple-50/70 border border-purple-200/80 px-4 py-2.5 rounded-2xl">
               <button 
-                onClick={() => {
-                  setCurrentRole('farmer');
-                  setActiveTab('home');
-                }}
+                onClick={() => setActiveTab('home')}
                 className="text-xs font-bold text-purple-800 hover:underline flex items-center gap-1 cursor-pointer"
               >
-                ← Back to Home Platform
+                ← Back to Universal Home Page
               </button>
-              <span className="text-xs text-slate-500 font-medium">
-                APMC Mandi Regulatory Oversight Desk
+              <span className="text-xs text-purple-900 font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-purple-600"></span>
+                APMC Mandi Regulatory & Market Oversight Desk
               </span>
             </div>
-            <AdminPortal />
+            <AdminPortal initialTab={getAdminSubTab()} />
           </div>
         )}
 
       </main>
 
       {/* 3. CLEAN FOOTER */}
-      <footer className="bg-white border-t border-[#eef0eb] mt-16 py-8 text-xs text-slate-500">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-6">
+      <footer className="bg-white border-t border-[#eef0eb] mt-20 py-10 text-xs text-slate-500">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-8">
           
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
-                <Sprout className="w-5 h-5 stroke-[2.2]" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            
+            {/* Col 1: Brand */}
+            <div className="md:col-span-5 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
+                  <Sprout className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <span className="font-black text-slate-900 text-base">
+                    Farmer Market Intelligence & Marketplace
+                  </span>
+                  <span className="text-[11px] text-slate-400 block">
+                    National Agri Market Intelligence & Direct Trading Platform
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="font-black text-slate-900 text-sm">
-                  Farmer Market Intelligence & Marketplace
-                </span>
-                <span className="text-[11px] text-slate-400 block">
-                  National Agri Market Intelligence & Direct Trading Platform
-                </span>
+              <p className="text-xs text-slate-600 max-w-sm leading-relaxed">
+                Empowering Indian farmers and FPOs with computer vision AI quality grading, verified institutional buyer matching, farm-gate logistics, and automated bank-backed escrow payments.
+              </p>
+            </div>
+
+            {/* Col 2: Quick Links */}
+            <div className="md:col-span-4 space-y-2">
+              <div className="text-xs font-bold uppercase text-slate-900 tracking-wider">Direct Portals</div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 font-medium pt-1">
+                <button onClick={() => handleNavigateTab('home')} className="hover:text-[#174d26] text-left cursor-pointer">Universal Home</button>
+                <button onClick={() => handleNavigateTab('farmer-portal')} className="hover:text-[#174d26] text-left cursor-pointer">Farmer Portal</button>
+                <button onClick={() => handleNavigateTab('buyer-portal')} className="hover:text-[#174d26] text-left cursor-pointer">Buyer Portal</button>
+                <button onClick={() => handleNavigateTab('transporter-portal')} className="hover:text-[#174d26] text-left cursor-pointer">Transporter Portal</button>
+                <button onClick={() => handleNavigateTab('admin-portal')} className="hover:text-[#174d26] text-left cursor-pointer">APMC Admin Desk</button>
+                <button onClick={() => setIsLoginModalOpen(true)} className="hover:text-[#174d26] text-left font-bold cursor-pointer">Sign In / Switch Role</button>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
-              <button onClick={() => handleNavigateTab('home')} className="hover:text-[#174d26] cursor-pointer">Home</button>
-              <button onClick={() => handleNavigateTab('market-prices')} className="hover:text-[#174d26] cursor-pointer">Market Prices</button>
-              <button onClick={() => handleNavigateTab('sell-produce')} className="hover:text-[#174d26] cursor-pointer">Sell Produce</button>
-              <button onClick={() => handleNavigateTab('find-buyers')} className="hover:text-[#174d26] cursor-pointer">Find Buyers</button>
-              <button onClick={() => handleNavigateTab('logistics')} className="hover:text-[#174d26] cursor-pointer">Logistics</button>
-              <button onClick={() => setIsLoginModalOpen(true)} className="hover:text-[#174d26] font-bold cursor-pointer">Sign In / Role</button>
-              <button onClick={() => setIsAiGraderOpen(true)} className="text-amber-800 font-bold hover:underline flex items-center gap-1 cursor-pointer">
-                <Sparkles className="w-3.5 h-3.5" /> AI Grader
-              </button>
-              <button onClick={() => setIsKisanBotOpen(true)} className="text-emerald-800 font-bold hover:underline flex items-center gap-1 cursor-pointer">
-                <Bot className="w-3.5 h-3.5" /> Kisan AI
-              </button>
+            {/* Col 3: Direct Contact Information */}
+            <div className="md:col-span-3 space-y-2">
+              <div className="text-xs font-bold uppercase text-slate-900 tracking-wider">Contact Us</div>
+              <div className="space-y-1.5 pt-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  <a href="tel:9336161644" className="font-bold text-slate-900 hover:text-[#174d26] cursor-pointer">
+                    9336161644
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                  <a href="mailto:adityapatelp34@gmail.com" className="font-bold text-slate-900 hover:text-[#174d26] cursor-pointer truncate">
+                    adityapatelp34@gmail.com
+                  </a>
+                </div>
+                <div className="text-[11px] text-slate-400 pt-1">
+                  24/7 Farmer & Buyer Technical Helpline
+                </div>
+              </div>
             </div>
+
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+          <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
             <div className="flex items-center gap-2">
               <span>Smart India Hackathon 2026: Problem Statement ID <strong>26132</strong></span>
               <span>•</span>

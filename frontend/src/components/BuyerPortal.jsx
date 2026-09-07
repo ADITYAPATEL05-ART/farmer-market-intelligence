@@ -19,7 +19,7 @@ import {
   X
 } from 'lucide-react';
 
-export const BuyerPortal = () => {
+export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
   const { 
     language, 
     lots, 
@@ -30,7 +30,13 @@ export const BuyerPortal = () => {
     crops 
   } = useApp();
 
-  const [buyerTab, setBuyerTab] = useState('marketplace'); // 'marketplace' | 'post-demand' | 'orders'
+  const [buyerTab, setBuyerTab] = useState(initialTab); // 'marketplace' | 'post-demand' | 'orders'
+  
+  React.useEffect(() => {
+    if (initialTab) {
+      setBuyerTab(initialTab);
+    }
+  }, [initialTab]);
   const [filterCrop, setFilterCrop] = useState('ALL');
   const [filterGrade, setFilterGrade] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');

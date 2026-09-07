@@ -15,7 +15,7 @@ import {
   Check
 } from 'lucide-react';
 
-export const AdminPortal = () => {
+export const AdminPortal = ({ initialTab = 'overview' }) => {
   const { 
     metrics, 
     kycRequests, 
@@ -26,7 +26,13 @@ export const AdminPortal = () => {
     language 
   } = useApp();
 
-  const [adminTab, setAdminTab] = useState('overview'); // 'overview' | 'kyc' | 'grievances'
+  const [adminTab, setAdminTab] = useState(initialTab); // 'overview' | 'kyc' | 'grievances'
+  
+  React.useEffect(() => {
+    if (initialTab) {
+      setAdminTab(initialTab);
+    }
+  }, [initialTab]);
   const [resolutionText, setResolutionText] = useState({});
 
   return (

@@ -10,7 +10,9 @@ import {
   Building2, 
   Truck, 
   ShieldCheck,
-  Award
+  Award,
+  LogOut,
+  ChevronDown
 } from 'lucide-react';
 
 export const Navbar = ({ 
@@ -26,28 +28,92 @@ export const Navbar = ({
     language, 
     setLanguage, 
     notification,
-    orders
+    orders,
+    showNotification
   } = useApp();
 
   const activeEscrowCount = orders.filter(o => o.escrowStatus === 'SECURED_IN_ESCROW').length;
 
-  const navLinks = [
-    { id: 'home', labelEn: 'Home', labelHi: 'होम' },
-    { id: 'market-prices', labelEn: 'Market Prices', labelHi: 'मंडी भाव' },
-    { id: 'sell-produce', labelEn: 'Sell Produce', labelHi: 'फसल बेचें' },
-    { id: 'find-buyers', labelEn: 'Find Buyers', labelHi: 'खरीदार खोजें' },
-    { id: 'logistics', labelEn: 'Logistics', labelHi: 'परिवहन' },
-    { id: 'how-it-works', labelEn: 'How It Works', labelHi: 'यह कैसे काम करता है' }
-  ];
+  const getNavLinks = () => {
+    if (currentRole === 'farmer') {
+      return [
+        { id: 'home', labelEn: 'Home', labelHi: 'होम' },
+        { id: 'farmer-portal', labelEn: 'Farmer Dashboard', labelHi: 'किसान डैशबोर्ड' },
+        { id: 'farmer-intelligence', labelEn: 'Mandi Intelligence', labelHi: 'मंडी भाव' },
+        { id: 'farmer-lots', labelEn: 'My Produce Lots', labelHi: 'मेरी फसल' },
+        { id: 'farmer-storage', labelEn: 'Cold Storage', labelHi: 'कोल्ड स्टोरेज' },
+        { id: 'farmer-grievances', labelEn: 'Grievances', labelHi: 'शिकायतें' }
+      ];
+    }
+    if (currentRole === 'buyer') {
+      return [
+        { id: 'home', labelEn: 'Home', labelHi: 'होम' },
+        { id: 'buyer-portal', labelEn: 'Buyer Dashboard', labelHi: 'खरीदार डैशबोर्ड' },
+        { id: 'buyer-produce', labelEn: 'Browse Produce Lots', labelHi: 'उपज लॉट देखें' },
+        { id: 'buyer-demands', labelEn: 'Post Demands', labelHi: 'मांग दर्ज करें' },
+        { id: 'buyer-orders', labelEn: 'Escrow Orders', labelHi: 'एस्क्रो ऑर्डर' }
+      ];
+    }
+    if (currentRole === 'transporter') {
+      return [
+        { id: 'home', labelEn: 'Home', labelHi: 'होम' },
+        { id: 'transporter-portal', labelEn: 'Transporter Dashboard', labelHi: 'परिवहन डैशबोर्ड' },
+        { id: 'transporter-dispatches', labelEn: 'Dispatch Loads', labelHi: 'पिकअप ट्रिप' },
+        { id: 'transporter-fleet', labelEn: 'Fleet Management', labelHi: 'वाहन प्रबंधन' }
+      ];
+    }
+    if (currentRole === 'admin') {
+      return [
+        { id: 'home', labelEn: 'Home', labelHi: 'होम' },
+        { id: 'admin-portal', labelEn: 'Regulatory Oversight', labelHi: 'नियामक केंद्र' },
+        { id: 'admin-kyc', labelEn: 'KYC Approvals', labelHi: 'केवाईसी सत्यापन' },
+        { id: 'admin-disputes', labelEn: 'Dispute Redressal', labelHi: 'विवाद निपटारा' }
+      ];
+    }
+    // Default: Public Guest
+    return [
+      { id: 'home', labelEn: 'Home', labelHi: 'होम' },
+      { id: 'rates-section', labelEn: 'Mandi Rates', labelHi: 'मंडी भाव' },
+      { id: 'ai-section', labelEn: 'Kisan AI', labelHi: 'किसान एआई' },
+      { id: 'how-it-works', labelEn: 'How It Works', labelHi: 'यह कैसे काम करता है' },
+      { id: 'news-section', labelEn: 'News & Research', labelHi: 'समाचार व रिसर्च' },
+      { id: 'contact-section', labelEn: 'Contact Us', labelHi: 'संपर्क करें' }
+    ];
+  };
+
+  const navLinks = getNavLinks();
+
+  const handleLinkClick = (linkId) => {
+    if (['rates-section', 'ai-section', 'how-it-works', 'news-section', 'contact-section'].includes(linkId)) {
+      onSelectTab('home');
+      setTimeout(() => {
+        const el = document.getElementById(linkId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return;
+    }
+    onSelectTab(linkId);
+  };
 
   const getRoleLabel = () => {
     switch(currentRole) {
       case 'farmer': return language === 'en' ? 'Farmer: Ramesh Patil' : 'किसान: रमेश पाटिल';
       case 'buyer': return language === 'en' ? 'Buyer: BigBasket' : 'खरीदार: बिगबास्केट';
       case 'transporter': return language === 'en' ? 'Fleet: Kisan Express' : 'वाहन: किसान एक्सप्रेस';
-      case 'admin': return language === 'en' ? 'APMC Mandi Board' : 'मंडी विनियामक बोर्ड';
-      default: return language === 'en' ? 'Login' : 'लॉगिन';
+      case 'admin': return language === 'en' ? 'APMC Directorate' : 'मंडी विनियामक बोर्ड';
+      default: return language === 'en' ? 'Sign In / Select Role' : 'लॉगिन / भूमिका चुनें';
     }
+  };
+
+  const isLinkActive = (linkId) => {
+    if (activeTab === linkId) return true;
+    if (linkId === 'farmer-portal' && activeTab.startsWith('farmer-')) return true;
+    if (linkId === 'buyer-portal' && activeTab.startsWith('buyer-')) return true;
+    if (linkId === 'transporter-portal' && activeTab.startsWith('transporter-')) return true;
+    if (linkId === 'admin-portal' && activeTab.startsWith('admin-')) return true;
+    return false;
   };
 
   return (
@@ -57,7 +123,7 @@ export const Navbar = ({
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-20 gap-4">
           
-          {/* Brand Logo & Tagline (Farmer Market Intelligence & Marketplace) */}
+          {/* Brand Logo & Tagline */}
           <div 
             onClick={() => onSelectTab('home')}
             className="flex items-center gap-3 cursor-pointer select-none group shrink-0"
@@ -81,21 +147,21 @@ export const Navbar = ({
           </div>
 
           {/* Center Navigation Links with Green Underline */}
-          <nav className="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-semibold text-slate-700">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs xl:text-sm font-semibold text-slate-700">
             {navLinks.map((link) => {
-              const isActive = activeTab === link.id;
+              const active = isLinkActive(link.id);
               return (
                 <button
                   key={link.id}
-                  onClick={() => onSelectTab(link.id)}
+                  onClick={() => handleLinkClick(link.id)}
                   className={`relative py-2 transition-colors cursor-pointer ${
-                    isActive 
+                    active 
                       ? 'text-[#174d26] font-bold' 
                       : 'text-slate-600 hover:text-[#174d26]'
                   }`}
                 >
                   <span>{language === 'en' ? link.labelEn : link.labelHi}</span>
-                  {isActive && (
+                  {active && (
                     <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#174d26] rounded-full animate-slide-up"></span>
                   )}
                 </button>
@@ -103,26 +169,26 @@ export const Navbar = ({
             })}
           </nav>
 
-          {/* Right: Language Toggle, AI Tools & Login Button */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+          {/* Right: Language Toggle, AI Tools & Role Button */}
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             
             {/* Quick AI Buttons */}
             <button
               onClick={onOpenAiGrader}
-              className="hidden lg:inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
               title="Computer Vision Produce Quality Assayer"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>AI Grader</span>
+              <span className="hidden xl:inline">AI Grader</span>
             </button>
 
             <button
               onClick={onOpenKisanBot}
-              className="hidden lg:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
-              title="Kisan AI Voice / Chatbot"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
+              title="Kisan AI Voice Assistant"
             >
               <Bot className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Kisan AI</span>
+              <span className="hidden xl:inline">Kisan AI</span>
             </button>
 
             {/* Language Toggle: हिंदी | English */}
@@ -146,23 +212,49 @@ export const Navbar = ({
               </button>
             </div>
 
-            {/* Dedicated Login Section Trigger */}
-            <button
-              onClick={onOpenLogin}
-              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-xl border text-xs font-bold transition shadow-xs cursor-pointer ${
-                currentRole && currentRole !== 'overview'
-                  ? 'border-emerald-600/50 bg-emerald-50 text-emerald-900 hover:bg-emerald-100'
-                  : 'border-slate-300 hover:border-[#174d26] bg-white hover:bg-[#eaf6ed]/40 text-slate-800'
-              }`}
-              title={currentRole && currentRole !== 'overview' ? 'Click to switch role or sign out' : 'Sign in or select role'}
-            >
-              {currentRole && currentRole !== 'overview' ? (
-                <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
-              ) : (
-                <User className="w-4 h-4 text-slate-600 shrink-0" />
+            {/* Role Button & Dropdown/Sign Out */}
+            <div className="flex items-center gap-1">
+              <button
+                onClick={onOpenLogin}
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition shadow-xs cursor-pointer ${
+                  currentRole && currentRole !== 'overview'
+                    ? currentRole === 'farmer' 
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-900 hover:bg-emerald-100'
+                      : currentRole === 'buyer'
+                        ? 'border-blue-500 bg-blue-50 text-blue-900 hover:bg-blue-100'
+                        : currentRole === 'transporter'
+                          ? 'border-amber-500 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                          : 'border-purple-500 bg-purple-50 text-purple-900 hover:bg-purple-100'
+                    : 'border-slate-300 hover:border-[#174d26] bg-white hover:bg-[#eaf6ed]/40 text-slate-800'
+                }`}
+                title={currentRole && currentRole !== 'overview' ? 'Click to switch role or view profile' : 'Sign in or select role'}
+              >
+                {currentRole && currentRole !== 'overview' ? (
+                  <span className={`w-2 h-2 rounded-full shrink-0 ${
+                    currentRole === 'farmer' ? 'bg-emerald-600' :
+                    currentRole === 'buyer' ? 'bg-blue-600' :
+                    currentRole === 'transporter' ? 'bg-amber-600' : 'bg-purple-600'
+                  }`}></span>
+                ) : (
+                  <User className="w-4 h-4 text-slate-600 shrink-0" />
+                )}
+                <span className="max-w-[130px] truncate">{getRoleLabel()}</span>
+              </button>
+
+              {currentRole && currentRole !== 'overview' && (
+                <button
+                  onClick={() => {
+                    setCurrentRole('overview');
+                    onSelectTab('home');
+                    showNotification('Signed out to public view.', 'info');
+                  }}
+                  className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
               )}
-              <span className="max-w-[130px] truncate">{getRoleLabel()}</span>
-            </button>
+            </div>
 
           </div>
 
@@ -170,18 +262,21 @@ export const Navbar = ({
       </div>
 
       {/* Mobile Nav Links Bar */}
-      <div className="md:hidden flex items-center justify-between px-4 py-2 bg-slate-50 border-t border-slate-100 overflow-x-auto no-scrollbar gap-4 text-xs font-semibold">
-        {navLinks.map((link) => (
-          <button
-            key={link.id}
-            onClick={() => onSelectTab(link.id)}
-            className={`whitespace-nowrap py-1 ${
-              activeTab === link.id ? 'text-[#174d26] font-bold border-b-2 border-[#174d26]' : 'text-slate-600'
-            }`}
-          >
-            {language === 'en' ? link.labelEn : link.labelHi}
-          </button>
-        ))}
+      <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-slate-50 border-t border-slate-100 overflow-x-auto no-scrollbar gap-4 text-xs font-semibold">
+        {navLinks.map((link) => {
+          const active = isLinkActive(link.id);
+          return (
+            <button
+              key={link.id}
+              onClick={() => handleLinkClick(link.id)}
+              className={`whitespace-nowrap py-1 ${
+                active ? 'text-[#174d26] font-bold border-b-2 border-[#174d26]' : 'text-slate-600'
+              }`}
+            >
+              {language === 'en' ? link.labelEn : link.labelHi}
+            </button>
+          );
+        })}
       </div>
 
       {/* Global Toast Notification */}
