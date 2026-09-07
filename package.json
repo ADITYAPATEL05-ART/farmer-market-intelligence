@@ -1,0 +1,18 @@
+{
+  "name": "farmer-market-intelligence-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Farmer Market Intelligence - Workspace for Frontend & Backend",
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend start",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:frontend",
+    "install:frontend": "npm --prefix frontend install",
+    "install:backend": "npm --prefix backend install",
+    "install:all": "npm run install:frontend && npm run install:backend"
+  }
+}
+
