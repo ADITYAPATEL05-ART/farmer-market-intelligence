@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import connectDB, { isDBConnected } from './config/db.js';
 import mandiRoutes from './routes/mandiRoutes.js';
 import produceRoutes from './routes/produceRoutes.js';
@@ -10,8 +13,15 @@ import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicPath = path.join(__dirname, '../public');
+
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+// Serve built frontend static assets
+app.use(express.static(publicPath));
 
 // Middleware
 const allowedOrigins = [
@@ -39,8 +49,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root Welcome & API Index
-app.get('/', (req, res) => {
+// API Overview
+app.get('/api', (req, res) => {
   res.json({
     message: 'Farmer Market Intelligence API Server is running',
     version: '1.0.0',
@@ -60,6 +70,7 @@ app.get('/', (req, res) => {
   });
 });
 
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
@@ -77,10 +88,14 @@ app.use('/api/mandi', mandiRoutes);
 app.use('/api/produce', produceRoutes);
 app.use('/api', orderRoutes);
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
+// SPA Fallback & 404 handler
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ success: false, message: `API route ${req.originalUrl} not found` });
+  }
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
+
 
 // Global Error Handler
 app.use((err, req, res, next) => {
