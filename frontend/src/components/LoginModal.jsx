@@ -114,22 +114,22 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
       <div 
-        className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full overflow-hidden animate-slide-up"
+        className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full max-h-[92vh] overflow-y-auto animate-slide-up my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#f7faf7] border-b border-[#eef0eb] px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#174d26] text-white flex items-center justify-center shadow-md shadow-[#174d26]/20">
-              <Lock className="w-5 h-5" />
+        <div className="bg-[#f7faf7] border-b border-[#eef0eb] px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#174d26] text-white flex items-center justify-center shadow-md shadow-[#174d26]/20 shrink-0">
+              <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 className="text-base font-black text-slate-900 leading-tight">
+              <h3 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
                 {language === 'en' ? 'Sign in to Platform' : 'प्लेटफ़ॉर्म में लॉगिन करें'}
               </h3>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[10px] sm:text-[11px] text-slate-500">
                 Farmer Market Intelligence & Marketplace
               </p>
             </div>
@@ -143,7 +143,7 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           
           {/* Stakeholder Persona Tabs */}
           <div>

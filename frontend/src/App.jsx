@@ -134,7 +134,7 @@ const MainContent = () => {
       />
 
       {/* 2. MAIN VIEW CONTAINER */}
-      <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
+      <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-8">
         
         {/* VIEW 1: UNIVERSAL HOME LANDING PAGE (AVAILABLE FOR EVERYONE) */}
         {activeTab === 'home' && (
@@ -231,7 +231,7 @@ const MainContent = () => {
 
       {/* 3. CLEAN FOOTER */}
       <footer className="bg-white border-t border-[#eef0eb] mt-20 py-10 text-xs text-slate-500">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-8">
+        <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 space-y-8">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             

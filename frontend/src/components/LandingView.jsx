@@ -503,32 +503,32 @@ export const LandingView = ({
   };
 
   return (
-    <div className="space-y-16 max-w-[1240px] mx-auto animate-fade-in pb-20">
+    <div className="space-y-12 sm:space-y-16 w-full max-w-[1720px] mx-auto animate-fade-in pb-20">
       
       {/* ------------------------------------------------------------- */}
       {/* SECTION 1: HERO & STAKEHOLDER ROLE GATEWAYS */}
       {/* ------------------------------------------------------------- */}
-      <section id="hero-section" className="space-y-8">
+      <section id="hero-section" className="space-y-6 sm:space-y-8">
         
         {/* Active Role Notice Banner if already logged in */}
         {currentRole && currentRole !== 'overview' && (
-          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-5 h-5" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
-                <div className="text-xs font-bold text-emerald-950">
+                <div className="text-xs sm:text-sm font-bold text-emerald-950">
                   {language === 'en' ? 'Active Session' : 'सक्रिय सत्र'}: <span className="capitalize font-black text-emerald-700">{currentRole} Portal</span>
                 </div>
-                <div className="text-[11px] text-emerald-800 font-medium">
+                <div className="text-[10px] sm:text-[11px] text-emerald-800 font-medium">
                   {language === 'en' 
                     ? 'You are currently logged in. You can open your private dashboard or browse public market intelligence below.' 
                     : 'आप वर्तमान में लॉग इन हैं। आप अपना निजी डैशबोर्ड खोल सकते हैं या नीचे सार्वजनिक मंडी जानकारी देख सकते हैं।'}
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
               <button
                 onClick={() => {
                   if (currentRole === 'farmer') onNavigateTab('farmer-portal');
@@ -536,7 +536,7 @@ export const LandingView = ({
                   else if (currentRole === 'transporter') onNavigateTab('transporter-portal');
                   else if (currentRole === 'admin') onNavigateTab('admin-portal');
                 }}
-                className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+                className="flex-1 sm:flex-initial bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>{language === 'en' ? 'Go to My Portal' : 'मेरे पोर्टल पर जाएं'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -554,19 +554,19 @@ export const LandingView = ({
           </div>
         )}
 
-        {/* Hero Banner with Original Green Palette */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#f7f9f6] via-[#f1f6f1] to-[#e7f0e6] border border-[#e4eae2] p-6 sm:p-10 lg:p-12 shadow-xs">
+        {/* Hero Banner with Full Width Expansion & Mobile Proportions */}
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-[#f7f9f6] via-[#f1f6f1] to-[#e7f0e6] border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-14 shadow-xs">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             {/* Left Column: Headlines & CTA */}
-            <div className="lg:col-span-7 space-y-6 z-10">
-              <div className="inline-flex items-center gap-2 bg-[#eaf6ed] border border-emerald-300/80 px-3 py-1 rounded-full text-xs font-bold text-[#174d26]">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6 z-10">
+              <div className="inline-flex items-center gap-2 bg-[#eaf6ed] border border-emerald-300/80 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold text-[#174d26]">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                 <span>Smart India Hackathon 2026 • Problem ID 26132</span>
               </div>
 
               <div>
-                <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 leading-[1.12] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-[1.14] sm:leading-[1.12] tracking-tight">
                   {language === 'en' ? (
                     <>
                       Sell Smarter.<br />
@@ -579,7 +579,7 @@ export const LandingView = ({
                     </>
                   )}
                 </h1>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mt-4 font-normal">
+                <p className="text-slate-600 text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl mt-3 sm:mt-4 font-normal">
                   {language === 'en' 
                     ? 'India\'s unified digital agriculture intelligence infrastructure. Real-time APMC mandi prices, computer vision AI grading, verified buyer marketplace, rural logistics, and 100% bank-backed escrow payments.'
                     : 'भारत का एकीकृत डिजिटल कृषि मंच। रीयल-टाइम मंडी भाव, कंप्यूटर विज़न एआई ग्रेडिंग, सत्यापित खरीदार बाज़ार, ग्रामीण परिवहन और 100% बैंक एस्क्रो सुरक्षा।'}
@@ -587,10 +587,10 @@ export const LandingView = ({
               </div>
 
               {/* Quick Action Navigation CTAs */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3.5 pt-1">
                 <a
                   href="#rates-section"
-                  className="inline-flex items-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md shadow-[#174d26]/20 transition hover:scale-[1.02] cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md shadow-[#174d26]/20 transition hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <BarChart2 className="w-4 h-4" />
                   <span>{language === 'en' ? 'Live Mandi Rates & Graphs' : 'मंडी भाव व ग्राफ देखें'}</span>
@@ -598,32 +598,32 @@ export const LandingView = ({
 
                 <a
                   href="#ai-section"
-                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm px-5 py-3 rounded-xl border border-slate-300 shadow-xs transition hover:scale-[1.02] cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-xl border border-slate-300 shadow-xs transition hover:scale-[1.02] cursor-pointer text-center"
                 >
                   <Bot className="w-4 h-4 text-[#174d26]" />
-                  <span>{language === 'en' ? 'Ask Kisan AI' : 'किसान AI से पूछें'}</span>
+                  <span>{language === 'en' ? 'Ask Kisan AI Assistant' : 'किसान AI से पूछें'}</span>
                 </a>
 
                 <a
                   href="#how-it-works"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] hover:underline px-2 py-2 cursor-pointer"
+                  className="inline-flex items-center justify-center sm:justify-start gap-1 text-xs font-bold text-[#174d26] hover:underline px-2 py-2 cursor-pointer"
                 >
                   <span>{language === 'en' ? 'How Platform Works →' : 'यह कैसे काम करता है →'}</span>
                 </a>
               </div>
 
               {/* Trust Badge Strip */}
-              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-slate-600 border-t border-slate-200/70">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-5 pt-3 text-[11px] sm:text-xs font-semibold text-slate-600 border-t border-slate-200/70">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
                   <span>25,000+ Farmers Enrolled</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
                   <span>₹4.82 Cr Protected Escrow</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
                   <span>Agmarknet & e-NAM Standard</span>
                 </div>
               </div>
@@ -632,38 +632,38 @@ export const LandingView = ({
 
             {/* Right Column: Hero Visual & Mission Card */}
             <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-[420px] aspect-[4/3] sm:aspect-[1/1] rounded-2xl overflow-hidden shadow-lg border border-white/60">
+              <div className="relative w-full max-w-[480px] aspect-[4/3] sm:aspect-square lg:aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-white/60">
                 <img 
                   src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=900&auto=format&fit=crop&q=80" 
                   alt="Farmer in lush Indian agricultural farm" 
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
                 {/* Floating Mission Card */}
-                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/80 max-w-[195px] space-y-2 animate-slide-up">
-                  <div className="w-9 h-9 rounded-xl bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
-                    <Sprout className="w-5 h-5 stroke-[2.2]" />
+                <div className="absolute top-3 left-3 sm:top-6 sm:left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl border border-white/80 max-w-[155px] sm:max-w-[195px] space-y-1 sm:space-y-2 animate-slide-up">
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
+                    <Sprout className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900 leading-tight">Better Price</div>
-                    <div className="text-xs font-extrabold text-[#174d26] leading-tight">Better Future</div>
+                    <div className="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Better Price</div>
+                    <div className="text-[11px] sm:text-xs font-extrabold text-[#174d26] leading-tight">Better Future</div>
                   </div>
-                  <div className="text-[10px] text-slate-500 font-medium space-y-0.5 leading-tight pt-1">
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-medium space-y-0.5 leading-tight pt-0.5">
                     <div>Transparent Mandis</div>
                     <div>Direct Buyer Bidding</div>
                     <div>Aadhaar DBT Payout</div>
                   </div>
-                  <div className="w-8 h-1 bg-[#174d26] rounded-full mt-1"></div>
+                  <div className="w-6 sm:w-8 h-0.5 sm:h-1 bg-[#174d26] rounded-full mt-1"></div>
                 </div>
 
                 {/* Bottom Live Escrow Ticker */}
-                <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl text-white flex items-center justify-between text-[11px] border border-slate-700/60">
-                  <div className="flex items-center gap-2">
+                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl text-white flex items-center justify-between text-[10px] sm:text-[11px] border border-slate-700/60">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span className="font-semibold">Live Trade Settlement:</span>
+                    <span className="font-semibold">Trade Settlement:</span>
                   </div>
-                  <div className="font-bold text-emerald-400">₹10,75,500 Secured in Escrow</div>
+                  <div className="font-bold text-emerald-400">₹10,75,500 in Escrow</div>
                 </div>
 
               </div>
@@ -673,25 +673,25 @@ export const LandingView = ({
         </div>
 
         {/* 4 DEDICATED STAKEHOLDER PORTAL GATEWAYS */}
-        <div className="space-y-3">
+        <div className="space-y-3 sm:space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                <Layers className="w-5 h-5 text-[#174d26]" />
+              <h2 className="text-base sm:text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-[#174d26]" />
                 <span>{language === 'en' ? 'Choose Your Dedicated Stakeholder Portal' : 'अपना समर्पित हितधारक पोर्टल चुनें'}</span>
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                 {language === 'en' 
                   ? 'Each role features an isolated, role-specific portal. Select your persona to enter your private dashboard:' 
                   : 'प्रत्येक भूमिका के लिए एक सुरक्षित, अलग पोर्टल है। अपने डैशबोर्ड में प्रवेश करने के लिए अपना विकल्प चुनें:'}
               </p>
             </div>
-            <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 hidden sm:inline-block">
+            <span className="text-[10px] sm:text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 hidden md:inline-block">
               Role-Separated Architecture
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6">
             
             {/* 1. Farmer Portal Card */}
             <div className="bg-white rounded-2xl border-2 border-emerald-500/40 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-emerald-600">
@@ -813,25 +813,25 @@ export const LandingView = ({
       {/* ------------------------------------------------------------- */}
       {/* SECTION 2: INLINE KISAN AI CHATBOT & ADVISORY WIDGET */}
       {/* ------------------------------------------------------------- */}
-      <section id="ai-section" className="bg-white rounded-3xl border border-[#e4eae2] p-6 sm:p-8 shadow-xs space-y-6">
+      <section id="ai-section" className="bg-white rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-4 sm:p-6 lg:p-8 xl:p-10 shadow-xs space-y-4 sm:space-y-6">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shadow-xs">
-              <Bot className="w-6 h-6 stroke-[2.2]" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shadow-xs shrink-0">
+              <Bot className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                   {language === 'en' ? 'Kisan AI Market Assistant' : 'किसान एआई बाज़ार सलाहकार'}
                 </h2>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping"></span>
                   Active 24/7
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                 {language === 'en' 
                   ? 'Ask any question in English or Hindi regarding mandi trends, selling windows, AI quality grading, or escrow.' 
                   : 'मंडी भाव, विक्रय समय, एआई ग्रेडिंग या एस्क्रो भुगतान के बारे में कोई भी प्रश्न पूछें।'}
@@ -850,33 +850,33 @@ export const LandingView = ({
                     : 'बातचीत रीसेट की गई। आज मैं आपकी फसल या मंडी भाव में क्या सहायता कर सकता हूँ?'
                 }
               ])}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition cursor-pointer"
+              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 bg-slate-50 hover:bg-slate-100 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 transition cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Reset</span>
             </button>
             <button
               onClick={onOpenAiGrader}
-              className="text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5 transition cursor-pointer"
+              className="text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5 transition cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-              <span>Open Camera Assayer</span>
+              <span>Camera Assayer</span>
             </button>
           </div>
         </div>
 
-        {/* Quick Suggestion Chips */}
+        {/* Quick Suggestion Chips (Swipeable on mobile, wrapped on desktop) */}
         <div>
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1">
+          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1">
             <HelpCircle className="w-3 h-3" />
             <span>Click a Quick Question to Ask Instantly:</span>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap gap-1.5 sm:gap-2 pb-1">
             {quickChips.map((chip, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSendChat(chip.label)}
-                className="text-xs font-medium bg-[#f6f9f6] hover:bg-[#eaf6ed] text-[#174d26] border border-emerald-200/70 px-3 py-1.5 rounded-xl transition hover:scale-[1.02] cursor-pointer text-left"
+                className="text-xs font-medium bg-[#f6f9f6] hover:bg-[#eaf6ed] text-[#174d26] border border-emerald-200/70 px-3 py-1.5 rounded-xl transition hover:scale-[1.02] cursor-pointer whitespace-nowrap sm:whitespace-normal shrink-0 sm:shrink"
               >
                 {chip.label}
               </button>
@@ -885,22 +885,22 @@ export const LandingView = ({
         </div>
 
         {/* Chat Messages Feed */}
-        <div className="bg-[#fafaf8] rounded-2xl border border-slate-200 p-4 sm:p-5 h-[320px] overflow-y-auto space-y-4">
+        <div className="bg-[#fafaf8] rounded-2xl border border-slate-200 p-3.5 sm:p-5 h-[280px] sm:h-[340px] lg:h-[380px] overflow-y-auto space-y-3 sm:space-y-4">
           {chatHistory.map((msg, index) => {
             const isBot = msg.sender === 'bot';
             return (
               <div 
                 key={index} 
-                className={`flex gap-3 items-start ${isBot ? '' : 'flex-row-reverse'}`}
+                className={`flex gap-2 sm:gap-3 items-start ${isBot ? '' : 'flex-row-reverse'}`}
               >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
                   isBot ? 'bg-[#eaf6ed] text-[#174d26]' : 'bg-slate-800 text-white'
                 }`}>
-                  {isBot ? <Bot className="w-4 h-4" /> : <Users className="w-4 h-4" />}
+                  {isBot ? <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                 </div>
 
-                <div className={`max-w-[82%] sm:max-w-[70%] space-y-1 ${isBot ? 'items-start' : 'items-end text-right'}`}>
-                  <div className={`p-3.5 rounded-2xl text-xs leading-relaxed ${
+                <div className={`max-w-[88%] sm:max-w-[75%] space-y-1 ${isBot ? 'items-start' : 'items-end text-right'}`}>
+                  <div className={`p-3 sm:p-3.5 rounded-2xl text-xs leading-relaxed ${
                     isBot 
                       ? 'bg-white border border-slate-200 text-slate-800 shadow-xs rounded-tl-none' 
                       : 'bg-[#174d26] text-white rounded-tr-none shadow-xs'
@@ -927,11 +927,11 @@ export const LandingView = ({
           })}
 
           {isAiThinking && (
-            <div className="flex gap-3 items-start animate-fade-in">
-              <div className="w-8 h-8 rounded-full bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
-                <Bot className="w-4 h-4" />
+            <div className="flex gap-2 sm:gap-3 items-start animate-fade-in">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <div className="bg-white border border-slate-200 p-3 rounded-2xl text-xs text-slate-500 rounded-tl-none flex items-center gap-2 shadow-xs">
+              <div className="bg-white border border-slate-200 p-2.5 sm:p-3 rounded-2xl text-xs text-slate-500 rounded-tl-none flex items-center gap-2 shadow-xs">
                 <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce"></span>
                 <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce [animation-delay:0.2s]"></span>
                 <span className="w-2 h-2 rounded-full bg-[#174d26] animate-bounce [animation-delay:0.4s]"></span>
@@ -954,14 +954,14 @@ export const LandingView = ({
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             placeholder={language === 'en' 
-              ? 'Ask about crop rates, selling windows, Agmarknet grades, or logistics...' 
+              ? 'Ask about crop rates, selling windows, Agmarknet grades...' 
               : 'फसल भाव, सही समय, ग्रेडिंग या परिवहन के बारे में पूछें...'}
-            className="flex-1 bg-slate-50 border border-slate-300 focus:border-[#174d26] focus:bg-white focus:outline-none text-xs rounded-xl px-4 py-3 text-slate-900 transition"
+            className="flex-1 bg-slate-50 border border-slate-300 focus:border-[#174d26] focus:bg-white focus:outline-none text-xs rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-slate-900 transition"
           />
           <button
             type="submit"
             disabled={!chatInput.trim() || isAiThinking}
-            className="bg-[#174d26] hover:bg-[#123e1e] disabled:opacity-50 text-white text-xs font-bold px-5 py-3 rounded-xl flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+            className="bg-[#174d26] hover:bg-[#123e1e] disabled:opacity-50 text-white text-xs font-bold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl flex items-center gap-1.5 transition shadow-xs cursor-pointer shrink-0"
           >
             <span>{language === 'en' ? 'Ask AI' : 'पूछें'}</span>
             <Send className="w-3.5 h-3.5" />
@@ -973,16 +973,16 @@ export const LandingView = ({
       {/* ------------------------------------------------------------- */}
       {/* SECTION 3: ALL RATE GRAPHS & MANDI INTELLIGENCE */}
       {/* ------------------------------------------------------------- */}
-      <section id="rates-section" className="space-y-6">
+      <section id="rates-section" className="space-y-4 sm:space-y-6">
         
         {/* Section Title & Filter Tabs */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
               <BarChart2 className="w-4 h-4" />
               <span>National Agmarknet Price Discovery</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
               {language === 'en' ? 'Live Mandi Rate Intelligence & Trends' : 'लाइव मंडी भाव व मूल्य विश्लेषण'}
             </h2>
             <p className="text-xs text-slate-500 max-w-xl mt-1">
@@ -1001,7 +1001,7 @@ export const LandingView = ({
                 <button
                   key={cropKey}
                   onClick={() => setSelectedCrop(cropKey)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
                     isSelected 
                       ? 'bg-[#174d26] text-white shadow-xs' 
                       : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
@@ -1014,88 +1014,88 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* Selected Crop Metric Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Selected Crop Metric Bar (2 columns on mobile, 4 columns on desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 xl:gap-6">
           
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-400">Modal Spot Price</div>
-            <div className="text-2xl font-black text-slate-900 mt-1">
-              ₹ {activeCropData.currentPrice} <span className="text-xs font-medium text-slate-500">{activeCropData.unit}</span>
+          <div className="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs">
+            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">Modal Spot Price</div>
+            <div className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
+              ₹ {activeCropData.currentPrice} <span className="text-[10px] sm:text-xs font-medium text-slate-500">{activeCropData.unit}</span>
             </div>
-            <div className={`text-xs font-bold mt-1 flex items-center gap-1 ${
+            <div className={`text-[11px] sm:text-xs font-bold mt-1 flex items-center gap-1 ${
               activeCropData.isPositive ? 'text-emerald-600' : 'text-rose-500'
             }`}>
               {activeCropData.isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
-              <span>{activeCropData.change} 24h change</span>
+              <span>{activeCropData.change} 24h</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-400">Benchmark APMC Mandi</div>
-            <div className="text-base font-black text-slate-900 mt-1 truncate">
+          <div className="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs">
+            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">Benchmark APMC</div>
+            <div className="text-xs sm:text-base font-black text-slate-900 mt-1 truncate">
               {activeCropData.mandi}
             </div>
-            <div className="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-              <span>Verified APMC Yard</span>
+            <div className="text-[10px] sm:text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
+              <MapPin className="w-3 h-3 text-slate-400" />
+              <span>Verified Yard</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-400">Today's Market Arrivals</div>
-            <div className="text-2xl font-black text-slate-900 mt-1">
+          <div className="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs">
+            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">Today's Arrivals</div>
+            <div className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
               {activeCropData.arrivalsMT}
             </div>
-            <div className="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
-              <Package className="w-3.5 h-3.5 text-slate-400" />
-              <span>Physical yard arrivals</span>
+            <div className="text-[10px] sm:text-xs font-medium text-slate-500 mt-1 flex items-center gap-1">
+              <Package className="w-3 h-3 text-slate-400" />
+              <span>Yard volume</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-400">AI Sale Recommendation</div>
-            <div className="text-base font-black text-[#174d26] mt-1">
+          <div className="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs">
+            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">Recommendation</div>
+            <div className="text-xs sm:text-base font-black text-[#174d26] mt-1 truncate">
               {activeCropData.recommendation}
             </div>
-            <div className="text-xs font-bold text-amber-800 mt-1 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>{activeCropData.confidence} Confidence Score</span>
+            <div className="text-[10px] sm:text-xs font-bold text-amber-800 mt-1 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-amber-600" />
+              <span>{activeCropData.confidence} Confidence</span>
             </div>
           </div>
 
         </div>
 
         {/* Interactive Recharts Graph & Mandi Comparison Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 xl:gap-8">
           
           {/* Main Price Trend Curve (8 Cols) */}
-          <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+          <div className="lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
                 <div>
                   <h3 className="font-black text-slate-900 text-sm sm:text-base">
                     {language === 'en' 
                       ? `${activeCropData.nameEn} Price Trend & 7-Day AI Forecast` 
                       : `${activeCropData.nameHi} मूल्य रुझान व 7-दिवसीय पूर्वानुमान`}
                   </h3>
-                  <p className="text-[11px] text-slate-400">
-                    Solid line: Historical actuals • Dashed area: Machine learning price projection
+                  <p className="text-[10px] sm:text-[11px] text-slate-400">
+                    Solid line: Actual spot prices • Area: Machine learning projection
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold bg-[#eaf6ed] text-[#174d26] px-2.5 py-1 rounded-lg">
+                  <span className="text-[10px] sm:text-[11px] font-bold bg-[#eaf6ed] text-[#174d26] px-2.5 py-1 rounded-lg">
                     {activeCropData.category}
                   </span>
                 </div>
               </div>
 
               {/* Chart Container */}
-              <div className="h-72 w-full mt-4">
+              <div className="h-60 sm:h-72 lg:h-80 xl:h-96 w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart 
                     data={activeCropData.trendData} 
-                    margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                    margin={{ top: 18, right: 10, left: -25, bottom: 5 }}
                   >
                     <defs>
                       <linearGradient id="cropPriceGradient" x1="0" y1="0" x2="0" y2="1">
@@ -1106,12 +1106,12 @@ export const LandingView = ({
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                     <XAxis 
                       dataKey="day" 
-                      tick={{ fontSize: 10, fill: '#64748b' }} 
+                      tick={{ fontSize: 9, fill: '#64748b' }} 
                       axisLine={{ stroke: '#cbd5e1' }}
                       tickLine={false}
                     />
                     <YAxis 
-                      tick={{ fontSize: 10, fill: '#64748b' }} 
+                      tick={{ fontSize: 9, fill: '#64748b' }} 
                       axisLine={false}
                       tickLine={false}
                       domain={['auto', 'auto']}
@@ -1137,15 +1137,15 @@ export const LandingView = ({
                       strokeWidth={2.5} 
                       fillOpacity={1} 
                       fill="url(#cropPriceGradient)" 
-                      dot={{ r: 4, fill: '#174d26', strokeWidth: 1, stroke: '#ffffff' }}
-                      activeDot={{ r: 6, fill: '#123e1e' }}
+                      dot={{ r: 3.5, fill: '#174d26', strokeWidth: 1, stroke: '#ffffff' }}
+                      activeDot={{ r: 5.5, fill: '#123e1e' }}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Advisory Box */}
-              <div className="mt-4 p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-2xl flex items-start gap-3">
+              <div className="mt-4 p-3 sm:p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-xl sm:rounded-2xl flex items-start gap-2.5 sm:gap-3">
                 <Sparkles className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                 <div className="text-xs text-amber-950 leading-relaxed">
                   <span className="font-bold">Agri AI Advisory: </span>
@@ -1155,8 +1155,8 @@ export const LandingView = ({
 
             </div>
 
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <span className="text-slate-500 text-[11px]">
+            <div className="pt-3 sm:pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+              <span className="text-slate-500 text-[10px] sm:text-[11px]">
                 Data synchronized with Agmarknet APMC Gateway • Refreshed hourly
               </span>
               <button
@@ -1169,20 +1169,20 @@ export const LandingView = ({
           </div>
 
           {/* Mandi Rate Comparison Table (4 Cols) */}
-          <div className="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+          <div className="lg:col-span-4 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <div className="pb-3 border-b border-slate-100">
                 <h3 className="font-black text-slate-900 text-sm sm:text-base">
                   {language === 'en' ? 'Top Mandis Comparison' : 'शीर्ष मंडियों की तुलना'}
                 </h3>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[10px] sm:text-[11px] text-slate-400">
                   Real-time price variance for {language === 'en' ? activeCropData.nameEn : activeCropData.nameHi}
                 </p>
               </div>
 
               <div className="divide-y divide-slate-100 mt-2">
                 {activeCropData.mandiComparisons.map((m, idx) => (
-                  <div key={idx} className="py-3 flex items-center justify-between">
+                  <div key={idx} className="py-2.5 sm:py-3 flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-bold text-slate-800">{m.name}</span>
@@ -1196,10 +1196,10 @@ export const LandingView = ({
                     </div>
 
                     <div className="text-right">
-                      <div className="text-xs font-black text-slate-900">
+                      <div className="text-xs sm:text-sm font-black text-slate-900">
                         ₹ {m.price}
                       </div>
-                      <div className="text-[10px] text-slate-400">/quintal</div>
+                      <div className="text-[9px] sm:text-[10px] text-slate-400">/quintal</div>
                     </div>
                   </div>
                 ))}
@@ -1209,7 +1209,7 @@ export const LandingView = ({
             <div className="mt-4 pt-3 border-t border-slate-100">
               <button
                 onClick={() => handleEnterRolePortal('farmer', 'farmer-portal')}
-                className="w-full py-2.5 px-3 rounded-xl border border-slate-300 hover:border-[#174d26] text-slate-800 text-xs font-bold hover:bg-slate-50 transition cursor-pointer text-center"
+                className="w-full py-2 sm:py-2.5 px-3 rounded-xl border border-slate-300 hover:border-[#174d26] text-slate-800 text-xs font-bold hover:bg-slate-50 transition cursor-pointer text-center"
               >
                 {language === 'en' ? 'Open Detailed Mandi Radar' : 'विस्तृत मंडी रडार देखें'}
               </button>
@@ -1223,14 +1223,14 @@ export const LandingView = ({
       {/* ------------------------------------------------------------- */}
       {/* SECTION 4: HOW THE APP WORKS (6-POINT BREAKDOWN) */}
       {/* ------------------------------------------------------------- */}
-      <section id="how-it-works" className="bg-[#fcfdfc] rounded-3xl border border-[#e4eae2] p-6 sm:p-10 shadow-xs space-y-8">
+      <section id="how-it-works" className="bg-[#fcfdfc] rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-12 shadow-xs space-y-6 sm:space-y-8">
         
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider">
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>End-to-End Agri Trade Infrastructure</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
             {language === 'en' ? 'How Farmer Market Intelligence Works' : 'यह मंच कैसे काम करता है'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -1240,114 +1240,114 @@ export const LandingView = ({
           </p>
         </div>
 
-        {/* 6 Grid Steps */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 6 Steps: Expands to 6 columns on Full Desktop! */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 xl:gap-5">
           
           {/* Point 1 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               01
             </div>
-            <div className="flex items-center gap-2">
-              <UserPlus className="w-4 h-4 text-[#174d26]" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Aadhaar / GSTIN Verified KYC' : 'आधार व जीएसटी सत्यापित केवाईसी'}
+            <div className="flex items-center gap-1.5">
+              <UserPlus className="w-4 h-4 text-[#174d26] shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'Verified KYC' : 'सत्यापित केवाईसी'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'Farmers and FPOs onboard via 1-click Aadhaar e-KYC. Corporate buyers and processors undergo GSTIN and bank solvency verification to prevent defaults.'
-                : 'किसान और एफपीओ आधार के माध्यम से आसानी से जुड़ते हैं। कॉरपोरेट खरीदारों का जीएसटी और बैंक सत्यापन किया जाता है ताकि किसी भी तरह का जोखिम न रहे।'}
+                ? 'Farmers and FPOs onboard via 1-click Aadhaar. Corporate buyers undergo GSTIN and solvency verification.'
+                : 'किसान आधार से आसानी से जुड़ते हैं। खरीदारों का जीएसटी व साख सत्यापन किया जाता है।'}
             </p>
           </div>
 
           {/* Point 2 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               02
             </div>
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-600" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'AI Computer Vision Assaying' : 'एआई कंप्यूटर विज़न गुणवत्ता परख'}
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'AI Quality Assaying' : 'एआई गुणवत्ता परख'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'Farmers snap 3 photos of their harvest. Our neural network assesses size uniformity, color saturation, and surface defects to issue an Agmarknet Grade A/B/C digital certificate.'
-                : 'किसान अपनी फसल की 3 फोटो लेते हैं। कंप्यूटर विज़न मॉडल आकार, रंग और दाग-धब्बों का विश्लेषण करके एगमार्कनेट ग्रेड प्रमाणपत्र जारी करता है।'}
+                ? 'Snap 3 photos of produce. Neural computer vision calculates Agmarknet Grade A/B/C specifications.'
+                : 'उपज की 3 फोटो लें। कंप्यूटर विज़न मॉडल Agmarknet ग्रेड प्रमाणपत्र जारी करता है।'}
             </p>
           </div>
 
           {/* Point 3 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               03
             </div>
-            <div className="flex items-center gap-2">
-              <Handshake className="w-4 h-4 text-[#174d26]" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Direct Price Discovery & Bidding' : 'प्रत्यक्ष मूल्य खोज व डिजिटल बोलियां'}
+            <div className="flex items-center gap-1.5">
+              <Handshake className="w-4 h-4 text-[#174d26] shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'Direct Price Bidding' : 'प्रत्यक्ष बोलियां'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'Lots are displayed directly to 1,200+ institutional buyers (BigBasket, Reliance Fresh, ITC). Buyers place digital bids based on verified grades, removing middlemen cartels.'
-                : 'प्रमाणित लॉट 1,200+ संस्थागत खरीदारों को दिखाए जाते हैं। खरीदार सीधे डिजिटल बोलियां लगाते हैं, जिससे 15-20% दलाली कमीशन पूरी तरह समाप्त हो जाती है।'}
+                ? 'Lots are displayed directly to 1,200+ institutional buyers. Digital bids remove 15-20% middlemen cut.'
+                : '1,200+ खरीदारों को सीधी पहुंच। डिजिटल बोलियां बिचौलियों की दलाली को समाप्त करती हैं।'}
             </p>
           </div>
 
           {/* Point 4 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               04
             </div>
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-emerald-700" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? '100% Locked Bank Escrow' : '100% सुरक्षित बैंक एस्क्रो'}
+            <div className="flex items-center gap-1.5">
+              <Lock className="w-4 h-4 text-emerald-700 shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'Locked Bank Escrow' : 'सुरक्षित एस्क्रो'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'When an offer is accepted, 100% of the trade value is securely deposited into an automated banking escrow account before any truck is dispatched from the farm.'
-                : 'सौदा पक्का होते ही पूरी खरीद राशि अधिकृत बैंक एस्क्रो में जमा हो जाती है। खेत से वाहन निकलने से पहले किसान का पूरा भुगतान सुरक्षित हो जाता है।'}
+                ? 'When an offer is accepted, 100% of the trade amount is secured in bank escrow before dispatch.'
+                : 'सौदा होते ही 100% राशि बैंक एस्क्रो में जमा होती है। वाहन निकलने से पहले भुगतान सुरक्षित।'}
             </p>
           </div>
 
           {/* Point 5 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               05
             </div>
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-amber-700" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Farm-Gate GPS Logistics & Cold Chain' : 'फार्म-गेट जीपीएस परिवहन व कोल्ड चेन'}
+            <div className="flex items-center gap-1.5">
+              <Truck className="w-4 h-4 text-amber-700 shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'Farm Logistics' : 'खेत से परिवहन'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'Kisan Express verified logistics fleet handles farm-gate loading with real-time GPS tracking. Perishable loads can be routed directly to partner cold storage facilities.'
-                : 'सत्यापित वाहन चालक खेत से ही माल उठाते हैं। जीपीएस ट्रैकिंग और तापमान नियंत्रित कोल्ड वैन से फल व सब्जियों की गुणवत्ता बनी रहती है।'}
+                ? 'Kisan Express fleet handles farm-gate loading with real-time GPS and cold chain reefer vans.'
+                : 'खेत से जीपीएस ट्रैकिंग और तापमान नियंत्रित वैन द्वारा उपज का सुरक्षित परिवहन।'}
             </p>
           </div>
 
           {/* Point 6 */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-base">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               06
             </div>
-            <div className="flex items-center gap-2">
-              <Coins className="w-4 h-4 text-emerald-700" />
-              <h3 className="text-sm font-bold text-slate-900">
-                {language === 'en' ? 'Instant DBT / UPI Settlement' : 'तत्काल डीबीटी / यूपीआई भुगतान'}
+            <div className="flex items-center gap-1.5">
+              <Coins className="w-4 h-4 text-emerald-700 shrink-0" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                {language === 'en' ? 'Instant DBT Payout' : 'तत्काल डीबीटी भुगतान'}
               </h3>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               {language === 'en'
-                ? 'Upon physical weighbridge verification at the buyer hub, the smart contract immediately releases funds directly to the farmer\'s bank account within 45 minutes.'
-                : 'खरीदार के गोदाम पर वजन और गुणवत्ता सत्यापन होते ही स्मार्ट अनुबंध द्वारा 45 मिनट के भीतर किसान के बैंक खाते में सीधा भुगतान हो जाता है।'}
+                ? 'Delivery weighbridge verification triggers instant payment release to farmer bank within 45 mins.'
+                : 'गोदाम पर वजन सत्यापन होते ही 45 मिनट के भीतर किसान के खाते में सीधा भुगतान।'}
             </p>
           </div>
 
@@ -1358,15 +1358,15 @@ export const LandingView = ({
       {/* ------------------------------------------------------------- */}
       {/* SECTION 5: AGRICULTURAL NEWS & CURRENT RESEARCH STUDIES */}
       {/* ------------------------------------------------------------- */}
-      <section id="news-section" className="space-y-6">
+      <section id="news-section" className="space-y-4 sm:space-y-6">
         
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
               <Newspaper className="w-4 h-4" />
               <span>National Agri Knowledge & Insights</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
               {language === 'en' ? 'Agricultural News & Current Research' : 'कृषि समाचार व नवीनतम अनुसंधान'}
             </h2>
             <p className="text-xs text-slate-500 max-w-xl mt-1">
@@ -1377,10 +1377,10 @@ export const LandingView = ({
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold">
+          <div className="flex items-center gap-1.5 sm:gap-2 bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold overflow-x-auto no-scrollbar">
             <button
               onClick={() => setNewsCategoryTab('all')}
-              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer whitespace-nowrap ${
                 newsCategoryTab === 'all' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -1388,7 +1388,7 @@ export const LandingView = ({
             </button>
             <button
               onClick={() => setNewsCategoryTab('news')}
-              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer whitespace-nowrap ${
                 newsCategoryTab === 'news' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -1396,7 +1396,7 @@ export const LandingView = ({
             </button>
             <button
               onClick={() => setNewsCategoryTab('research')}
-              className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg transition cursor-pointer whitespace-nowrap ${
                 newsCategoryTab === 'research' ? 'bg-[#174d26] text-white' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -1406,11 +1406,11 @@ export const LandingView = ({
         </div>
 
         {/* Article Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
           {filteredArticles.map((article) => (
             <div 
               key={article.id}
-              className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between group"
+              className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between group"
             >
               <div className="space-y-3">
                 
@@ -1422,19 +1422,19 @@ export const LandingView = ({
                   <span className="text-[10px] text-slate-400 font-medium">{article.readTime}</span>
                 </div>
 
-                <h3 className="text-sm font-bold text-slate-900 leading-snug group-hover:text-[#174d26] transition">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug group-hover:text-[#174d26] transition">
                   {language === 'en' ? article.titleEn : article.titleHi}
                 </h3>
 
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
                   {language === 'en' ? article.summaryEn : article.summaryHi}
                 </p>
 
               </div>
 
-              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                <div className="text-slate-400 font-medium">
-                  <span>{article.source}</span> • <span>{article.date}</span>
+              <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <div className="text-slate-400 font-medium text-[10px] sm:text-[11px]">
+                  <span>{article.source}</span>
                 </div>
                 <button
                   onClick={() => showNotification(`Opened full summary for: ${article.titleEn.slice(0, 40)}...`, 'info')}
@@ -1454,18 +1454,18 @@ export const LandingView = ({
       {/* ------------------------------------------------------------- */}
       {/* SECTION 6: CONTACT US & GRIEVANCE HELPDESK */}
       {/* ------------------------------------------------------------- */}
-      <section id="contact-section" className="bg-white rounded-3xl border border-[#e4eae2] p-6 sm:p-10 shadow-xs space-y-8">
+      <section id="contact-section" className="bg-white rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-12 shadow-xs space-y-6 sm:space-y-8">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 xl:gap-12 items-start">
           
           {/* Left Column: Explicit Contact Details */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-4 sm:space-y-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
                 <Phone className="w-3.5 h-3.5" />
                 <span>24/7 Farmer & Buyer Helpline</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                 {language === 'en' ? 'Get In Touch & Support' : 'संपर्क व सहायता केंद्र'}
               </h2>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed">
@@ -1476,9 +1476,9 @@ export const LandingView = ({
             </div>
 
             {/* Direct Phone Box */}
-            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
                   <Phone className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <div>
@@ -1495,7 +1495,7 @@ export const LandingView = ({
 
               <button
                 onClick={() => copyToClipboard('9336161644', 'Phone Number')}
-                className="p-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition cursor-pointer"
+                className="p-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition cursor-pointer shrink-0"
                 title="Copy phone number"
               >
                 <Copy className="w-4 h-4" />
@@ -1503,16 +1503,16 @@ export const LandingView = ({
             </div>
 
             {/* Direct Email Box */}
-            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+            <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-11 h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
                   <Mail className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <div className="min-w-0">
                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Official Inquiries & Support</div>
                   <a 
                     href="mailto:adityapatelp34@gmail.com" 
-                    className="text-sm sm:text-base font-black text-slate-900 hover:text-[#174d26] transition truncate block cursor-pointer"
+                    className="text-xs sm:text-base font-black text-slate-900 hover:text-[#174d26] transition truncate block cursor-pointer"
                   >
                     adityapatelp34@gmail.com
                   </a>
@@ -1533,20 +1533,20 @@ export const LandingView = ({
             <div className="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>National Agricultural Innovation Directorate • Pusa Complex, New Delhi & Pune Division</span>
+                <span className="text-[11px] sm:text-xs">National Agricultural Innovation Directorate • Pusa Complex, New Delhi & Pune Division</span>
               </div>
               <div className="flex items-center gap-2">
                 <Award className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Smart India Hackathon 2026: Team <strong>INCREDIBLE_X_TECH</strong> (Problem ID 26132)</span>
+                <span className="text-[11px] sm:text-xs">Smart India Hackathon 2026: Team <strong>INCREDIBLE_X_TECH</strong> (Problem ID 26132)</span>
               </div>
             </div>
 
           </div>
 
           {/* Right Column: Direct Message & Inquiry Form */}
-          <div className="lg:col-span-7 bg-[#fafaf8] border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4">
+          <div className="lg:col-span-7 bg-[#fafaf8] border border-slate-200 rounded-2xl p-4 sm:p-8 space-y-4">
             <div>
-              <h3 className="text-base font-black text-slate-900">
+              <h3 className="text-sm sm:text-base font-black text-slate-900">
                 {language === 'en' ? 'Send an Inquiry or Grievance' : 'पूछताछ या शिकायत भेजें'}
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -1557,11 +1557,11 @@ export const LandingView = ({
             </div>
 
             {isContactSubmitted ? (
-              <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2 animate-slide-up">
-                <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-6 h-6" />
+              <div className="p-5 sm:p-6 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2 animate-slide-up">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <div className="text-sm font-black text-emerald-950">
+                <div className="text-xs sm:text-sm font-black text-emerald-950">
                   {language === 'en' ? 'Inquiry Submitted Successfully!' : 'पूछताछ सफलतापूर्वक दर्ज की गई!'}
                 </div>
                 <p className="text-xs text-emerald-800 max-w-sm mx-auto">
@@ -1571,11 +1571,11 @@ export const LandingView = ({
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleContactSubmit} className="space-y-4">
+              <form onSubmit={handleContactSubmit} className="space-y-3 sm:space-y-4">
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                    <label className="text-[10px] sm:text-[11px] font-bold text-slate-700 block mb-1">
                       Your Full Name *
                     </label>
                     <input 
@@ -1584,12 +1584,12 @@ export const LandingView = ({
                       placeholder="e.g. Ramesh Patil / Rajesh Kumar"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-slate-900 focus:outline-none"
                     />
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                    <label className="text-[10px] sm:text-[11px] font-bold text-slate-700 block mb-1">
                       Phone Number / Email *
                     </label>
                     <input 
@@ -1598,20 +1598,20 @@ export const LandingView = ({
                       placeholder="+91 98224 XXXXX or your email"
                       value={contactForm.phoneOrEmail}
                       onChange={(e) => setContactForm({ ...contactForm, phoneOrEmail: e.target.value })}
-                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-slate-900 focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                    <label className="text-[10px] sm:text-[11px] font-bold text-slate-700 block mb-1">
                       Stakeholder Role
                     </label>
                     <select
                       value={contactForm.roleCategory}
                       onChange={(e) => setContactForm({ ...contactForm, roleCategory: e.target.value })}
-                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none cursor-pointer"
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-slate-900 focus:outline-none cursor-pointer"
                     >
                       <option value="farmer">Farmer / FPO Producer</option>
                       <option value="buyer">Institutional / Bulk Buyer</option>
@@ -1621,21 +1621,21 @@ export const LandingView = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                    <label className="text-[10px] sm:text-[11px] font-bold text-slate-700 block mb-1">
                       Subject / Topic
                     </label>
                     <input 
                       type="text"
-                      placeholder="e.g. Escrow Inquiry, AI Grader, FPO Onboarding"
+                      placeholder="e.g. Escrow Inquiry, AI Grader, FPO"
                       value={contactForm.subject}
                       onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3.5 py-2.5 text-slate-900 focus:outline-none"
+                      className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-slate-900 focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                  <label className="text-[10px] sm:text-[11px] font-bold text-slate-700 block mb-1">
                     Your Message / Grievance Details *
                   </label>
                   <textarea 
@@ -1644,13 +1644,13 @@ export const LandingView = ({
                     placeholder="Describe your question, mandi issue, or technical support requirement..."
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl p-3.5 text-slate-900 focus:outline-none resize-none"
+                    className="w-full bg-white border border-slate-300 focus:border-[#174d26] text-xs rounded-xl p-3 sm:p-3.5 text-slate-900 focus:outline-none resize-none"
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white text-xs font-bold py-3 px-6 rounded-xl transition shadow-xs cursor-pointer w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 bg-[#174d26] hover:bg-[#123e1e] text-white text-xs font-bold py-2.5 sm:py-3 px-6 rounded-xl transition shadow-xs cursor-pointer w-full sm:w-auto"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Submit Inquiry</span>
