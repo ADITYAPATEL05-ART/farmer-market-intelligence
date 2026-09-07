@@ -22,10 +22,11 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow any origin during development or from Vercel deployment domains
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
-      callback(null, true); // Allow dev access
+      callback(null, true);
     }
   },
   credentials: true
@@ -90,7 +91,7 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Farmer Market Intelligence Backend listening on port ${PORT}`);
     console.log(`Health check: http://localhost:${PORT}/api/health`);
   });
