@@ -38,6 +38,27 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root Welcome & API Index
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Farmer Market Intelligence API Server is running',
+    version: '1.0.0',
+    status: 'online',
+    database: isDBConnected() ? 'connected (MongoDB Atlas)' : 'in-memory mode',
+    endpoints: {
+      health: '/api/health',
+      crops: '/api/mandi/crops',
+      mandiPrices: '/api/mandi/prices',
+      priceForecast: '/api/mandi/forecast',
+      produceLots: '/api/produce/lots',
+      buyerDemands: '/api/produce/demands',
+      orders: '/api/orders',
+      transporters: '/api/transporters',
+      coldStorages: '/api/storages'
+    }
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
