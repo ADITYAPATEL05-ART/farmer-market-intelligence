@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 let isConnected = false;
 
 export const connectDB = async () => {
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
 
   if (!uri || uri.includes('<username>') || uri.includes('<password>')) {
     console.warn('[MongoDB] MONGODB_URI is not configured with actual credentials in backend/.env.');
