@@ -11,7 +11,8 @@ import {
   FileText, 
   ArrowRight,
   Phone,
-  Fuel
+  Fuel,
+  Star
 } from 'lucide-react';
 
 export const TransporterPortal = () => {
@@ -45,7 +46,10 @@ export const TransporterPortal = () => {
 
           <div className="bg-white/10 backdrop-blur px-4 py-2.5 rounded-xl border border-white/20 text-xs text-right">
             <div className="text-[10px] uppercase font-bold text-amber-300">Carrier Rating</div>
-            <div className="text-base font-black text-white">★ {activeDriver.rating} / 5.0</div>
+            <div className="text-base font-black text-white flex items-center justify-end gap-1">
+              <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
+              <span>{activeDriver.rating} / 5.0</span>
+            </div>
             <div className="text-[10px] text-amber-200">Tariff: ₹{activeDriver.ratePerKm}/km</div>
           </div>
         </div>

@@ -58,8 +58,7 @@ export const LandingView = ({
       price: '2,125',
       unit: '/quintal',
       change: '+1.8%',
-      isPositive: true,
-      icon: '🌾'
+      isPositive: true
     },
     {
       name: language === 'en' ? 'Tomato' : 'टमाटर',
@@ -67,8 +66,7 @@ export const LandingView = ({
       price: '1,245',
       unit: '/quintal',
       change: '-2.6%',
-      isPositive: false,
-      icon: '🍅'
+      isPositive: false
     },
     {
       name: language === 'en' ? 'Potato' : 'आलू',
@@ -76,8 +74,7 @@ export const LandingView = ({
       price: '1,050',
       unit: '/quintal',
       change: '+3.2%',
-      isPositive: true,
-      icon: '🥔'
+      isPositive: true
     },
     {
       name: language === 'en' ? 'Onion' : 'प्याज',
@@ -85,8 +82,7 @@ export const LandingView = ({
       price: '1,180',
       unit: '/quintal',
       change: '+0.9%',
-      isPositive: true,
-      icon: '🧅'
+      isPositive: true
     }
   ];
 
@@ -232,7 +228,9 @@ export const LandingView = ({
               {marketPrices.map((item, idx) => (
                 <div key={idx} className="py-2.5 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-lg">{item.icon}</span>
+                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
+                      <Sprout className="w-3.5 h-3.5" />
+                    </div>
                     <div>
                       <div className="text-xs font-bold text-slate-800">{item.name}</div>
                       <div className="text-[10px] text-slate-400">{item.mandi}</div>

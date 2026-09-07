@@ -224,8 +224,9 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
           <div className="text-2xl sm:text-3xl font-black text-slate-900">
             {PLATFORM_IMPACT_METRICS.totalTradeVolumeINR}
           </div>
-          <p className="text-[11px] text-purple-600 font-semibold mt-1">
-            ✓ {language === 'en' ? '100% dispute-free digital settlement' : '100% सुरक्षित डिजिटल निपटान'}
+          <p className="text-[11px] text-purple-600 font-semibold mt-1 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+            <span>{language === 'en' ? '100% dispute-free digital settlement' : '100% सुरक्षित डिजिटल निपटान'}</span>
           </p>
         </div>
 

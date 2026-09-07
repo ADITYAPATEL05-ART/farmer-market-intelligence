@@ -16,7 +16,11 @@ import {
   RefreshCw,
   Clock,
   Building,
-  Scale
+  Scale,
+  BarChart3,
+  Sprout,
+  X,
+  Zap
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -179,43 +183,47 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-emerald-600/60 overflow-x-auto text-xs">
           <button
             onClick={() => setActiveTab('intelligence')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               activeTab === 'intelligence'
                 ? 'bg-white text-emerald-900 shadow-sm'
                 : 'text-emerald-100 hover:bg-white/10'
             }`}
           >
-            📊 {language === 'en' ? 'Mandi Intelligence & AI Sale Window' : 'मंडी भाव व AI सेल विंडो'}
+            <BarChart3 className="w-4 h-4" />
+            <span>{language === 'en' ? 'Mandi Intelligence & AI Sale Window' : 'मंडी भाव व AI सेल विंडो'}</span>
           </button>
           <button
             onClick={() => setActiveTab('lots')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               activeTab === 'lots'
                 ? 'bg-white text-emerald-900 shadow-sm'
                 : 'text-emerald-100 hover:bg-white/10'
             }`}
           >
-            🌾 {language === 'en' ? 'My Produce Lots & Bids' : 'मेरे लॉट व बोलियां'} ({lots.length})
+            <Sprout className="w-4 h-4" />
+            <span>{language === 'en' ? 'My Produce Lots & Bids' : 'मेरे लॉट व बोलियां'} ({lots.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('storage')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               activeTab === 'storage'
                 ? 'bg-white text-emerald-900 shadow-sm'
                 : 'text-emerald-100 hover:bg-white/10'
             }`}
           >
-            🏬 {language === 'en' ? 'Cold Storage & Warehousing' : 'कोल्ड स्टोरेज'} ({storages.length})
+            <Warehouse className="w-4 h-4" />
+            <span>{language === 'en' ? 'Cold Storage & Warehousing' : 'कोल्ड स्टोरेज'} ({storages.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('grievance')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               activeTab === 'grievance'
                 ? 'bg-white text-emerald-900 shadow-sm'
                 : 'text-emerald-100 hover:bg-white/10'
             }`}
           >
-            ⚖️ {language === 'en' ? 'Grievance Support' : 'शिकायत निवारण'}
+            <Scale className="w-4 h-4" />
+            <span>{language === 'en' ? 'Grievance Support' : 'शिकायत निवारण'}</span>
           </button>
         </div>
       </div>
@@ -259,10 +267,20 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-black uppercase px-2.5 py-1 rounded-full text-white shadow-sm ${
+                  <span className={`text-xs font-black uppercase px-2.5 py-1 rounded-full text-white shadow-sm flex items-center gap-1 ${
                     activeMandi.saleWindow.recommendation === 'HOLD' ? 'bg-amber-600' : 'bg-emerald-600'
                   }`}>
-                    {activeMandi.saleWindow.recommendation === 'HOLD' ? '⏳ AI ADVISORY: HOLD PRODUCE' : '⚡ AI ADVISORY: SELL NOW'}
+                    {activeMandi.saleWindow.recommendation === 'HOLD' ? (
+                      <>
+                        <Clock className="w-3.5 h-3.5 inline" />
+                        <span>AI ADVISORY: HOLD PRODUCE</span>
+                      </>
+                    ) : (
+                      <>
+                        <Zap className="w-3.5 h-3.5 inline" />
+                        <span>AI ADVISORY: SELL NOW</span>
+                      </>
+                    )}
                   </span>
                   <span className="text-xs font-semibold text-slate-600">
                     Confidence: <strong className="text-slate-900">{activeMandi.saleWindow.confidence}%</strong>
@@ -811,9 +829,9 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
               </div>
               <button 
                 onClick={() => setIsLotModalOpen(false)}
-                className="text-slate-400 hover:text-slate-700 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 

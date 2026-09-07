@@ -70,8 +70,8 @@ const startServer = async () => {
   await connectDB();
 
   app.listen(PORT, () => {
-    console.log(`🌾 Farmer Market Intelligence Backend listening on port ${PORT}`);
-    console.log(`🚀 Health check: http://localhost:${PORT}/api/health`);
+    console.log(`Farmer Market Intelligence Backend listening on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/api/health`);
   });
 };
 

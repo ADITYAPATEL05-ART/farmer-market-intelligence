@@ -59,33 +59,36 @@ export const AdminPortal = () => {
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700/60 overflow-x-auto text-xs">
           <button
             onClick={() => setAdminTab('overview')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               adminTab === 'overview'
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            📈 {language === 'en' ? 'Macro Impact Analytics' : 'प्रभाव व विश्लेषण'}
+            <TrendingUp className="w-4 h-4" />
+            <span>{language === 'en' ? 'Macro Impact Analytics' : 'प्रभाव व विश्लेषण'}</span>
           </button>
           <button
             onClick={() => setAdminTab('kyc')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               adminTab === 'kyc'
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            🛡️ {language === 'en' ? 'KYC Verification Desk' : 'केवाईसी सत्यापन'} ({kycRequests.filter(k => k.status === 'PENDING').length} Pending)
+            <ShieldCheck className="w-4 h-4" />
+            <span>{language === 'en' ? 'KYC Verification Desk' : 'केवाईसी सत्यापन'} ({kycRequests.filter(k => k.status === 'PENDING').length} Pending)</span>
           </button>
           <button
             onClick={() => setAdminTab('grievances')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               adminTab === 'grievances'
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            ⚖️ {language === 'en' ? 'Disputes & Grievance Arbitration' : 'विवाद निवारण'} ({grievances.length})
+            <Scale className="w-4 h-4" />
+            <span>{language === 'en' ? 'Disputes & Grievance Arbitration' : 'विवाद निवारण'} ({grievances.length})</span>
           </button>
         </div>
       </div>

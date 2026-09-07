@@ -6,8 +6,8 @@ export const connectDB = async () => {
   const uri = process.env.MONGODB_URI;
 
   if (!uri || uri.includes('<username>') || uri.includes('<password>')) {
-    console.warn('⚠️  [MongoDB] MONGODB_URI is not configured with actual credentials in backend/.env.');
-    console.warn('⚠️  [MongoDB] Running in fallback mode using in-memory dataset until Atlas credentials are provided.');
+    console.warn('[MongoDB] MONGODB_URI is not configured with actual credentials in backend/.env.');
+    console.warn('[MongoDB] Running in fallback mode using in-memory dataset until Atlas credentials are provided.');
     return false;
   }
 
@@ -17,23 +17,23 @@ export const connectDB = async () => {
     });
 
     isConnected = true;
-    console.log(`✅ [MongoDB Atlas] Connected successfully to host: ${conn.connection.host}`);
-    console.log(`📦 [MongoDB Atlas] Database: ${conn.connection.name}`);
+    console.log(`[MongoDB Atlas] Connected successfully to host: ${conn.connection.host}`);
+    console.log(`[MongoDB Atlas] Database: ${conn.connection.name}`);
 
     mongoose.connection.on('error', (err) => {
-      console.error('❌ [MongoDB Atlas] Connection error:', err.message);
+      console.error('[MongoDB Atlas] Connection error:', err.message);
       isConnected = false;
     });
 
     mongoose.connection.on('disconnected', () => {
-      console.warn('⚠️  [MongoDB Atlas] Disconnected from database');
+      console.warn('[MongoDB Atlas] Disconnected from database');
       isConnected = false;
     });
 
     return true;
   } catch (error) {
-    console.error(`❌ [MongoDB Atlas] Initial connection failed: ${error.message}`);
-    console.warn('⚠️  [MongoDB] Falling back to in-memory mode so server stays operational.');
+    console.error(`[MongoDB Atlas] Initial connection failed: ${error.message}`);
+    console.warn('[MongoDB] Falling back to in-memory mode so server stays operational.');
     isConnected = false;
     return false;
   }

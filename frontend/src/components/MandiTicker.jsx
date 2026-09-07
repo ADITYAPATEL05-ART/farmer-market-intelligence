@@ -1,6 +1,6 @@
 import React from 'react';
 import { MANDI_PRICES } from '../data/mandiData';
-import { TrendingUp, TrendingDown, Activity, Sparkles, ShieldCheck } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, Sparkles, ShieldCheck, Sprout } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const MandiTicker = ({ onSelectCrop }) => {
@@ -8,20 +8,6 @@ export const MandiTicker = ({ onSelectCrop }) => {
 
   // Duplicate items for seamless continuous marquee loop
   const tickerItems = [...MANDI_PRICES, ...MANDI_PRICES];
-
-  const getCropEmoji = (cropId) => {
-    switch (cropId) {
-      case 'onion': return '🧅';
-      case 'wheat': return '🌾';
-      case 'tomato': return '🍅';
-      case 'soybean': return '🫘';
-      case 'rice': return '🍚';
-      case 'cotton': return '☁️';
-      case 'potato': return '🥔';
-      case 'chilli': return '🌶️';
-      default: return '🌱';
-    }
-  };
 
   return (
     <div className="bg-slate-900 border-b border-slate-800 text-white text-xs relative overflow-hidden select-none z-30 shadow-inner">
@@ -50,7 +36,7 @@ export const MandiTicker = ({ onSelectCrop }) => {
                   onClick={() => onSelectCrop && onSelectCrop(item.cropId)}
                   className="inline-flex items-center gap-2.5 px-3 py-1 rounded-lg bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700/50 cursor-pointer transition-colors"
                 >
-                  <span className="text-base leading-none">{getCropEmoji(item.cropId)}</span>
+                  <Sprout className="w-4 h-4 text-emerald-400 shrink-0" />
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-slate-100">{item.cropName}</span>
                     <span className="text-[10px] text-slate-400">({item.mandi})</span>

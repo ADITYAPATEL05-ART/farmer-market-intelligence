@@ -4,7 +4,7 @@ A full-stack agricultural marketplace and mandi price intelligence platform.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 farmer-market-intelligence/

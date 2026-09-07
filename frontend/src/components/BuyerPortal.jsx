@@ -11,10 +11,12 @@ import {
   CheckCircle2, 
   Clock, 
   Truck, 
-  ArrowRight,
-  Sparkles,
   DollarSign,
-  PackageCheck
+  PackageCheck,
+  ShoppingCart,
+  Megaphone,
+  Package,
+  X
 } from 'lucide-react';
 
 export const BuyerPortal = () => {
@@ -132,33 +134,36 @@ export const BuyerPortal = () => {
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700/60 overflow-x-auto text-xs">
           <button
             onClick={() => setBuyerTab('marketplace')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               buyerTab === 'marketplace'
                 ? 'bg-emerald-500 text-slate-950 shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            🛒 {language === 'en' ? 'Live Produce Lots' : 'उपलब्ध लॉट'} ({filteredLots.length})
+            <ShoppingCart className="w-4 h-4" />
+            <span>{language === 'en' ? 'Live Produce Lots' : 'उपलब्ध लॉट'} ({filteredLots.length})</span>
           </button>
           <button
             onClick={() => setBuyerTab('post-demand')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               buyerTab === 'post-demand'
                 ? 'bg-emerald-500 text-slate-950 shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            📢 {language === 'en' ? 'Active Demands & RFQs' : 'खरीद मांग'} ({demands.length})
+            <Megaphone className="w-4 h-4" />
+            <span>{language === 'en' ? 'Active Demands & RFQs' : 'खरीद मांग'} ({demands.length})</span>
           </button>
           <button
             onClick={() => setBuyerTab('orders')}
-            className={`px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg font-bold transition whitespace-nowrap ${
               buyerTab === 'orders'
                 ? 'bg-emerald-500 text-slate-950 shadow-sm'
                 : 'text-slate-300 hover:bg-white/10'
             }`}
           >
-            📦 {language === 'en' ? 'Escrow Orders & Delivery Tracking' : 'एस्क्रो ऑर्डर व ट्रैकिंग'} ({orders.length})
+            <Package className="w-4 h-4" />
+            <span>{language === 'en' ? 'Escrow Orders & Delivery Tracking' : 'एस्क्रो ऑर्डर व ट्रैकिंग'} ({orders.length})</span>
           </button>
         </div>
       </div>
@@ -528,9 +533,9 @@ export const BuyerPortal = () => {
               </h3>
               <button 
                 onClick={() => setSelectedLotForBid(null)}
-                className="text-slate-400 hover:text-slate-700 text-sm font-bold"
+                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
