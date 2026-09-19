@@ -28,7 +28,6 @@ export const TransporterPortal = () => {
   return (
     <div className="space-y-6">
       
-      {/* Transporter Header */}
       <div className="bg-gradient-to-r from-amber-900 via-amber-800 to-slate-900 rounded-2xl p-6 text-white shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -55,7 +54,6 @@ export const TransporterPortal = () => {
         </div>
       </div>
 
-      {/* Assigned Delivery Jobs */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-black text-slate-900">
@@ -69,7 +67,6 @@ export const TransporterPortal = () => {
         {activeDriver.assignedTrips.map((trip) => (
           <div key={trip.orderId} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
             
-            {/* Trip Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
               <div>
                 <div className="flex items-center gap-2">
@@ -95,7 +92,6 @@ export const TransporterPortal = () => {
               </div>
             </div>
 
-            {/* Route & GPS Progress */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
               
               <div className="space-y-4">
@@ -123,7 +119,6 @@ export const TransporterPortal = () => {
                   </div>
                 </div>
 
-                {/* Progress Bar */}
                 <div className="space-y-1.5 pt-2">
                   <div className="flex justify-between text-xs font-semibold">
                     <span className="text-slate-500">Trip Progression:</span>
@@ -138,7 +133,6 @@ export const TransporterPortal = () => {
                 </div>
               </div>
 
-              {/* Map & GPS Route Preview Graphic */}
               <div className="bg-slate-900 rounded-xl p-4 text-white relative overflow-hidden h-48 flex flex-col justify-between border border-slate-800">
                 <div className="flex justify-between items-center text-xs">
                   <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
@@ -150,7 +144,6 @@ export const TransporterPortal = () => {
                   </span>
                 </div>
 
-                {/* Simulated Visual Route */}
                 <div className="relative flex items-center justify-between px-6">
                   <div className="text-center">
                     <div className="w-3 h-3 rounded-full bg-emerald-500 mx-auto"></div>
@@ -180,7 +173,6 @@ export const TransporterPortal = () => {
 
             </div>
 
-            {/* Transporter Action Buttons */}
             <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
               <div className="text-slate-500 font-medium">
                 Update trip milestone to trigger automated notification to buyer and farmer.

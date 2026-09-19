@@ -92,16 +92,13 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
   return (
     <div className="space-y-10 animate-fade-in">
 
-      {/* Hero Showcase Section */}
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-950 text-white p-8 md:p-12 shadow-2xl border border-emerald-800/40">
         
-        {/* Subtle Decorative Background Glows */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
         
         <div className="relative z-10 max-w-4xl space-y-6">
           
-          {/* Header Badges */}
           <div className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold px-3 py-1 rounded-full text-xs tracking-wide uppercase shadow-md shadow-amber-500/20">
               <Award className="w-3.5 h-3.5" /> Smart India Hackathon 2026
@@ -114,7 +111,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
             </span>
           </div>
 
-          {/* Main Title */}
           <div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight text-white">
               Kisan<span className="text-emerald-400">Setu</span> Digital Agricultural Intelligence Platform
@@ -126,7 +122,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
             </p>
           </div>
 
-          {/* Quick Action Buttons */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <button
               onClick={() => onSelectRole('farmer')}
@@ -166,7 +161,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
 
       </div>
 
-      {/* Real-World Impact KPI Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         
         <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition">
@@ -232,7 +226,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
 
       </div>
 
-      {/* Interactive Role Switcher Explorer Cards */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
@@ -293,7 +286,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
         </div>
       </div>
 
-      {/* 4 Core Architectural Innovations */}
       <div className="bg-slate-900 text-white rounded-3xl p-8 md:p-10 border border-slate-800 space-y-8 shadow-xl">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs uppercase font-extrabold tracking-widest text-emerald-400">
@@ -354,7 +346,6 @@ export const PlatformOverview = ({ onSelectRole, onOpenAiGrader, onOpenKisanBot 
         </div>
       </div>
 
-      {/* Live Mandi Arbitrage Table Preview */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>

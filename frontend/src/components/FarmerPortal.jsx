@@ -47,7 +47,7 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
     crops
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState(initialTab); // 'intelligence' | 'lots' | 'storage' | 'grievance'
+  const [activeTab, setActiveTab] = useState(initialTab); 
   
   React.useEffect(() => {
     if (initialTab) {
@@ -57,7 +57,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
 
   const [selectedCropId, setSelectedCropId] = useState('onion');
   
-  // Create Lot Modal State
   const [isLotModalOpen, setIsLotModalOpen] = useState(false);
   const [lotForm, setLotForm] = useState({
     crop: 'Onion (Red)',
@@ -75,7 +74,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
     imageUrl: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=600&auto=format&fit=crop&q=80'
   });
 
-  // If prefilled from AI Grader
   React.useEffect(() => {
     if (prefillData) {
       setLotForm(prev => ({
@@ -91,15 +89,12 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
     }
   }, [prefillData]);
 
-  // Storage Booking Modal
   const [selectedStorage, setSelectedStorage] = useState(null);
   const [storageQty, setStorageQty] = useState(150);
   const [storageDays, setStorageDays] = useState(14);
 
-  // Counter offer modal
   const [counterState, setCounterState] = useState({ open: false, lotId: null, offerId: null, price: 2450 });
 
-  // Grievance Form
   const [grievanceForm, setGrievanceForm] = useState({
     crop: 'Onion (Red)',
     issueType: 'Quality Dispute on Arrival',
@@ -142,7 +137,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
   return (
     <div className="space-y-6">
       
-      {/* Farmer Banner & Quick Stats */}
       <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-green-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-56 h-56 bg-white/5 rounded-full blur-2xl"></div>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
@@ -179,7 +173,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
           </div>
         </div>
 
-        {/* Tab Navigation */}
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-emerald-600/60 overflow-x-auto text-xs">
           <button
             onClick={() => setActiveTab('intelligence')}
@@ -228,11 +221,9 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       </div>
 
-      {/* TAB 1: MANDI INTELLIGENCE & AI SALE WINDOW */}
       {activeTab === 'intelligence' && (
         <div className="space-y-6">
           
-          {/* Commodity Selector Bar */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
             {mandiPrices.map((m) => (
               <button
@@ -256,7 +247,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
             ))}
           </div>
 
-          {/* AI Sale Window Alert Banner */}
           <div className={`rounded-2xl p-5 border shadow-sm transition-all ${
             activeMandi.saleWindow.recommendation === 'HOLD'
               ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300'
@@ -306,10 +296,8 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
             </div>
           </div>
 
-          {/* Mandi Detail Cards & Price Chart */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            {/* Live APMC Metric Card */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div>
@@ -376,7 +364,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
               </button>
             </div>
 
-            {/* Historical + 14-Day Price Forecast Chart */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm lg:col-span-2 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -440,7 +427,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* TAB 2: MY PRODUCE LOTS & DIGITAL BIDS */}
       {activeTab === 'lots' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
@@ -471,7 +457,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
                 className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition"
               >
                 <div className="p-5 flex flex-col lg:flex-row gap-5">
-                  {/* Lot Image & Cert */}
                   <div className="w-full lg:w-48 h-40 rounded-xl overflow-hidden relative bg-slate-100 shrink-0">
                     <img 
                       src={lot.images[0]} 
@@ -486,7 +471,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
                     </div>
                   </div>
 
-                  {/* Lot Info */}
                   <div className="flex-1 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
@@ -514,7 +498,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
                       </div>
                     </div>
 
-                    {/* Lot Badges */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                       <div className="bg-slate-50 p-2 rounded-lg border border-slate-200/60">
                         <span className="text-[10px] text-slate-400 font-bold uppercase">Total Quantity</span>
@@ -534,7 +517,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
                       </div>
                     </div>
 
-                    {/* Received Offers Section */}
                     <div className="pt-3 border-t border-slate-100">
                       <div className="flex items-center justify-between mb-2">
                         <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
@@ -619,7 +601,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* TAB 3: COLD STORAGE & WAREHOUSING */}
       {activeTab === 'storage' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
@@ -695,7 +676,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
             ))}
           </div>
 
-          {/* Bookings History */}
           {storageBookings.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 p-5">
               <h4 className="font-extrabold text-sm text-slate-900 mb-3">Your Active Storage Reservations</h4>
@@ -721,7 +701,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* TAB 4: GRIEVANCE SUPPORT */}
       {activeTab === 'grievance' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
@@ -814,7 +793,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* CREATE LOT MODAL */}
       {isLotModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto animate-fade-in">
           <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 my-8 space-y-5">
@@ -955,7 +933,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* STORAGE BOOKING MODAL */}
       {selectedStorage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 text-xs">
@@ -1020,7 +997,6 @@ export const FarmerPortal = ({ onOpenAiGrader, prefillData, onClearPrefill, init
         </div>
       )}
 
-      {/* COUNTER OFFER MODAL */}
       {counterState.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200 space-y-4 text-xs">

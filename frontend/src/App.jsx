@@ -25,14 +25,8 @@ import {
 const MainContent = () => {
   const { currentRole, setCurrentRole, language, showNotification } = useApp();
   
-  // Navigation tabs:
-  // 'home' | 'farmer-portal' | 'farmer-intelligence' | 'farmer-lots' | 'farmer-storage' | 'farmer-grievances'
-  // | 'buyer-portal' | 'buyer-produce' | 'buyer-demands' | 'buyer-orders'
-  // | 'transporter-portal' | 'transporter-dispatches' | 'transporter-fleet'
-  // | 'admin-portal' | 'admin-kyc' | 'admin-disputes'
   const [activeTab, setActiveTab] = useState('home');
 
-  // Modals
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAiGraderOpen, setIsAiGraderOpen] = useState(false);
   const [isKisanBotOpen, setIsKisanBotOpen] = useState(false);
@@ -51,7 +45,6 @@ const MainContent = () => {
       return;
     }
 
-    // Role-isolated routing
     if (tabId.startsWith('farmer-') || tabId === 'sell-produce' || tabId === 'market-prices') {
       if (currentRole !== 'farmer') setCurrentRole('farmer');
       setActiveTab(tabId === 'sell-produce' ? 'farmer-lots' : tabId === 'market-prices' ? 'farmer-intelligence' : tabId);
@@ -98,7 +91,6 @@ const MainContent = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Helper to determine FarmerPortal initial subtab
   const getFarmerSubTab = () => {
     if (activeTab === 'farmer-intelligence') return 'intelligence';
     if (activeTab === 'farmer-lots') return 'lots';
@@ -107,14 +99,12 @@ const MainContent = () => {
     return 'lots';
   };
 
-  // Helper to determine BuyerPortal initial subtab
   const getBuyerSubTab = () => {
     if (activeTab === 'buyer-demands') return 'post-demand';
     if (activeTab === 'buyer-orders') return 'orders';
     return 'marketplace';
   };
 
-  // Helper to determine AdminPortal initial subtab
   const getAdminSubTab = () => {
     if (activeTab === 'admin-kyc') return 'kyc';
     if (activeTab === 'admin-disputes') return 'grievances';
@@ -124,7 +114,6 @@ const MainContent = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7] text-slate-900 selection:bg-emerald-500 selection:text-white">
       
-      {/* 1. TOP NAVBAR */}
       <Navbar 
         activeTab={activeTab}
         onSelectTab={handleNavigateTab}
@@ -133,10 +122,8 @@ const MainContent = () => {
         onOpenKisanBot={() => setIsKisanBotOpen(true)}
       />
 
-      {/* 2. MAIN VIEW CONTAINER */}
       <main className="flex-1 w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-8">
         
-        {/* VIEW 1: UNIVERSAL HOME LANDING PAGE (AVAILABLE FOR EVERYONE) */}
         {activeTab === 'home' && (
           <LandingView 
             onNavigateTab={handleNavigateTab}
@@ -146,7 +133,6 @@ const MainContent = () => {
           />
         )}
 
-        {/* VIEW 2: DEDICATED FARMER PORTAL */}
         {activeTab.startsWith('farmer-') && (
           <div className="space-y-4">
             <div className="flex items-center justify-between bg-emerald-50/70 border border-emerald-200/80 px-4 py-2.5 rounded-2xl">
@@ -170,7 +156,6 @@ const MainContent = () => {
           </div>
         )}
 
-        {/* VIEW 3: DEDICATED BUYER PORTAL */}
         {activeTab.startsWith('buyer-') && (
           <div className="space-y-4">
             <div className="flex items-center justify-between bg-blue-50/70 border border-blue-200/80 px-4 py-2.5 rounded-2xl">
@@ -189,7 +174,6 @@ const MainContent = () => {
           </div>
         )}
 
-        {/* VIEW 4: DEDICATED TRANSPORTER PORTAL */}
         {activeTab.startsWith('transporter-') && (
           <div className="space-y-4">
             <div className="flex items-center justify-between bg-amber-50/70 border border-amber-200/80 px-4 py-2.5 rounded-2xl">
@@ -208,7 +192,6 @@ const MainContent = () => {
           </div>
         )}
 
-        {/* VIEW 5: DEDICATED APMC MANDI BOARD & GOVT REGULATORY OVERSIGHT */}
         {activeTab.startsWith('admin-') && (
           <div className="space-y-4">
             <div className="flex items-center justify-between bg-purple-50/70 border border-purple-200/80 px-4 py-2.5 rounded-2xl">
@@ -229,13 +212,11 @@ const MainContent = () => {
 
       </main>
 
-      {/* 3. CLEAN FOOTER */}
       <footer className="bg-white border-t border-[#eef0eb] mt-20 py-10 text-xs text-slate-500">
         <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 space-y-8">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             
-            {/* Col 1: Brand */}
             <div className="md:col-span-5 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
@@ -255,7 +236,6 @@ const MainContent = () => {
               </p>
             </div>
 
-            {/* Col 2: Quick Links */}
             <div className="md:col-span-4 space-y-2">
               <div className="text-xs font-bold uppercase text-slate-900 tracking-wider">Direct Portals</div>
               <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 font-medium pt-1">
@@ -268,7 +248,6 @@ const MainContent = () => {
               </div>
             </div>
 
-            {/* Col 3: Direct Contact Information */}
             <div className="md:col-span-3 space-y-2">
               <div className="text-xs font-bold uppercase text-slate-900 tracking-wider">Contact Us</div>
               <div className="space-y-1.5 pt-1 text-xs">
@@ -307,7 +286,6 @@ const MainContent = () => {
         </div>
       </footer>
 
-      {/* 4. MODALS */}
       <LoginModal 
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}

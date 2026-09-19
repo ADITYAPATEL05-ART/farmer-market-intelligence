@@ -22,7 +22,6 @@ export const getLots = async (req, res) => {
     }
   }
 
-  // Fallback to in-memory
   let results = [...memLots];
   if (crop) {
     results = results.filter(l => l.crop.toLowerCase().includes(crop.toLowerCase()));
@@ -57,7 +56,6 @@ export const createLot = async (req, res) => {
     }
   }
 
-  // Fallback
   memLots.unshift(newLotData);
   return res.status(201).json({ success: true, source: 'memory', data: newLotData });
 };
@@ -88,7 +86,6 @@ export const submitOffer = async (req, res) => {
     }
   }
 
-  // Fallback
   const lotIndex = memLots.findIndex(l => l.id === id);
   if (lotIndex === -1) {
     return res.status(404).json({ success: false, message: 'Produce lot not found' });

@@ -26,7 +26,7 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
     language 
   } = useApp();
 
-  const [adminTab, setAdminTab] = useState(initialTab); // 'overview' | 'kyc' | 'grievances'
+  const [adminTab, setAdminTab] = useState(initialTab); 
   
   React.useEffect(() => {
     if (initialTab) {
@@ -38,7 +38,6 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
   return (
     <div className="space-y-6">
       
-      {/* Admin Header */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -61,7 +60,6 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
           </div>
         </div>
 
-        {/* Tab Controls */}
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700/60 overflow-x-auto text-xs">
           <button
             onClick={() => setAdminTab('overview')}
@@ -99,11 +97,9 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
         </div>
       </div>
 
-      {/* TAB 1: MACRO IMPACT ANALYTICS */}
       {adminTab === 'overview' && (
         <div className="space-y-6">
           
-          {/* Key Metric Cards (Matching Slide 2 & 5 Metrics!) */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
               <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -154,7 +150,6 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
             </div>
           </div>
 
-          {/* Regional APMC Live Settlement Table */}
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div>
@@ -206,7 +201,6 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
         </div>
       )}
 
-      {/* TAB 2: KYC VERIFICATION DESK */}
       {adminTab === 'kyc' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -267,7 +261,6 @@ export const AdminPortal = ({ initialTab = 'overview' }) => {
         </div>
       )}
 
-      {/* TAB 3: DISPUTES & GRIEVANCE ARBITRATION */}
       {adminTab === 'grievances' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">

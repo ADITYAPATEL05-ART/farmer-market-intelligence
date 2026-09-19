@@ -16,7 +16,6 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
 
   
-  // Current user persona: 'overview' | 'farmer' | 'buyer' | 'transporter' | 'admin'
   const [currentRole, setCurrentRoleState] = useState(() => {
     try {
       return localStorage.getItem('kisan_user_role') || 'overview';
@@ -40,29 +39,21 @@ export const AppProvider = ({ children }) => {
     setCurrentRole('overview');
   };
   
-  // Language: 'en' | 'hi'
   const [language, setLanguage] = useState('en');
 
-  // Active Produce Lots
   const [lots, setLots] = useState(INITIAL_PRODUCE_LOTS);
 
-  // Buyer Demands
   const [demands, setDemands] = useState(BUYER_DEMANDS);
 
-  // Cold Storages & Bookings
   const [storages, setStorages] = useState(COLD_STORAGE_FACILITIES);
   const [storageBookings, setStorageBookings] = useState([]);
 
-  // Transporters & Trips
   const [transporterList, setTransporterList] = useState(TRANSPORTERS);
 
-  // Escrow Orders
   const [orders, setOrders] = useState(ESCROW_ORDERS);
 
-  // Grievances
   const [grievanceList, setGrievanceList] = useState(GRIEVANCES);
 
-  // KYC Verification Requests for Admin
   const [kycRequests, setKycRequests] = useState([
     {
       id: 'KYC-801',
@@ -84,7 +75,6 @@ export const AppProvider = ({ children }) => {
     }
   ]);
 
-  // Notifications / Toast
   const [notification, setNotification] = useState(null);
 
   const showNotification = (message, type = 'success') => {
@@ -94,7 +84,6 @@ export const AppProvider = ({ children }) => {
     }, 4500);
   };
 
-  // Farmer creates a new produce lot
   const createProduceLot = (lotData) => {
     const newLot = {
       ...lotData,
@@ -114,7 +103,6 @@ export const AppProvider = ({ children }) => {
     return newLot;
   };
 
-  // Buyer submits a digital offer on a farmer lot
   const submitBuyerOffer = (lotId, offerData) => {
     const newOffer = {
       id: `OFFER-${Math.floor(500 + Math.random() * 499)}`,
@@ -148,7 +136,6 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Farmer accepts an offer -> Automatically creates an Escrow Order and creates transport dispatch
   const acceptOffer = (lotId, offerId) => {
     let acceptedOffer = null;
     let targetLot = null;
@@ -173,7 +160,6 @@ export const AppProvider = ({ children }) => {
     }));
 
     if (acceptedOffer && targetLot) {
-      // Create Escrow Order
       const newOrder = {
         orderId: `ORD-${Math.floor(700 + Math.random() * 299)}`,
         lotId: targetLot.id,
@@ -199,7 +185,6 @@ export const AppProvider = ({ children }) => {
 
       setOrders(prev => [newOrder, ...prev]);
 
-      // Assign to Transporter
       setTransporterList(prev => prev.map((tr, idx) => {
         if (idx === 0) {
           return {
@@ -233,7 +218,6 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Farmer sends a counter-offer
   const counterOffer = (lotId, offerId, counterPrice) => {
     setLots(prev => prev.map(lot => {
       if (lot.id === lotId) {
@@ -265,7 +249,6 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Buyer creates bulk demand
   const createBuyerDemand = (demandData) => {
     const newDemand = {
       ...demandData,
@@ -283,7 +266,6 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Cold Storage booking
   const bookColdStorage = (storageId, quantityQtl, days) => {
     const target = storages.find(s => s.id === storageId);
     if (!target) return;
@@ -301,7 +283,6 @@ export const AppProvider = ({ children }) => {
     };
 
     setStorageBookings(prev => [booking, ...prev]);
-    // Reduce capacity
     setStorages(prev => prev.map(s => {
       if (s.id === storageId) {
         return {
@@ -320,9 +301,7 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Transporter updates status
   const updateDeliveryStatus = (orderId, newStatus) => {
-    // update in transporter
     setTransporterList(prev => prev.map(tr => ({
       ...tr,
       assignedTrips: tr.assignedTrips.map(trip => {
@@ -337,7 +316,6 @@ export const AppProvider = ({ children }) => {
       })
     })));
 
-    // update in escrow orders
     setOrders(prev => prev.map(ord => {
       if (ord.orderId === orderId) {
         const updatedStages = ord.stages.map(stg => {
@@ -373,7 +351,6 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Grievance filing
   const fileGrievance = (grievanceData) => {
     const newGrievance = {
       ticketId: `GRV-${Math.floor(900 + Math.random() * 99)}`,
@@ -395,7 +372,6 @@ export const AppProvider = ({ children }) => {
     );
   };
 
-  // Admin resolves grievance
   const resolveGrievance = (ticketId, note) => {
     setGrievanceList(prev => prev.map(g => {
       if (g.ticketId === ticketId) {
@@ -410,7 +386,6 @@ export const AppProvider = ({ children }) => {
     showNotification(`Ticket #${ticketId} marked as RESOLVED!`, 'success');
   };
 
-  // Admin approves KYC
   const approveKyc = (kycId) => {
     setKycRequests(prev => prev.map(k => {
       if (k.id === kycId) {

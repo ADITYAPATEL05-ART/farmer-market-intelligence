@@ -6,14 +6,12 @@ import { useApp } from '../context/AppContext';
 export const MandiTicker = ({ onSelectCrop }) => {
   const { language } = useApp();
 
-  // Duplicate items for seamless continuous marquee loop
   const tickerItems = [...MANDI_PRICES, ...MANDI_PRICES];
 
   return (
     <div className="bg-slate-900 border-b border-slate-800 text-white text-xs relative overflow-hidden select-none z-30 shadow-inner">
       <div className="flex items-center">
         
-        {/* Left Fixed Badge */}
         <div className="shrink-0 z-10 bg-slate-950 px-3.5 py-2 flex items-center gap-2 border-r border-slate-800 font-bold text-[11px] shadow-md">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -25,7 +23,6 @@ export const MandiTicker = ({ onSelectCrop }) => {
           </span>
         </div>
 
-        {/* Scrolling Marquee Container */}
         <div className="overflow-hidden whitespace-nowrap flex-1 py-1.5 flex items-center">
           <div className="animate-marquee flex items-center gap-8">
             {tickerItems.map((item, idx) => {
@@ -68,7 +65,6 @@ export const MandiTicker = ({ onSelectCrop }) => {
           </div>
         </div>
 
-        {/* Right Fixed Status Indicator */}
         <div className="hidden lg:flex shrink-0 z-10 bg-slate-950 px-3.5 py-2 items-center gap-3 border-l border-slate-800 text-[10px] font-medium text-slate-400">
           <div className="flex items-center gap-1 text-emerald-400">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />

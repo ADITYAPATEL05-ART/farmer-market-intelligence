@@ -1,5 +1,3 @@
-// KisanSetu / Farmer Market Intelligence & Marketplace Seed Data
-// Problem Statement ID: 26132 | Team: INCREDIBLE_X_TECH
 
 export const CROPS_CATALOG = [
   { id: 'onion', name: 'Onion (Red)', hindiName: 'लाल प्याज', category: 'Vegetables', unit: 'Quintal' },

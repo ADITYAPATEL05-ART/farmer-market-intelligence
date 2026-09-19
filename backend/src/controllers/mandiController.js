@@ -16,7 +16,6 @@ export const getCrops = async (req, res) => {
     }
   }
 
-  // Fallback
   if (category) {
     const filtered = CROPS_CATALOG.filter(
       c => c.category.toLowerCase() === category.toLowerCase()
@@ -42,7 +41,6 @@ export const getPrices = async (req, res) => {
     }
   }
 
-  // Fallback
   let results = [...MANDI_PRICES];
   if (crop) {
     results = results.filter(p => p.crop.toLowerCase().includes(crop.toLowerCase()));

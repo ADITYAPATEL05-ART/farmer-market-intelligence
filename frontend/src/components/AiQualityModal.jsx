@@ -108,7 +108,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in overflow-y-auto">
       <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
         
-        {/* Modal Header */}
         <div className="bg-gradient-to-r from-emerald-700 via-teal-800 to-emerald-900 text-white p-6 relative">
           <button 
             onClick={onClose}
@@ -129,10 +128,8 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
           </p>
         </div>
 
-        {/* Modal Body */}
         <div className="p-6 space-y-6">
           
-          {/* Sample Switcher */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
               Select Sample Produce or Upload Lot Picture:
@@ -160,7 +157,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
             </div>
           </div>
 
-          {/* Active Image Inspection Area */}
           <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-900">
             <img 
               src={selectedSample.url} 
@@ -170,7 +166,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
               }`}
             />
             
-            {/* Scanline Animation */}
             {analyzing && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-[2px]">
                 <div className="w-12 h-12 rounded-full border-4 border-amber-400 border-t-transparent animate-spin mb-3"></div>
@@ -189,7 +184,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
             )}
           </div>
 
-          {/* Result Card */}
           {analysisDone && (
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-4 animate-fade-in">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
@@ -226,7 +220,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
                 </div>
               </div>
 
-              {/* Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                 <div className="bg-white p-2.5 rounded-lg border border-slate-200/80">
                   <div className="text-slate-400 text-[10px] font-bold uppercase flex items-center gap-1">
@@ -268,7 +261,6 @@ export const AiQualityModal = ({ isOpen, onClose, onApplyToLot }) => {
             </div>
           )}
 
-          {/* Action buttons */}
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
               onClick={handleTriggerAnalysis}

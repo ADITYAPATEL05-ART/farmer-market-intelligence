@@ -355,9 +355,6 @@ export const LandingView = ({
     }
   };
 
-  // -------------------------------------------------------------
-  // 3. CONTACT FORM STATE (SECTION 6)
-  // -------------------------------------------------------------
   const [contactForm, setContactForm] = useState({
     name: '',
     phoneOrEmail: '',
@@ -395,10 +392,7 @@ export const LandingView = ({
     showNotification(`${label} copied to clipboard!`, 'info');
   };
 
-  // -------------------------------------------------------------
-  // 4. NEWS & RESEARCH DATA (SECTION 5)
-  // -------------------------------------------------------------
-  const [newsCategoryTab, setNewsCategoryTab] = useState('all'); // 'all' | 'news' | 'research'
+  const [newsCategoryTab, setNewsCategoryTab] = useState('all'); 
 
   const agriNewsArticles = [
     {
@@ -491,7 +485,6 @@ export const LandingView = ({
     ? agriNewsArticles
     : agriNewsArticles.filter(a => a.type === newsCategoryTab);
 
-  // Helper for navigating to role-specific portal
   const handleEnterRolePortal = (targetRole, targetTab) => {
     setCurrentRole(targetRole);
     onNavigateTab(targetTab);
@@ -500,12 +493,8 @@ export const LandingView = ({
   return (
     <div className="space-y-12 sm:space-y-16 w-full max-w-[1720px] mx-auto animate-fade-in pb-20">
       
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 1: HERO & STAKEHOLDER ROLE GATEWAYS */}
-      {/* ------------------------------------------------------------- */}
       <section id="hero-section" className="space-y-6 sm:space-y-8">
         
-        {/* Active Role Notice Banner if already logged in */}
         {currentRole && currentRole !== 'overview' && (
           <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
             <div className="flex items-center gap-3">
@@ -549,11 +538,9 @@ export const LandingView = ({
           </div>
         )}
 
-        {/* Hero Banner with Full Width Expansion & Mobile Proportions */}
         <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-[#f7f9f6] via-[#f1f6f1] to-[#e7f0e6] border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-14 shadow-xs">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Left Column: Headlines & CTA */}
             <div className="lg:col-span-7 space-y-4 sm:space-y-6 z-10">
               <div>
 
@@ -577,7 +564,6 @@ export const LandingView = ({
                 </p>
               </div>
 
-              {/* Quick Action Navigation CTAs */}
               <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3.5 pt-1">
                 <a
                   href="#rates-section"
@@ -603,7 +589,6 @@ export const LandingView = ({
                 </a>
               </div>
 
-              {/* Trust Badge Strip */}
               <div className="flex flex-wrap items-center gap-3 sm:gap-5 pt-3 text-[11px] sm:text-xs font-semibold text-slate-600 border-t border-slate-200/70">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
@@ -621,7 +606,6 @@ export const LandingView = ({
 
             </div>
 
-            {/* Right Column: Hero Visual & Mission Card */}
             <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
               <div className="relative w-full max-w-[480px] aspect-[4/3] sm:aspect-square lg:aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-white/60">
                 <img 
@@ -631,7 +615,6 @@ export const LandingView = ({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
-                {/* Floating Mission Card */}
                 <div className="absolute top-3 left-3 sm:top-6 sm:left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl border border-white/80 max-w-[155px] sm:max-w-[195px] space-y-1 sm:space-y-2 animate-slide-up">
                   <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-[#eaf6ed] flex items-center justify-center text-[#174d26]">
                     <Sprout className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
@@ -648,7 +631,6 @@ export const LandingView = ({
                   <div className="w-6 sm:w-8 h-0.5 sm:h-1 bg-[#174d26] rounded-full mt-1"></div>
                 </div>
 
-                {/* Bottom Live Escrow Ticker */}
                 <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl text-white flex items-center justify-between text-[10px] sm:text-[11px] border border-slate-700/60">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -663,7 +645,6 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* 4 DEDICATED STAKEHOLDER PORTAL GATEWAYS */}
         <div className="space-y-3 sm:space-y-4">
           <div className="flex items-center justify-between">
             <div>
@@ -684,7 +665,6 @@ export const LandingView = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6">
             
-            {/* 1. Farmer Portal Card */}
             <div className="bg-white rounded-2xl border-2 border-emerald-500/40 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-emerald-600">
               <div className="space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#174d26] flex items-center justify-center group-hover:scale-110 transition">
@@ -712,7 +692,6 @@ export const LandingView = ({
               </button>
             </div>
 
-            {/* 2. Buyer Portal Card */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-blue-500">
               <div className="space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:scale-110 transition">
@@ -740,7 +719,6 @@ export const LandingView = ({
               </button>
             </div>
 
-            {/* 3. Transporter Portal Card */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-amber-500">
               <div className="space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center group-hover:scale-110 transition">
@@ -768,7 +746,6 @@ export const LandingView = ({
               </button>
             </div>
 
-            {/* 4. APMC Admin Card */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between group hover:border-purple-500">
               <div className="space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center group-hover:scale-110 transition">
@@ -801,12 +778,8 @@ export const LandingView = ({
 
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 2: INLINE KISAN AI CHATBOT & ADVISORY WIDGET */}
-      {/* ------------------------------------------------------------- */}
       <section id="ai-section" className="bg-white rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-4 sm:p-6 lg:p-8 xl:p-10 shadow-xs space-y-4 sm:space-y-6">
         
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shadow-xs shrink-0">
@@ -856,7 +829,6 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* Quick Suggestion Chips (Swipeable on mobile, wrapped on desktop) */}
         <div>
           <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1">
             <HelpCircle className="w-3 h-3" />
@@ -875,7 +847,6 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* Chat Messages Feed */}
         <div className="bg-[#fafaf8] rounded-2xl border border-slate-200 p-3.5 sm:p-5 h-[280px] sm:h-[340px] lg:h-[380px] overflow-y-auto space-y-3 sm:space-y-4">
           {chatHistory.map((msg, index) => {
             const isBot = msg.sender === 'bot';
@@ -932,7 +903,6 @@ export const LandingView = ({
           )}
         </div>
 
-        {/* Input Bar */}
         <form 
           onSubmit={(e) => {
             e.preventDefault();
@@ -961,12 +931,8 @@ export const LandingView = ({
 
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 3: ALL RATE GRAPHS & MANDI INTELLIGENCE */}
-      {/* ------------------------------------------------------------- */}
       <section id="rates-section" className="space-y-4 sm:space-y-6">
         
-        {/* Section Title & Filter Tabs */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
@@ -983,7 +949,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Crop Switcher Pills */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
             {Object.keys(cropDatasets).map((cropKey) => {
               const item = cropDatasets[cropKey];
@@ -1005,7 +970,6 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* Selected Crop Metric Bar (2 columns on mobile, 4 columns on desktop) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 xl:gap-6">
           
           <div className="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs">
@@ -1056,10 +1020,8 @@ export const LandingView = ({
 
         </div>
 
-        {/* Interactive Recharts Graph & Mandi Comparison Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 xl:gap-8">
           
-          {/* Main Price Trend Curve (8 Cols) */}
           <div className="lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
@@ -1081,7 +1043,6 @@ export const LandingView = ({
                 </div>
               </div>
 
-              {/* Chart Container */}
               <div className="h-60 sm:h-72 lg:h-80 xl:h-96 w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart 
@@ -1135,7 +1096,6 @@ export const LandingView = ({
                 </ResponsiveContainer>
               </div>
 
-              {/* Advisory Box */}
               <div className="mt-4 p-3 sm:p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-xl sm:rounded-2xl flex items-start gap-2.5 sm:gap-3">
                 <Sparkles className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                 <div className="text-xs text-amber-950 leading-relaxed">
@@ -1159,7 +1119,6 @@ export const LandingView = ({
             </div>
           </div>
 
-          {/* Mandi Rate Comparison Table (4 Cols) */}
           <div className="lg:col-span-4 bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs flex flex-col justify-between">
             <div>
               <div className="pb-3 border-b border-slate-100">
@@ -1211,9 +1170,6 @@ export const LandingView = ({
 
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 4: HOW THE APP WORKS (6-POINT BREAKDOWN) */}
-      {/* ------------------------------------------------------------- */}
       <section id="how-it-works" className="bg-[#fcfdfc] rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-12 shadow-xs space-y-6 sm:space-y-8">
         
         <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -1231,10 +1187,8 @@ export const LandingView = ({
           </p>
         </div>
 
-        {/* 6 Steps: Expands to 6 columns on Full Desktop! */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 xl:gap-5">
           
-          {/* Point 1 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               01
@@ -1252,7 +1206,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Point 2 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               02
@@ -1270,7 +1223,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Point 3 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               03
@@ -1288,7 +1240,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Point 4 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               04
@@ -1306,7 +1257,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Point 5 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               05
@@ -1324,7 +1274,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Point 6 */}
           <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 xl:p-4 shadow-xs hover:shadow-md transition space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center font-black text-sm">
               06
@@ -1346,9 +1295,6 @@ export const LandingView = ({
 
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 5: AGRICULTURAL NEWS & CURRENT RESEARCH STUDIES */}
-      {/* ------------------------------------------------------------- */}
       <section id="news-section" className="space-y-4 sm:space-y-6">
         
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
@@ -1367,7 +1313,6 @@ export const LandingView = ({
             </p>
           </div>
 
-          {/* Filter Tabs */}
           <div className="flex items-center gap-1.5 sm:gap-2 bg-white p-1 rounded-xl border border-slate-200 text-xs font-bold overflow-x-auto no-scrollbar">
             <button
               onClick={() => setNewsCategoryTab('all')}
@@ -1396,7 +1341,6 @@ export const LandingView = ({
           </div>
         </div>
 
-        {/* Article Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 xl:gap-8">
           {filteredArticles.map((article) => (
             <div 
@@ -1405,7 +1349,6 @@ export const LandingView = ({
             >
               <div className="space-y-3">
                 
-                {/* Meta Tag & Source */}
                 <div className="flex items-center justify-between gap-2">
                   <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${article.tagColor}`}>
                     {article.tag}
@@ -1442,14 +1385,10 @@ export const LandingView = ({
 
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SECTION 6: CONTACT US & GRIEVANCE HELPDESK */}
-      {/* ------------------------------------------------------------- */}
       <section id="contact-section" className="bg-white rounded-2xl sm:rounded-3xl border border-[#e4eae2] p-5 sm:p-8 lg:p-10 xl:p-12 shadow-xs space-y-6 sm:space-y-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 xl:gap-12 items-start">
           
-          {/* Left Column: Explicit Contact Details */}
           <div className="lg:col-span-5 space-y-4 sm:space-y-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#174d26] uppercase tracking-wider mb-1">
@@ -1466,7 +1405,6 @@ export const LandingView = ({
               </p>
             </div>
 
-            {/* Direct Phone Box */}
             <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
@@ -1493,7 +1431,6 @@ export const LandingView = ({
               </button>
             </div>
 
-            {/* Direct Email Box */}
             <div className="bg-[#f7faf7] border border-emerald-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#eaf6ed] text-[#174d26] flex items-center justify-center shrink-0">
@@ -1520,7 +1457,6 @@ export const LandingView = ({
               </button>
             </div>
 
-            {/* Physical Location & Credentials */}
             <div className="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
@@ -1534,7 +1470,6 @@ export const LandingView = ({
 
           </div>
 
-          {/* Right Column: Direct Message & Inquiry Form */}
           <div className="lg:col-span-7 bg-[#fafaf8] border border-slate-200 rounded-2xl p-4 sm:p-8 space-y-4">
             <div>
               <h3 className="text-sm sm:text-base font-black text-slate-900">

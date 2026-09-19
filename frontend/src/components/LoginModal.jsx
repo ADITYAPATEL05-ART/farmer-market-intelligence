@@ -119,7 +119,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
         className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-xl w-full max-h-[92vh] overflow-y-auto animate-slide-up my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="bg-[#f7faf7] border-b border-[#eef0eb] px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
           <div className="flex items-center gap-2.5 sm:gap-3">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#174d26] text-white flex items-center justify-center shadow-md shadow-[#174d26]/20 shrink-0">
@@ -145,7 +144,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           
-          {/* Stakeholder Persona Tabs */}
           <div>
             <label className="text-xs font-bold text-slate-700 block mb-2">
               {language === 'en' ? 'Select Stakeholder Role:' : 'हितधारक की भूमिका चुनें:'}
@@ -179,7 +177,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
             </div>
           </div>
 
-          {/* Active Persona Banner */}
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
             <div className={`p-2.5 rounded-xl ${currentConfig.color} shrink-0 mt-0.5 shadow-sm`}>
               <CurrentIcon className="w-5 h-5" />
@@ -202,7 +199,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
             </div>
           </div>
 
-          {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1">
@@ -247,7 +243,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
               </div>
             </div>
 
-            {/* Quick 1-Click Login Button */}
             <button
               type="submit"
               className="w-full py-3.5 px-4 rounded-xl bg-[#174d26] hover:bg-[#113d1c] text-white text-xs font-bold shadow-md shadow-[#174d26]/20 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
@@ -268,7 +263,6 @@ export const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
             )}
           </form>
 
-          {/* Trust Seals */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
             <span className="flex items-center gap-1 text-emerald-700 font-semibold">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />

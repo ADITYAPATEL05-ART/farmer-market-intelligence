@@ -74,7 +74,6 @@ export const Navbar = ({
         { id: 'admin-disputes', labelEn: 'Dispute Redressal', labelHi: 'विवाद निपटारा' }
       ];
     }
-    // Default: Public Guest
     return [
       { id: 'home', labelEn: 'Home', labelHi: 'होम' },
       { id: 'rates-section', labelEn: 'Mandi Rates', labelHi: 'मंडी भाव' },
@@ -124,11 +123,9 @@ export const Navbar = ({
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-[#eef0eb] shadow-xs">
       
-      {/* Top Main Navbar - Full Width Desktop & Adaptive Mobile */}
       <div className="w-full max-w-[1720px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-18 sm:h-20 gap-2 sm:gap-4">
           
-          {/* Brand Logo & Title */}
           <div 
             onClick={() => handleLinkClick('home')}
             className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none group shrink-0 min-w-0"
@@ -151,7 +148,6 @@ export const Navbar = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Links (Visible on Large Displays) */}
           <nav className="hidden xl:flex items-center gap-5 2xl:gap-7 text-xs xl:text-sm font-semibold text-slate-700">
             {navLinks.map((link) => {
               const active = isLinkActive(link.id);
@@ -174,10 +170,8 @@ export const Navbar = ({
             })}
           </nav>
 
-          {/* Right Controls: Quick AI, Language, Role Selector & Mobile Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
-            {/* Quick AI Buttons (Medium+ Displays) */}
             <button
               onClick={onOpenAiGrader}
               className="hidden md:inline-flex items-center gap-1 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
@@ -196,7 +190,6 @@ export const Navbar = ({
               <span>Kisan AI</span>
             </button>
 
-            {/* Language Toggle: हिंदी | English */}
             <div className="flex items-center text-[11px] sm:text-xs font-semibold text-slate-600 bg-slate-50 sm:bg-transparent px-1.5 py-0.5 sm:p-0 rounded-lg sm:rounded-none border sm:border-0 border-slate-200">
               <button
                 onClick={() => setLanguage('hi')}
@@ -217,7 +210,6 @@ export const Navbar = ({
               </button>
             </div>
 
-            {/* Role Button & Status */}
             <div className="flex items-center gap-1">
               <button
                 onClick={onOpenLogin}
@@ -261,7 +253,6 @@ export const Navbar = ({
               )}
             </div>
 
-            {/* Mobile Hamburger Menu Button (Visible on < xl screens) */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="xl:hidden p-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition cursor-pointer shrink-0"
@@ -279,7 +270,6 @@ export const Navbar = ({
         </div>
       </div>
 
-      {/* Mobile Swipeable Quick Sub-Bar (Visible on Mobile & Tablet) */}
       <div className="xl:hidden flex items-center px-3 sm:px-6 py-2 bg-slate-50 border-t border-slate-100 overflow-x-auto no-scrollbar gap-2 sm:gap-3 text-xs font-semibold">
         {navLinks.map((link) => {
           const active = isLinkActive(link.id);
@@ -299,7 +289,6 @@ export const Navbar = ({
         })}
       </div>
 
-      {/* Mobile Full Collapsible Drawer Menu */}
       {isMobileMenuOpen && (
         <div className="xl:hidden bg-white border-t border-slate-200 shadow-xl animate-slide-up px-4 py-5 space-y-4">
           
@@ -326,7 +315,6 @@ export const Navbar = ({
             })}
           </div>
 
-          {/* Quick AI Tools Strip in Mobile Menu */}
           <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
             <button
               onClick={() => {
@@ -350,7 +338,6 @@ export const Navbar = ({
             </button>
           </div>
 
-          {/* Direct Helpline in Mobile Menu */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-slate-600 font-medium">
               <Phone className="w-3.5 h-3.5 text-emerald-700" />
@@ -371,7 +358,6 @@ export const Navbar = ({
         </div>
       )}
 
-      {/* Global Toast Notification */}
       {notification && (
         <div className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-start gap-3 animate-slide-up">
           {notification.type === 'success' ? (

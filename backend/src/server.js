@@ -20,10 +20,8 @@ const publicPath = path.join(__dirname, '../public');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Serve built frontend static assets
 app.use(express.static(publicPath));
 
-// Middleware
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:3000',
@@ -32,7 +30,6 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow any origin during development or from Vercel deployment domains
     if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
@@ -43,13 +40,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Request logger
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   next();
 });
 
-// API Overview
 app.get('/api', (req, res) => {
   res.json({
     message: 'Farmer Market Intelligence API Server is running',
@@ -71,7 +66,6 @@ app.get('/api', (req, res) => {
 });
 
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'healthy',
@@ -82,13 +76,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/mandi', mandiRoutes);
 app.use('/api/produce', produceRoutes);
 app.use('/api', orderRoutes);
 
-// SPA Fallback & 404 handler
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ success: false, message: `API route ${req.originalUrl} not found` });
@@ -97,7 +89,6 @@ app.get('*', (req, res) => {
 });
 
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
   res.status(500).json({ success: false, message: 'Internal server error', error: err.message });

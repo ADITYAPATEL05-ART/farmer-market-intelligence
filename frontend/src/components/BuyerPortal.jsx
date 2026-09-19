@@ -30,7 +30,7 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
     crops 
   } = useApp();
 
-  const [buyerTab, setBuyerTab] = useState(initialTab); // 'marketplace' | 'post-demand' | 'orders'
+  const [buyerTab, setBuyerTab] = useState(initialTab); 
   
   React.useEffect(() => {
     if (initialTab) {
@@ -41,7 +41,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
   const [filterGrade, setFilterGrade] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Bid / Offer Modal
   const [selectedLotForBid, setSelectedLotForBid] = useState(null);
   const [bidForm, setBidForm] = useState({
     buyerName: 'BigBasket Fresh Procurements',
@@ -50,7 +49,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
     pickupDate: '2026-09-12'
   });
 
-  // Demand Form
   const [demandForm, setDemandForm] = useState({
     buyerName: 'BigBasket Fresh Procurements',
     buyerType: 'E-Grocery Major',
@@ -63,7 +61,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
     preferredMinGrade: 'Grade A'
   });
 
-  // Filter lots
   const filteredLots = lots.filter(lot => {
     if (filterCrop !== 'ALL' && !lot.crop.toLowerCase().includes(filterCrop.toLowerCase())) return false;
     if (filterGrade !== 'ALL' && lot.grade !== filterGrade) return false;
@@ -109,7 +106,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
   return (
     <div className="space-y-6">
       
-      {/* Buyer Header */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950 rounded-2xl p-6 text-white shadow-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -136,7 +132,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
           </div>
         </div>
 
-        {/* Tab Controls */}
         <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700/60 overflow-x-auto text-xs">
           <button
             onClick={() => setBuyerTab('marketplace')}
@@ -174,11 +169,9 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
         </div>
       </div>
 
-      {/* TAB 1: MARKETPLACE LOTS */}
       {buyerTab === 'marketplace' && (
         <div className="space-y-6">
           
-          {/* Filter Bar */}
           <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
             <div className="relative w-full md:w-80">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -224,7 +217,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
             </div>
           </div>
 
-          {/* Lots Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredLots.map((lot) => (
               <div
@@ -307,7 +299,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
         </div>
       )}
 
-      {/* TAB 2: POST DEMAND & RFQ */}
       {buyerTab === 'post-demand' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
@@ -416,7 +407,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
             </form>
           </div>
 
-          {/* Active Demands Column */}
           <div className="space-y-4">
             <h4 className="font-extrabold text-sm text-slate-900">Live Procurement Demands</h4>
             <div className="space-y-3">
@@ -440,7 +430,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
         </div>
       )}
 
-      {/* TAB 3: ESCROW ORDERS & DELIVERY TRACKING */}
       {buyerTab === 'orders' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
@@ -458,7 +447,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
             {orders.map((ord) => (
               <div key={ord.orderId} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
                 
-                {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -486,7 +474,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
                   </div>
                 </div>
 
-                {/* Milestone Stepper */}
                 <div>
                   <div className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">
                     Milestone Progress Pipeline
@@ -529,7 +516,6 @@ export const BuyerPortal = ({ initialTab = 'marketplace' }) => {
         </div>
       )}
 
-      {/* SUBMIT BID MODAL */}
       {selectedLotForBid && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 text-xs">

@@ -55,7 +55,6 @@ export const VoiceAssistantModal = ({ isOpen, onClose }) => {
     setMessages(prev => [...prev, userMsg]);
     setInputText('');
 
-    // Simulate AI response
     setTimeout(() => {
       let matched = quickPrompts.find(
         p => p.en.toLowerCase().includes(textToSend.toLowerCase().slice(0, 10)) ||
@@ -86,7 +85,6 @@ export const VoiceAssistantModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in">
       <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col h-[560px]">
         
-        {/* Header */}
         <div className="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-amber-300 shadow-sm">
@@ -110,7 +108,6 @@ export const VoiceAssistantModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Quick Question Chips */}
         <div className="p-3 bg-emerald-50/70 border-b border-emerald-100 flex items-center gap-2 overflow-x-auto text-xs">
           <span className="text-[10px] font-bold uppercase text-emerald-900 whitespace-nowrap">
             {language === 'en' ? 'Ask Instantly:' : 'तुरंत पूछें:'}
@@ -126,7 +123,6 @@ export const VoiceAssistantModal = ({ isOpen, onClose }) => {
           ))}
         </div>
 
-        {/* Chat History */}
         <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50">
           {messages.map((m, idx) => (
             <div
@@ -162,7 +158,6 @@ export const VoiceAssistantModal = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Input Bar */}
         <div className="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
           <button
             onClick={toggleMic}

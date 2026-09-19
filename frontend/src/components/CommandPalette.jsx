@@ -29,7 +29,6 @@ export const CommandPalette = ({
   const { language, setLanguage } = useApp();
   const [query, setQuery] = useState('');
 
-  // Keyboard shortcut listener (Cmd+K or Ctrl+K)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -37,7 +36,6 @@ export const CommandPalette = ({
         if (isOpen) {
           onClose();
         } else {
-          // Open handled by parent or toggle
         }
       }
       if (e.key === 'Escape' && isOpen) {
@@ -91,7 +89,6 @@ export const CommandPalette = ({
       color: 'text-slate-800 bg-slate-100',
       action: () => { onNavigateRole('admin'); onClose(); }
     },
-    // AI Tools
     {
       category: 'AI & Intelligence',
       id: 'ai-grader',
@@ -110,7 +107,6 @@ export const CommandPalette = ({
       badge: 'Voice AI',
       action: () => { onClose(); onOpenKisanBot(); }
     },
-    // Language
     {
       category: 'Quick Settings',
       id: 'lang-toggle',
@@ -121,7 +117,6 @@ export const CommandPalette = ({
     }
   ];
 
-  // Search filter
   const filteredActions = actions.filter(item => 
     item.title.toLowerCase().includes(query.toLowerCase()) || 
     item.category.toLowerCase().includes(query.toLowerCase())
@@ -139,7 +134,6 @@ export const CommandPalette = ({
         className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden animate-slide-up flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search Input Bar */}
         <div className="flex items-center px-4 py-3.5 border-b border-slate-100 gap-3">
           <Search className="w-5 h-5 text-slate-400 shrink-0" />
           <input 
@@ -160,10 +154,8 @@ export const CommandPalette = ({
           </span>
         </div>
 
-        {/* Search Results List */}
         <div className="overflow-y-auto p-3 space-y-4 flex-1">
           
-          {/* Actions & Views */}
           <div>
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-1.5">
               {language === 'en' ? 'Navigation & Quick Actions' : 'नेविगेशन व त्वरित कार्य'}
@@ -199,7 +191,6 @@ export const CommandPalette = ({
             </div>
           </div>
 
-          {/* Crops & Mandis */}
           <div>
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-1.5">
               {language === 'en' ? 'Commodities & Mandi Intelligence' : 'फसलें व मंडी भाव'}
@@ -242,7 +233,6 @@ export const CommandPalette = ({
 
         </div>
 
-        {/* Footer info */}
         <div className="bg-slate-50 px-4 py-2.5 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
           <span>KisanSetu • SIH 2026 Problem ID: 26132</span>
           <span className="font-semibold text-emerald-700">Team INCREDIBLE_X_TECH</span>

@@ -78,9 +78,7 @@ export const AppSidebar = ({
         isOpen ? 'w-64' : 'w-20'
       }`}
     >
-      {/* Top Sidebar Header */}
       <div>
-        {/* Brand Logo & Collapse Toggle */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100">
           <div 
             onClick={() => setCurrentRole('overview')}
@@ -110,7 +108,6 @@ export const AppSidebar = ({
           </button>
         </div>
 
-        {/* SIH 2026 Tag */}
         {isOpen ? (
           <div className="mx-3 my-3 p-2.5 rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 text-xs">
             <div className="flex items-center gap-1.5 font-bold text-emerald-900 text-[11px]">
@@ -129,7 +126,6 @@ export const AppSidebar = ({
           </div>
         )}
 
-        {/* Navigation Section */}
         <div className="px-3 space-y-1">
           <div className={`text-[10px] uppercase font-bold text-slate-400 px-3 py-1 ${!isOpen && 'text-center'}`}>
             {isOpen ? (language === 'en' ? 'Core Portals' : 'मुख्य पोर्टल') : '•••'}
@@ -170,7 +166,6 @@ export const AppSidebar = ({
           })}
         </div>
 
-        {/* AI Quick Tools Section */}
         <div className="px-3 mt-5 space-y-1">
           <div className={`text-[10px] uppercase font-bold text-slate-400 px-3 py-1 ${!isOpen && 'text-center'}`}>
             {isOpen ? (language === 'en' ? 'AI Intelligence' : 'AI सहायक उपकरण') : 'AI'}
@@ -220,11 +215,9 @@ export const AppSidebar = ({
         </div>
       </div>
 
-      {/* Bottom Sidebar Status & Controls */}
       <div className="p-3 border-t border-slate-100 space-y-2">
         {isOpen ? (
           <>
-            {/* Network Status indicator */}
             <div className="bg-slate-50 p-2 rounded-xl border border-slate-100 space-y-1.5 text-[10px] text-slate-500">
               <div className="flex items-center justify-between font-semibold">
                 <span className="flex items-center gap-1 text-slate-700">
@@ -239,7 +232,6 @@ export const AppSidebar = ({
               </div>
             </div>
 
-            {/* Language toggle */}
             <button
               onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
               className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition"
