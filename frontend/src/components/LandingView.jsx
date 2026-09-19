@@ -71,9 +71,6 @@ export const LandingView = ({
     showNotification 
   } = useApp();
 
-  // -------------------------------------------------------------
-  // 1. CROP SELECTION & RATE GRAPH DATA (SECTION 3)
-  // -------------------------------------------------------------
   const [selectedCrop, setSelectedCrop] = useState('wheat');
   const [graphTimeframe, setGraphTimeframe] = useState('14days');
 
@@ -268,9 +265,7 @@ export const LandingView = ({
 
   const activeCropData = cropDatasets[selectedCrop] || cropDatasets.wheat;
 
-  // -------------------------------------------------------------
-  // 2. INLINE KISAN AI CHATBOT STATE (SECTION 2)
-  // -------------------------------------------------------------
+ 
   const [chatInput, setChatInput] = useState('');
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [chatHistory, setChatHistory] = useState([
@@ -560,12 +555,8 @@ export const LandingView = ({
             
             {/* Left Column: Headlines & CTA */}
             <div className="lg:col-span-7 space-y-4 sm:space-y-6 z-10">
-              <div className="inline-flex items-center gap-2 bg-[#eaf6ed] border border-emerald-300/80 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold text-[#174d26]">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Smart India Hackathon 2026 • Problem ID 26132</span>
-              </div>
-
               <div>
+
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-[1.14] sm:leading-[1.12] tracking-tight">
                   {language === 'en' ? (
                     <>
